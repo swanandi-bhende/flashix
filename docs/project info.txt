@@ -1,0 +1,17 @@
+﻿Flashix- AI Flashloan Arbitrage Executor
+One-sentence: Autonomous TEE-sealed AI agent that detects and executes flashloan-funded perpetual arbitrage across global DEXs using sealed inference on private mempool + liquidity snapshots.
+Why it stands out: Flashloan strategies are core to advanced DeFi quants but vulnerable to front-running; this makes them verifiably private and autonomous — zero public equivalents in current submissions.
+0G core: 0G Compute (Sealed Inference in TEE) + 0G Chain for atomic execution. Explorer link proves sealed detection → flashloan perp trade.
+Demo: Simulated live mempool → sealed flashloan trigger → profitable perp execution → Explorer verification.
+
+
+Tech Stack
+Which technical components of 0G do you plan to use in your project?*
+✅ 0G Compute — Verifiable AI inference and model serving
+✅ 0G Chain — EVM-compatible L1 for deploying smart contracts
+✅ TEE / Private Sandbox — Trusted Execution Environment for privacy-preserving computation
+(Do NOT select Storage, Agent ID, or Memory for now — keep it focused on Track 2.)
+
+
+Which track are you interested in?*
+Track 2: Agentic Trading Arena (Verifiable Finance)

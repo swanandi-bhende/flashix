@@ -1,0 +1,32 @@
+name: Security checks
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  python-security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install bandit
+        run: pip install bandit
+      - name: Run bandit
+        run: bandit -r . -ll
+
+  node-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install and run npm audit
+        run: |
+          npm ci
+          npm audit --audit-level=moderate || true
