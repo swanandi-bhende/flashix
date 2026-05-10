@@ -1,0 +1,49 @@
+# Secrets and local env
+.env
+.env.*
+!.env.example
+
+# Node and package managers
+node_modules/
+.pnpm-store/
+.npm/
+.yarn/
+.yarn-cache/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.venv/
+venv/
+env/
+
+# Build and coverage outputs
+coverage/
+coverage.json
+.nyc_output/
+dist/
+build/
+out/
+
+# Hardhat generated artifacts
+contracts/artifacts/
+contracts/cache/
+contracts/typechain-types/
+contracts/coverage/
+contracts/coverage.json
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+*.swo
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

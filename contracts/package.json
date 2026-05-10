@@ -1,0 +1,33 @@
+{
+  "name": "contracts",
+  "version": "1.0.0",
+  "description": "Contracts directory ------------------- Solidity smart contracts for on-chain execution and validation. Expected structure: - contracts/LendingPool.sol - contracts/ArbitrageExecutor.sol - contracts/SignalValidator.sol - contracts/abi/ (compiled ABIs) - contracts/tests/ (contract unit tests)",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "test:verbose": "hardhat test --reporter verbose",
+    "coverage": "hardhat coverage",
+    "deploy": "hardhat run scripts/deploy_all.ts --network zgTestnet",
+    "deploy:lending-pool": "hardhat run scripts/deploy_lending_pool.ts --network zgTestnet",
+    "deploy:signal-validator": "hardhat run scripts/deploy_signal_validator.ts --network zgTestnet",
+    "deploy:arbitrage-executor": "hardhat run scripts/deploy_arbitrage_executor.ts --network zgTestnet",
+    "verify:deployment": "hardhat run scripts/verify_deployment.ts --network zgTestnet"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.1.0",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.1.1",
+    "@openzeppelin/contracts": "^5.6.1",
+    "dotenv": "^17.4.2",
+    "ethers": "^6.16.0",
+    "hardhat": "^2.26.3",
+    "solidity-coverage": "^0.8.14",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  }
+}
