@@ -42,6 +42,12 @@ contracts/coverage.json
 *.swp
 *.swo
 
+# TEE artifacts
+/certs/
+/compute/models/*.pkl
+/logs/
+.env.local
+
 # IDE and OS files
 .vscode/
 .idea/

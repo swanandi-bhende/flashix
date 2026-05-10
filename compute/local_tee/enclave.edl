@@ -1,0 +1,7 @@
+enclave {
+    from "openenclave/edl/sgx" import *;
+
+    trusted {
+        public void ecall_process([in, size=len] const uint8_t* len, size_t len);
+    };
+};
