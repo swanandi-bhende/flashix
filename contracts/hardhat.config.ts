@@ -4,6 +4,10 @@ import "@nomicfoundation/hardhat-verify";
 import "solidity-coverage";
 import "dotenv/config";
 
+// Allow the requested .py-named Hardhat test shim to be loaded as JavaScript.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(require as any).extensions[".py"] = (require as any).extensions[".js"];
+
 const rawDeployerPrivateKey = process.env.DEPLOYER_PRIVATE_KEY?.trim() || "";
 const normalizedDeployerPrivateKey =
   rawDeployerPrivateKey === ""
@@ -32,6 +36,11 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       allowUnlimitedContractSize: true,
+      forking: process.env.ZG_MAINNET_RPC
+        ? {
+            url: process.env.ZG_MAINNET_RPC,
+          }
+        : undefined,
     },
     localhost: {
       url: "http://127.0.0.1:8545",
@@ -65,6 +74,9 @@ const config: HardhatUserConfig = {
         },
       },
     ],
+  },
+  mocha: {
+    timeout: 120000,
   },
   paths: {
     sources: "./contracts",
