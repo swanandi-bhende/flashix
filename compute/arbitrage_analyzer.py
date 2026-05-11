@@ -4,16 +4,26 @@ import pickle
 import hashlib
 import numpy as np
 from decimal import Decimal
+from json import dumps
+
+from eth_account import Account
+from eth_account.messages import encode_defunct
+from web3 import Web3
 
 from .payload_schema import InferenceRequest, InferenceResponse
 
 MIN_PROFIT_MARGIN = float(os.getenv("MIN_PROFIT_MARGIN_PERCENT", "3.0"))
+DEFAULT_LOCAL_SIGNING_KEY = os.getenv(
+    "TEE_LOCAL_SIGNING_PRIVATE_KEY",
+    "0x59c6995e998f97a5a004497e5da6f7a5fba8f3a15d7f66b5a6a51f6c4a1b0d1d",
+)
 
 class ArbitrageAnalyzer:
     def __init__(self):
         self.model = None
         self.model_path = os.getenv("TEE_LOCAL_MODEL_PATH", "./compute/models/arbitrage_scorer_v1.pkl")
         self.expected_hash = os.getenv("TEE_LOCAL_MODEL_HASH")
+        self.signing_account = Account.from_key(DEFAULT_LOCAL_SIGNING_KEY)
         self.load_model()
 
     def load_model(self):
@@ -41,9 +51,11 @@ class ArbitrageAnalyzer:
 
         gross_spread = abs(price_a - price_b) / min(price_a, price_b) * 100.0
         # estimate costs
-        flashloan_fee = 0.0009 * 100.0  # 0.09% in percent
-        slippage = 0.35  # percent (estimate)
-        total_cost = flashloan_fee + slippage
+        flashloan_fee = 0.09
+        size_factor = min(max(borrow / 1_000_000.0, 0.0), 1.0)
+        slippage = 0.2 + (0.3 * size_factor)
+        gas_cost = 0.05
+        total_cost = flashloan_fee + slippage + gas_cost
         net_profit = gross_spread - total_cost
 
         # volatility proxy and time of day
@@ -57,22 +69,29 @@ class ArbitrageAnalyzer:
             # simple heuristic for fallback
             confidence = min(1.0, max(0.0, (gross_spread / 10.0)))
 
-        risk_score = max(0.0, min(1.0, 1.0 - (confidence * 0.8)))
+        risk_score = max(0.0, min(1.0, 1.0 - (confidence * 0.8) + (0.1 if volatility > 0.02 else 0.0)))
 
         decision = "EXECUTE" if (net_profit > MIN_PROFIT_MARGIN and confidence > 0.75 and risk_score < 0.6) else "SKIP"
 
-        expected_profit_usdc = Decimal(str(net_profit))
+        expected_profit_usdc = Decimal(str(round(net_profit, 8)))
         reasoning = f"gross_spread={gross_spread:.4f} total_cost={total_cost:.4f} net_profit={net_profit:.4f} confidence={confidence:.3f}"
 
         # deterministic signal hash
-        sig_payload = f"{request.opportunity_id}|{decision}|{expected_profit_usdc}|{risk_score:.4f}|{confidence:.4f}"
-        try:
-            signal_hash = hashlib.new('keccak256', sig_payload.encode()).hexdigest()
-        except Exception:
-            signal_hash = hashlib.sha256(sig_payload.encode()).hexdigest()
+        response_fields = {
+            "opportunity_id": request.opportunity_id,
+            "decision": decision,
+            "expected_profit_usdc": str(expected_profit_usdc),
+            "risk_score": round(risk_score, 8),
+            "confidence": round(confidence, 8),
+            "reasoning_summary": reasoning,
+        }
+        sig_payload = dumps(response_fields, sort_keys=True, separators=(",", ":"))
+        signal_hash = Web3.to_hex(Web3.keccak(text=sig_payload))
 
-        # tee_signature is produced by the enclave; in local mode we leave a placeholder
-        tee_signature = os.getenv("TEE_LOCAL_SIGNATURE_PLACEHOLDER", "0x00")
+        tee_signature = Web3.to_hex(Account.sign_message(
+            encode_defunct(text=signal_hash),
+            private_key=self.signing_account.key,
+        ).signature)
 
         resp = InferenceResponse(
             opportunity_id=request.opportunity_id,

@@ -2,14 +2,16 @@ import os
 import time
 import asyncio
 import statistics
+import logging
 from collections import deque
-from typing import Deque, List
+from typing import Deque
 
 import httpx
 from fastapi import FastAPI
 from pydantic import BaseModel
 
 app = FastAPI()
+logger = logging.getLogger(__name__)
 
 class ComputeStatus:
     HEALTHY = "HEALTHY"
@@ -22,6 +24,7 @@ class ComputeHealthMonitor:
         self.samples: Deque[int] = deque(maxlen=20)
         self.client = client or httpx.AsyncClient(timeout=5.0)
         self.last_failures = 0
+        self.last_checked_at = 0.0
 
     async def ping(self) -> int:
         payload = {"health_check": True}
@@ -32,23 +35,43 @@ class ComputeHealthMonitor:
                 await asyncio.sleep(0.01)
                 latency = int((time.time() - start) * 1000)
             else:
-                resp = await self.client.post(self.endpoint, json=payload)
+                headers = {}
+                api_key = os.getenv("TEE_API_KEY")
+                if api_key and str(api_key).startswith("app-sk-"):
+                    headers["Authorization"] = f"Bearer {api_key}"
+                resp = await self.client.post(self.endpoint, json=payload, headers=headers)
                 latency = int((time.time() - start) * 1000)
                 if resp.status_code != 200:
                     raise RuntimeError("non-200")
             self.samples.append(latency)
             self.last_failures = 0
+            self.last_checked_at = time.time()
+            logger.info("compute_health latency_ms=%s status=%s", latency, ComputeStatus.HEALTHY)
             return latency
         except Exception:
             self.last_failures += 1
             self.samples.append(9999)
+            self.last_checked_at = time.time()
+            logger.warning("compute_health latency_ms=%s status=%s", 9999, ComputeStatus.UNAVAILABLE)
             return 9999
 
     def percentiles(self):
         if not self.samples:
             return {"p50": 0, "p95": 0, "p99": 0}
         arr = list(self.samples)
-        return {"p50": int(statistics.median(arr)), "p95": int(sorted(arr)[int(len(arr)*0.95)-1]) if len(arr)>1 else arr[-1], "p99": int(sorted(arr)[int(len(arr)*0.99)-1]) if len(arr)>1 else arr[-1]}
+        ordered = sorted(arr)
+
+        def pick_percentile(percentile: float) -> int:
+            if len(ordered) == 1:
+                return int(ordered[0])
+            index = max(0, min(len(ordered) - 1, int(round((len(ordered) - 1) * percentile))))
+            return int(ordered[index])
+
+        return {
+            "p50": int(statistics.median(arr)),
+            "p95": pick_percentile(0.95),
+            "p99": pick_percentile(0.99),
+        }
 
     def get_status(self):
         p = self.percentiles()
