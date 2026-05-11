@@ -13,7 +13,7 @@ except ImportError:  # pragma: no cover - local dry-run fallback
         def invoke(self, values):
             return values
 
-from prompts.system_prompt import SYSTEM_PROMPT
+from agent.prompts.system_prompt import SYSTEM_PROMPT
 
 REASONING_INSTRUCTIONS = """When evaluating any arbitrage signal, you MUST reason through EXACTLY FIVE sections in this order. Do not skip sections. Do not merge sections. Each section must contain a 'narrative' field written as a complete English sentence AND a 'data' field containing the numeric values as a JSON object. OUTPUT FORMAT: Wrap your entire reasoning in a JSON object with keys: opportunity_analysis, cost_breakdown, profit_calculation, risk_assessment, final_decision. Each key maps to an object with 'narrative' (string) and 'data' (object with numeric fields).
 

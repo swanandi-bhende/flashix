@@ -20,7 +20,7 @@ except ImportError:
 
 from agent_config import AgentConfig, ConfigurationError
 from agent_memory import FlashixMemory
-from prompts.system_prompt import SYSTEM_PROMPT
+from agent.prompts.system_prompt import SYSTEM_PROMPT
 from tools import (
     ValidateInferenceSignal,
     AssessMarketConditions,

@@ -204,6 +204,39 @@ class InferenceRecorder:
                 )
                 self._conn.commit()
 
+    def flag_for_retraining(self, correlation_id: str) -> None:
+        self.update_ground_truth(correlation_id, Decimal("0"), "UNPROFITABLE")
+        with self._lock:
+            row = self._conn.execute(
+                "SELECT 1 FROM inference_records WHERE correlation_id = ?",
+                (correlation_id,),
+            ).fetchone()
+            if row is None:
+                self._conn.execute(
+                    """
+                    INSERT OR REPLACE INTO inference_records (
+                        record_id, correlation_id, input_json, output_json, market_state_json,
+                        model_version, model_checksum, tee_mode, inference_latency_ms, recorded_at,
+                        ground_truth_profit_usdc, ground_truth_status
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        correlation_id,
+                        correlation_id,
+                        None,
+                        None,
+                        None,
+                        "unknown",
+                        "",
+                        "REPLAY",
+                        0.0,
+                        int(__import__("time").time() * 1000),
+                        0.0,
+                        "UNPROFITABLE",
+                    ),
+                )
+                self._conn.commit()
+
     def flush(self) -> None:
         self._queue.join()
 
