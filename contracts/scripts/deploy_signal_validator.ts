@@ -18,15 +18,9 @@ async function main() {
   const deployerAddr = await deployer.getAddress();
   console.log(`\nDeployer address: ${deployerAddr}`);
 
-  // Get TEE signer from environment
-  let teeSigner = process.env.TEE_SIGNER_ADDRESS;
-  if (!teeSigner) {
-    // If not set, use deployer address for testing
-    teeSigner = deployerAddr;
-    console.log(`Warning: TEE_SIGNER_ADDRESS not set, using deployer address: ${teeSigner}`);
-  } else {
-    console.log(`TEE Signer address: ${teeSigner}`);
-  }
+  // Get expected MRENCLAVE from environment
+  const expectedMrenclave = process.env.EXPECTED_MRENCLAVE || process.env.TEE_MRENCLAVE || ethers.ZeroHash;
+  console.log(`Expected MRENCLAVE: ${expectedMrenclave}`);
 
   // Check deployer balance
   const balance = await ethers.provider.getBalance(deployerAddr);
@@ -49,7 +43,7 @@ async function main() {
   // Deploy SignalValidator
   console.log("\nDeploying SignalValidator contract...");
   const SignalValidator = await ethers.getContractFactory("SignalValidator");
-  const signalValidator = await SignalValidator.deploy(teeSigner);
+  const signalValidator = await SignalValidator.deploy(expectedMrenclave);
 
   const deploymentTx = signalValidator.deploymentTransaction();
   await signalValidator.waitForDeployment();
@@ -65,7 +59,7 @@ async function main() {
   console.log(`  Transaction: ${txHash}`);
   console.log(`  Block: ${blockNumber}`);
   console.log(`  Gas Used: ${gasUsed}`);
-  console.log(`  Trusted Signer: ${teeSigner}`);
+  console.log(`  Expected MRENCLAVE: ${expectedMrenclave}`);
 
   // Save to ABI folder
   const abiDir = path.join(__dirname, "../abi");
@@ -86,7 +80,7 @@ async function main() {
     deployedAt: new Date().toISOString(),
     txHash: txHash,
     blockNumber: blockNumber,
-    trustedSigner: teeSigner,
+    expectedMrenclave,
   };
 
   fs.writeFileSync(
