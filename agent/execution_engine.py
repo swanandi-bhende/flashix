@@ -336,7 +336,7 @@ class ExecutionEngine:
     in a structured ExecutionResult with full context.
     """
     
-    def __init__(self, web3=None, private_key: str = "", db_path: str = "opportunities.db"):
+    def __init__(self, web3=None, private_key: str = "", db_path: str = "opportunities.db", risk_manager: Optional[Any] = None):
         """
         Initialize the execution engine.
         
@@ -367,6 +367,18 @@ class ExecutionEngine:
             self.settlement_validator = SettlementValidator(web3=self.web3)
         except ImportError as e:
             _logger.warning(f"Execution components not yet initialized: {e}")
+
+        try:
+            from agent.risk_manager import RiskManager
+
+            self.risk_manager = risk_manager if risk_manager is not None else RiskManager(web3=self.web3)
+        except Exception as e:
+            _logger.warning(f"Risk manager not yet initialized: {e}")
+            self.risk_manager = risk_manager
+
+    @staticmethod
+    def emergency_close(opportunity_id: str) -> None:
+        _logger.critical(f"EMERGENCY_CLOSE_REQUESTED: opportunity_id={opportunity_id}")
     
     def execute(self, request: ExecutionRequest) -> ExecutionResult:
         """
@@ -402,6 +414,21 @@ class ExecutionEngine:
             f"EXECUTION_START: opportunity_id={request.opportunity_id}, "
             f"decision_id={request.decision_id}, trace_id={request.trace_id}"
         )
+
+        if getattr(self, "risk_manager", None) is not None:
+            risk_check = self.risk_manager.pre_execution_check(request)
+            if not risk_check.allowed:
+                _logger.critical(
+                    f"EXECUTION_BLOCKED_BY_RISK: opportunity_id={request.opportunity_id}, "
+                    f"reason={risk_check.blocking_reason}, breakers={[breaker.value for breaker in risk_check.blocking_breakers]}"
+                )
+                return ExecutionResult(
+                    opportunity_id=request.opportunity_id,
+                    decision_id=request.decision_id,
+                    status="BROADCAST_FAILURE",
+                    revert_reason=risk_check.blocking_reason,
+                    execution_latency_ms=(time.perf_counter() - start_time) * 1000,
+                )
         
         try:
             # ================================================================
@@ -606,6 +633,13 @@ class ExecutionEngine:
                 f"TX_BROADCAST_SUCCESS: opportunity_id={request.opportunity_id}, "
                 f"tx_hash={broadcast_result.tx_hash}"
             )
+
+            if getattr(self, "risk_manager", None) is not None and broadcast_result.tx_hash:
+                self.risk_manager.on_position_opened(
+                    request.opportunity_id,
+                    broadcast_result.tx_hash,
+                    request.borrow_amount_usdc,
+                )
             
             # ================================================================
             # STEP 7: Settlement Validation
@@ -647,6 +681,9 @@ class ExecutionEngine:
                 revert_reason=broadcast_result.revert_reason,
                 explorer_link=broadcast_result.explorer_link,
             )
+
+            if getattr(self, "risk_manager", None) is not None and broadcast_result.status == "CONFIRMED":
+                self.risk_manager.post_execution_update(result, request)
             
             return result
         
