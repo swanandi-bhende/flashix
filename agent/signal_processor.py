@@ -1,13 +1,21 @@
 """
-Signal processor that bridges TEE inference output and the LangChain agent.
-Formats raw InferenceOutput objects into structured inputs for the agent's reasoning loop.
+Signal processor that bridges TEE inference output and the structured reasoning engine.
+Formats raw InferenceOutput objects into rich market context, executes the reasoning trace,
+and persists the resulting audit trail.
 """
 
 import json
+import logging
 import time
-from typing import Any, Dict, Optional
+from dataclasses import dataclass, field
+from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Field
+
+from reasoning import ChainOfThoughtExecutor, MarketStressCalculator, ReasoningParser, TraceDB
+
+
+logger = logging.getLogger(__name__)
 
 
 class InferenceOutput(BaseModel):
@@ -40,6 +48,36 @@ class AgentDecision(BaseModel):
     risk_assessment: str = Field(description="Risk assessment")
 
 
+@dataclass
+class ProcessingResult:
+    """Structured processing result that still behaves like the legacy decision object."""
+
+    trace: Any
+    decision: str
+    decision_id: str
+    warnings: List[str] = field(default_factory=list)
+
+    @property
+    def reasoning_summary(self) -> str:
+        return self.trace.final_decision.narrative
+
+    @property
+    def key_factors(self) -> List[str]:
+        return list(self.trace.risk_assessment.risk_factors)
+
+    @property
+    def expected_profit_usdc(self) -> float:
+        return float(self.trace.final_decision.expected_profit_usdc)
+
+    @property
+    def risk_assessment(self) -> str:
+        return self.trace.risk_assessment.narrative
+
+    @property
+    def trace_id(self) -> str:
+        return self.trace.trace_id
+
+
 class SignalProcessor:
     """
     Bridges TEE inference output and the LangChain agent.
@@ -59,6 +97,31 @@ class SignalProcessor:
             agent: Initialized FlashixAgent instance
         """
         self.agent = agent
+        self.market_stress_calculator = getattr(agent, "market_stress_calculator", MarketStressCalculator())
+        self.reasoning_executor = getattr(
+            agent,
+            "reasoning_executor",
+            ChainOfThoughtExecutor(dry_run_mode=True),
+        )
+        self.trace_db = getattr(agent, "trace_db", TraceDB())
+        self.reasoning_parser = ReasoningParser()
+        self.decision_logger_tool = self._find_tool("LogExecutionDecision")
+
+    def _find_tool(self, tool_name: str) -> Any:
+        tools = getattr(self.agent, "tools", []) or []
+        for tool in tools:
+            if getattr(tool, "name", "") == tool_name:
+                return tool
+        return None
+
+    def _recent_trade_summary(self) -> str:
+        if hasattr(self.agent, "get_memory_stats"):
+            try:
+                stats = self.agent.get_memory_stats()
+                return json.dumps(stats, ensure_ascii=True)
+            except Exception:
+                return "Recent performance summary unavailable."
+        return "Recent performance summary unavailable."
     
     def format_signal_for_agent(self, signal: InferenceOutput) -> str:
         """
@@ -95,100 +158,67 @@ class SignalProcessor:
         
         return prompt
     
-    def process(self, signal: InferenceOutput) -> AgentDecision:
+    def process(self, signal: InferenceOutput) -> ProcessingResult:
         """
-        Process a signal through the agent's reasoning loop.
-        
-        1. Format signal into agent input
-        2. Invoke agent with formatting handling
-        3. Parse agent output into structured decision
-        4. Validate decision structure
-        5. Return structured AgentDecision
+        Process a signal through the structured reasoning loop.
+
+        1. Build market conditions from the current market stress snapshot
+        2. Execute the chain-of-thought trace
+        3. Validate arithmetic consistency and persist the trace
+        4. Log approval decisions with the shared trace ID
+        5. Return a structured processing result
         
         Args:
             signal: InferenceOutput from TEE
         
         Returns:
-            AgentDecision with execution approval/rejection
+            ProcessingResult with execution approval/rejection
         
         Raises:
             No exceptions; errors result in REJECT decision with error details
         """
         try:
-            # Format signal for agent
-            formatted_signal = self.format_signal_for_agent(signal)
-            
-            # Invoke agent
-            agent_response = self.agent.invoke(formatted_signal)
-            
-            # Handle potential errors from agent
-            if "error" in agent_response:
-                return AgentDecision(
-                    decision="REJECT",
-                    decision_id="",
-                    reasoning_summary=f"Agent error: {agent_response['error']}",
-                    key_factors=["AGENT_EXECUTION_ERROR"],
-                    expected_profit_usdc=0.0,
-                    risk_assessment="Agent failed to process signal; rejected as precaution"
-                )
-            
-            # Extract and parse agent output
-            output_text = agent_response.get("output", "{}")
-            
-            # Try to extract JSON from output (agent might wrap it in markdown)
-            if "```json" in output_text:
-                json_start = output_text.find("```json") + 7
-                json_end = output_text.find("```", json_start)
-                if json_end > json_start:
-                    output_text = output_text[json_start:json_end].strip()
-            
-            # Parse JSON response
-            try:
-                response_dict = json.loads(output_text)
-            except json.JSONDecodeError:
-                # Fallback: agent output was not valid JSON
-                return AgentDecision(
-                    decision="REJECT",
-                    decision_id="",
-                    reasoning_summary="Agent output was not valid JSON",
-                    key_factors=["INVALID_JSON_RESPONSE"],
-                    expected_profit_usdc=0.0,
-                    risk_assessment="Agent produced malformed output; signal rejected"
-                )
-            
-            # Validate required fields
-            required_fields = ["decision", "reasoning_summary", "risk_assessment"]
-            missing_fields = [f for f in required_fields if f not in response_dict]
-            
-            if missing_fields:
-                return AgentDecision(
-                    decision="REJECT",
-                    decision_id="",
-                    reasoning_summary=f"Agent output missing fields: {missing_fields}",
-                    key_factors=["INCOMPLETE_RESPONSE"],
-                    expected_profit_usdc=0.0,
-                    risk_assessment="Agent output was incomplete; signal rejected"
-                )
-            
-            # Build and return AgentDecision
-            decision = AgentDecision(
-                decision=response_dict.get("decision", "REJECT").upper(),
-                decision_id=response_dict.get("decision_id", ""),
-                reasoning_summary=response_dict.get("reasoning_summary", ""),
-                key_factors=response_dict.get("key_factors", []),
-                expected_profit_usdc=response_dict.get("expected_profit_usdc", 0.0),
-                risk_assessment=response_dict.get("risk_assessment", "")
+            market_conditions = self.market_stress_calculator.build_market_conditions(
+                signal.symbol,
+                recent_trade_summary=self._recent_trade_summary(),
             )
-            
-            return decision
+            trace = self.reasoning_executor.execute(signal, market_conditions)
+            warnings = self.reasoning_parser.validate_numeric_consistency(trace)
+            for warning in warnings:
+                logger.warning(warning)
+
+            self.trace_db.insert_trace(trace, warnings=warnings)
+
+            decision_id = trace.trace_id
+            if trace.final_decision.decision == "APPROVE" and self.decision_logger_tool is not None:
+                logger_result = self.decision_logger_tool._run(
+                    opportunity_id=signal.opportunity_id,
+                    decision="APPROVE",
+                    reasoning_summary=trace.final_decision.narrative,
+                    decision_id=trace.trace_id,
+                    reasoning=trace.final_decision.narrative,
+                    confidence=float(trace.final_decision.decision_confidence),
+                    expected_profit=float(trace.final_decision.expected_profit_usdc),
+                    risk_factors=trace.risk_assessment.risk_factors,
+                )
+                try:
+                    logger_payload = json.loads(logger_result)
+                    if logger_payload.get("success") and logger_payload.get("decision_id"):
+                        decision_id = logger_payload["decision_id"]
+                except Exception:
+                    logger.warning("Decision logger returned malformed payload")
+
+            return ProcessingResult(
+                trace=trace,
+                decision=trace.final_decision.decision,
+                decision_id=decision_id,
+                warnings=warnings,
+            )
         
         except Exception as e:
-            # Catch-all for any unexpected errors
-            return AgentDecision(
+            return ProcessingResult(
+                trace=self.reasoning_executor.parser._failed_trace(signal.opportunity_id),
                 decision="REJECT",
-                decision_id="",
-                reasoning_summary=f"Unexpected error during signal processing: {e}",
-                key_factors=["UNEXPECTED_ERROR"],
-                expected_profit_usdc=0.0,
-                risk_assessment="Critical error during processing; signal rejected for safety"
+                decision_id=signal.opportunity_id,
+                warnings=[f"Unexpected error during signal processing: {e}"],
             )

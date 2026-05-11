@@ -199,6 +199,7 @@ class ContractManager:
         amount: int,
         signal_data: bytes,
         signer: Any,
+        trace_id: Optional[str] = None,
         gas_limit: Optional[int] = None
     ) -> str:
         """
@@ -209,6 +210,7 @@ class ContractManager:
             amount: Amount to borrow in token units
             signal_data: Encoded arbitrage signal
             signer: Web3 account that will sign the transaction
+            trace_id: Optional reasoning trace identifier for audit correlation
             gas_limit: Optional gas limit (auto-estimated if not provided)
 
         Returns:
@@ -220,6 +222,10 @@ class ContractManager:
         try:
             lending_pool = self.get_lending_pool()
             arbitrage_executor = self.get_arbitrage_executor()
+
+            if trace_id:
+                trace_tag = Web3.keccak(text=trace_id)
+                signal_data = signal_data + trace_tag
 
             token_addr = Web3.to_checksum_address(token_address)
             executor_addr = arbitrage_executor.address
@@ -248,7 +254,11 @@ class ContractManager:
             signed_tx = signer.sign_transaction(tx)
             tx_hash = self.web3.eth.send_raw_transaction(signed_tx.rawTransaction)
 
-            logger.info(f"Flashloan transaction submitted: {tx_hash.hex()}")
+            logger.info(
+                "Flashloan transaction submitted: %s trace_id=%s",
+                tx_hash.hex(),
+                trace_id,
+            )
             return tx_hash.hex()
 
         except Exception as e:

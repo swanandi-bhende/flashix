@@ -44,6 +44,9 @@ interface ISwapRouter {
  * LendingPool and execute atomic arbitrage in a single transaction.
  */
 contract ArbitrageExecutor is IERC3156FlashBorrower, ReentrancyGuard, Pausable, Ownable {
+    uint256 private constant SIGNAL_DATA_STATIC_SIZE = 10 * 32;
+    uint256 private constant TRACE_ID_SIZE = 32;
+
     // ==================== State Variables ====================
     /// @notice Reference to the lending pool contract
     IERC3156FlashLender public lendingPool;
@@ -59,6 +62,12 @@ contract ArbitrageExecutor is IERC3156FlashBorrower, ReentrancyGuard, Pausable, 
 
     /// @notice Counter for execution IDs (for event tracking)
     uint256 public executionCounter;
+
+    /// @notice Last trace identifier linked to an execution, if provided.
+    bytes32 public lastTraceId;
+
+    /// @notice Mapping from signal opportunity ID to the linked reasoning trace ID.
+    mapping(bytes32 => bytes32) public traceIdsByOpportunity;
 
     // ==================== Events ====================
     /// @notice Emitted when arbitrage is successfully executed
@@ -81,6 +90,9 @@ contract ArbitrageExecutor is IERC3156FlashBorrower, ReentrancyGuard, Pausable, 
 
     /// @notice Emitted when signal validator reference is updated
     event SignalValidatorUpdated(address indexed newValidator);
+
+    /// @notice Emitted when a reasoning trace is linked to an execution.
+    event TraceLinked(bytes32 indexed opportunityId, bytes32 indexed traceId);
 
     // ==================== Errors ====================
     /// @notice Raised when signal verification fails
@@ -185,8 +197,15 @@ contract ArbitrageExecutor is IERC3156FlashBorrower, ReentrancyGuard, Pausable, 
             bytes32 opportunityId,
             address dexA,
             address dexB,
-            uint256 minProfit
+            uint256 minProfit,
+            bytes32 traceId
         ) = _validateSignal(data);
+
+        if (traceId != bytes32(0)) {
+            lastTraceId = traceId;
+            traceIdsByOpportunity[opportunityId] = traceId;
+            emit TraceLinked(opportunityId, traceId);
+        }
 
         // Verify routers are approved.
         if (!approvedRouters[dexA] || !approvedRouters[dexB]) {
@@ -235,10 +254,17 @@ contract ArbitrageExecutor is IERC3156FlashBorrower, ReentrancyGuard, Pausable, 
             bytes32 opportunityId,
             address dexA,
             address dexB,
-            uint256 minProfit
+            uint256 minProfit,
+            bytes32 traceId
         )
     {
-        SignalValidator.ArbitrageSignal memory signal = abi.decode(data, (SignalValidator.ArbitrageSignal));
+        bytes calldata signalData = data[:SIGNAL_DATA_STATIC_SIZE];
+        SignalValidator.ArbitrageSignal memory signal = abi.decode(signalData, (SignalValidator.ArbitrageSignal));
+
+        traceId = bytes32(0);
+        if (data.length >= SIGNAL_DATA_STATIC_SIZE + TRACE_ID_SIZE) {
+            traceId = bytes32(data[SIGNAL_DATA_STATIC_SIZE:SIGNAL_DATA_STATIC_SIZE + TRACE_ID_SIZE]);
+        }
 
         if (block.timestamp > signal.deadline) {
             revert SignalExpired(signal.deadline, block.timestamp);
@@ -259,7 +285,8 @@ contract ArbitrageExecutor is IERC3156FlashBorrower, ReentrancyGuard, Pausable, 
             signal.opportunityId,
             signal.dexA,
             signal.dexB,
-            signal.minProfit
+            signal.minProfit,
+            traceId
         );
     }
 

@@ -1,7 +1,7 @@
 {
   "name": "contracts",
   "version": "1.0.0",
-  "description": "Contracts directory ------------------- Solidity smart contracts for on-chain execution and validation. Expected structure: - contracts/LendingPool.sol - contracts/ArbitrageExecutor.sol - contracts/SignalValidator.sol - contracts/abi/ (compiled ABIs) - contracts/tests/ (contract unit tests)",
+  "description": "Solidity smart contracts for Flashix. Source of truth lives in contracts/contracts/*.sol; generated ABIs, artifacts, and bindings live alongside the Hardhat project.",
   "main": "index.js",
   "scripts": {
     "compile": "hardhat compile",

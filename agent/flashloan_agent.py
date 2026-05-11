@@ -27,6 +27,7 @@ from tools import (
     QueryTradeHistory,
     LogExecutionDecision,
 )
+from reasoning import ChainOfThoughtExecutor, MarketStressCalculator, TraceDB
 
 
 class FlashixAgent:
@@ -63,6 +64,16 @@ class FlashixAgent:
             QueryTradeHistory(),
             LogExecutionDecision(),
         ]
+
+        # Initialize structured reasoning components
+        self.market_stress_calculator = MarketStressCalculator()
+        self.reasoning_executor = ChainOfThoughtExecutor(
+            model_name=self.config.gemini_model,
+            temperature=self.config.gemini_temperature,
+            max_output_tokens=self.config.gemini_max_tokens,
+            dry_run_mode=self.config.dry_run_mode,
+        )
+        self.trace_db = TraceDB()
         
         # Initialize LLM and agent executor
         self.agent_executor: Optional[AgentExecutor] = None
@@ -176,6 +187,13 @@ class FlashixAgent:
                 "decision": "REJECT",
                 "reasoning": "Agent execution failed; rejecting signal as precaution"
             }
+
+    def process_signal(self, signal: Any) -> Any:
+        """Process a structured inference signal through the reasoning pipeline."""
+        from signal_processor import SignalProcessor
+
+        processor = SignalProcessor(self)
+        return processor.process(signal)
     
     def get_memory_stats(self) -> Dict[str, Any]:
         """Get summary statistics from agent memory."""

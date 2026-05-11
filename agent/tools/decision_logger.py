@@ -66,10 +66,12 @@ class LogExecutionDecision(BaseTool):
         self,
         opportunity_id: str,
         decision: str,
-        reasoning: str,
+        reasoning: str = "",
         confidence: float = 0.0,
         expected_profit: float = 0.0,
         risk_factors: List[str] = None,
+        decision_id: str = "",
+        reasoning_summary: str = "",
         **kwargs
     ) -> str:
         """
@@ -88,6 +90,9 @@ class LogExecutionDecision(BaseTool):
         """
         if risk_factors is None:
             risk_factors = []
+
+        if reasoning_summary:
+            reasoning = reasoning_summary
         
         # Validate decision
         decision = decision.upper()
@@ -102,7 +107,7 @@ class LogExecutionDecision(BaseTool):
             return json.dumps(result.dict())
         
         # Generate unique decision ID
-        decision_id = str(uuid.uuid4())
+        decision_id = decision_id or str(uuid.uuid4())
         timestamp = int(time.time())
         
         # Create log entry
