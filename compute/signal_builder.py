@@ -17,7 +17,17 @@ class SignalBuilder:
         borrow_amount = Decimal(str(input.borrow_amount_usdc))
         collateral_required = borrow_amount * Decimal("1.5")
         expiry_timestamp = int(input.timestamp) + 30
-        decision = "EXECUTE" if (confidence > 0.75 and risk_score < 0.6 and expected_profit > MIN_PROFIT_USDC) else "SKIP"
+        gross_spread = float(abs(float(input.price_a) - float(input.price_b)) / min(float(input.price_a), float(input.price_b)) * 100.0)
+        liquidity_floor = min(float(input.orderbook_depth_a), float(input.orderbook_depth_b))
+        funding_diff = abs(float(input.funding_rate_a - input.funding_rate_b))
+        suspicious_market = (
+            gross_spread > 10.0
+            or liquidity_floor < 1000.0
+            or float(input.volatility_24h) >= 4.0
+            or funding_diff >= 0.008
+            or float(input.gas_price_gwei) >= 100.0
+        )
+        decision = "EXECUTE" if (not suspicious_market and confidence > 0.75 and risk_score < 0.6 and expected_profit > MIN_PROFIT_USDC) else "SKIP"
         reasoning = self._build_reasoning_string(input, confidence, risk_score, expected_profit, decision)
 
         input_dict = input.__dict__

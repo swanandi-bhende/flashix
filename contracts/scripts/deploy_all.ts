@@ -7,12 +7,31 @@ async function main() {
   console.log("=".repeat(70) + "\n");
 
   const scriptsDir = path.dirname(__filename);
+  const repoRoot = path.resolve(path.dirname(scriptsDir), "..");
   const network = process.env.HARDHAT_NETWORK || "zgTestnet";
   const deploymentOrder = [
     { name: "SignalValidator", file: "deploy_signal_validator.ts" },
     { name: "LendingPool", file: "deploy_lending_pool.ts" },
     { name: "ArbitrageExecutor", file: "deploy_arbitrage_executor.ts" },
   ];
+
+  console.log("\nRunning inference replay validation before deployment...\n");
+  try {
+    const pythonBin = process.env.PYTHON_BIN || "python3";
+    const validationOutput = execSync(
+      `${pythonBin} ../tests/replay/replay_harness.py --ci-mode`,
+      {
+        cwd: path.join(repoRoot, "contracts"),
+        encoding: "utf-8",
+        stdio: ["ignore", "pipe", "pipe"],
+      }
+    );
+    console.log(validationOutput);
+  } catch (error) {
+    console.error("\n❌ Inference validation failed; deployment blocked");
+    console.error(error);
+    process.exit(1);
+  }
 
   const deployedAddresses: Record<string, string> = {};
 

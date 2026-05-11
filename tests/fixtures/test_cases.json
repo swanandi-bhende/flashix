@@ -1,0 +1,3947 @@
+[
+  {
+    "expected_confidence_range": [
+      0.8,
+      0.95
+    ],
+    "expected_decision": "EXECUTE",
+    "expected_profit_range": [
+      "-470",
+      "780"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 35.0,
+      "opportunity_id": "np-0",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "103.5000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.5
+    },
+    "notes": "Stable profitable spread with healthy liquidity.",
+    "scenario_type": "NORMAL_PROFITABLE",
+    "test_id": "normal-profit-000",
+    "test_name": "normal_profitable_0"
+  },
+  {
+    "expected_confidence_range": [
+      0.8,
+      0.95
+    ],
+    "expected_decision": "EXECUTE",
+    "expected_profit_range": [
+      "-470",
+      "780"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 36.0,
+      "opportunity_id": "np-1",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "103.65000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.55
+    },
+    "notes": "Stable profitable spread with healthy liquidity.",
+    "scenario_type": "NORMAL_PROFITABLE",
+    "test_id": "normal-profit-001",
+    "test_name": "normal_profitable_1"
+  },
+  {
+    "expected_confidence_range": [
+      0.8,
+      0.95
+    ],
+    "expected_decision": "EXECUTE",
+    "expected_profit_range": [
+      "-470",
+      "780"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 37.0,
+      "opportunity_id": "np-2",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "103.8000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Stable profitable spread with healthy liquidity.",
+    "scenario_type": "NORMAL_PROFITABLE",
+    "test_id": "normal-profit-002",
+    "test_name": "normal_profitable_2"
+  },
+  {
+    "expected_confidence_range": [
+      0.8,
+      0.95
+    ],
+    "expected_decision": "EXECUTE",
+    "expected_profit_range": [
+      "-470",
+      "780"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 38.0,
+      "opportunity_id": "np-3",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "103.95000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.5
+    },
+    "notes": "Stable profitable spread with healthy liquidity.",
+    "scenario_type": "NORMAL_PROFITABLE",
+    "test_id": "normal-profit-003",
+    "test_name": "normal_profitable_3"
+  },
+  {
+    "expected_confidence_range": [
+      0.8,
+      0.95
+    ],
+    "expected_decision": "EXECUTE",
+    "expected_profit_range": [
+      "-470",
+      "780"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 39.0,
+      "opportunity_id": "np-4",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.1000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.55
+    },
+    "notes": "Stable profitable spread with healthy liquidity.",
+    "scenario_type": "NORMAL_PROFITABLE",
+    "test_id": "normal-profit-004",
+    "test_name": "normal_profitable_4"
+  },
+  {
+    "expected_confidence_range": [
+      0.8,
+      0.95
+    ],
+    "expected_decision": "EXECUTE",
+    "expected_profit_range": [
+      "-470",
+      "780"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 40.0,
+      "opportunity_id": "np-5",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.25000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Stable profitable spread with healthy liquidity.",
+    "scenario_type": "NORMAL_PROFITABLE",
+    "test_id": "normal-profit-005",
+    "test_name": "normal_profitable_5"
+  },
+  {
+    "expected_confidence_range": [
+      0.8,
+      0.95
+    ],
+    "expected_decision": "EXECUTE",
+    "expected_profit_range": [
+      "-470",
+      "780"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 41.0,
+      "opportunity_id": "np-6",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.4000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.5
+    },
+    "notes": "Stable profitable spread with healthy liquidity.",
+    "scenario_type": "NORMAL_PROFITABLE",
+    "test_id": "normal-profit-006",
+    "test_name": "normal_profitable_6"
+  },
+  {
+    "expected_confidence_range": [
+      0.8,
+      0.95
+    ],
+    "expected_decision": "EXECUTE",
+    "expected_profit_range": [
+      "-470",
+      "780"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 42.0,
+      "opportunity_id": "np-7",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.55000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.55
+    },
+    "notes": "Stable profitable spread with healthy liquidity.",
+    "scenario_type": "NORMAL_PROFITABLE",
+    "test_id": "normal-profit-007",
+    "test_name": "normal_profitable_7"
+  },
+  {
+    "expected_confidence_range": [
+      0.8,
+      0.95
+    ],
+    "expected_decision": "EXECUTE",
+    "expected_profit_range": [
+      "-470",
+      "780"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 43.0,
+      "opportunity_id": "np-8",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.7000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Stable profitable spread with healthy liquidity.",
+    "scenario_type": "NORMAL_PROFITABLE",
+    "test_id": "normal-profit-008",
+    "test_name": "normal_profitable_8"
+  },
+  {
+    "expected_confidence_range": [
+      0.8,
+      0.95
+    ],
+    "expected_decision": "EXECUTE",
+    "expected_profit_range": [
+      "-470",
+      "780"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 44.0,
+      "opportunity_id": "np-9",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.85000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.5
+    },
+    "notes": "Stable profitable spread with healthy liquidity.",
+    "scenario_type": "NORMAL_PROFITABLE",
+    "test_id": "normal-profit-009",
+    "test_name": "normal_profitable_9"
+  },
+  {
+    "expected_confidence_range": [
+      0.8,
+      0.95
+    ],
+    "expected_decision": "EXECUTE",
+    "expected_profit_range": [
+      "-470",
+      "780"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 45.0,
+      "opportunity_id": "np-10",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "105.000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.55
+    },
+    "notes": "Stable profitable spread with healthy liquidity.",
+    "scenario_type": "NORMAL_PROFITABLE",
+    "test_id": "normal-profit-010",
+    "test_name": "normal_profitable_10"
+  },
+  {
+    "expected_confidence_range": [
+      0.8,
+      0.95
+    ],
+    "expected_decision": "EXECUTE",
+    "expected_profit_range": [
+      "-470",
+      "780"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 46.0,
+      "opportunity_id": "np-11",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "105.15000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Stable profitable spread with healthy liquidity.",
+    "scenario_type": "NORMAL_PROFITABLE",
+    "test_id": "normal-profit-011",
+    "test_name": "normal_profitable_11"
+  },
+  {
+    "expected_confidence_range": [
+      0.8,
+      0.95
+    ],
+    "expected_decision": "EXECUTE",
+    "expected_profit_range": [
+      "-470",
+      "780"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 47.0,
+      "opportunity_id": "np-12",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "105.3000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.5
+    },
+    "notes": "Stable profitable spread with healthy liquidity.",
+    "scenario_type": "NORMAL_PROFITABLE",
+    "test_id": "normal-profit-012",
+    "test_name": "normal_profitable_12"
+  },
+  {
+    "expected_confidence_range": [
+      0.8,
+      0.95
+    ],
+    "expected_decision": "EXECUTE",
+    "expected_profit_range": [
+      "-470",
+      "780"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 48.0,
+      "opportunity_id": "np-13",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "105.45000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.55
+    },
+    "notes": "Stable profitable spread with healthy liquidity.",
+    "scenario_type": "NORMAL_PROFITABLE",
+    "test_id": "normal-profit-013",
+    "test_name": "normal_profitable_13"
+  },
+  {
+    "expected_confidence_range": [
+      0.8,
+      0.95
+    ],
+    "expected_decision": "EXECUTE",
+    "expected_profit_range": [
+      "-470",
+      "780"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 49.0,
+      "opportunity_id": "np-14",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "105.6000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Stable profitable spread with healthy liquidity.",
+    "scenario_type": "NORMAL_PROFITABLE",
+    "test_id": "normal-profit-014",
+    "test_name": "normal_profitable_14"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.74
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-156",
+      "134"
+    ],
+    "input": {
+      "borrow_amount_usdc": "5000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 60.0,
+      "opportunity_id": "nu-0",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "100.6000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Spread is below costs after fees and slippage.",
+    "scenario_type": "NORMAL_UNPROFITABLE",
+    "test_id": "normal-loss-000",
+    "test_name": "normal_unprofitable_0"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.74
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-156",
+      "134"
+    ],
+    "input": {
+      "borrow_amount_usdc": "5000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 61.0,
+      "opportunity_id": "nu-1",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "100.68000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Spread is below costs after fees and slippage.",
+    "scenario_type": "NORMAL_UNPROFITABLE",
+    "test_id": "normal-loss-001",
+    "test_name": "normal_unprofitable_1"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.74
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-156",
+      "134"
+    ],
+    "input": {
+      "borrow_amount_usdc": "5000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 62.0,
+      "opportunity_id": "nu-2",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "100.76000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Spread is below costs after fees and slippage.",
+    "scenario_type": "NORMAL_UNPROFITABLE",
+    "test_id": "normal-loss-002",
+    "test_name": "normal_unprofitable_2"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.74
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-156",
+      "134"
+    ],
+    "input": {
+      "borrow_amount_usdc": "5000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 63.0,
+      "opportunity_id": "nu-3",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "100.84000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Spread is below costs after fees and slippage.",
+    "scenario_type": "NORMAL_UNPROFITABLE",
+    "test_id": "normal-loss-003",
+    "test_name": "normal_unprofitable_3"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.74
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-156",
+      "134"
+    ],
+    "input": {
+      "borrow_amount_usdc": "5000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 64.0,
+      "opportunity_id": "nu-4",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "100.92000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Spread is below costs after fees and slippage.",
+    "scenario_type": "NORMAL_UNPROFITABLE",
+    "test_id": "normal-loss-004",
+    "test_name": "normal_unprofitable_4"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.74
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-156",
+      "134"
+    ],
+    "input": {
+      "borrow_amount_usdc": "5000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 65.0,
+      "opportunity_id": "nu-5",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "101.000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Spread is below costs after fees and slippage.",
+    "scenario_type": "NORMAL_UNPROFITABLE",
+    "test_id": "normal-loss-005",
+    "test_name": "normal_unprofitable_5"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.74
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-156",
+      "134"
+    ],
+    "input": {
+      "borrow_amount_usdc": "5000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 66.0,
+      "opportunity_id": "nu-6",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "101.08000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Spread is below costs after fees and slippage.",
+    "scenario_type": "NORMAL_UNPROFITABLE",
+    "test_id": "normal-loss-006",
+    "test_name": "normal_unprofitable_6"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.74
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-156",
+      "134"
+    ],
+    "input": {
+      "borrow_amount_usdc": "5000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 67.0,
+      "opportunity_id": "nu-7",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "101.16000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Spread is below costs after fees and slippage.",
+    "scenario_type": "NORMAL_UNPROFITABLE",
+    "test_id": "normal-loss-007",
+    "test_name": "normal_unprofitable_7"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.74
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-156",
+      "134"
+    ],
+    "input": {
+      "borrow_amount_usdc": "5000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 68.0,
+      "opportunity_id": "nu-8",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "101.24000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Spread is below costs after fees and slippage.",
+    "scenario_type": "NORMAL_UNPROFITABLE",
+    "test_id": "normal-loss-008",
+    "test_name": "normal_unprofitable_8"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.74
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-156",
+      "134"
+    ],
+    "input": {
+      "borrow_amount_usdc": "5000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 69.0,
+      "opportunity_id": "nu-9",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "101.32000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Spread is below costs after fees and slippage.",
+    "scenario_type": "NORMAL_UNPROFITABLE",
+    "test_id": "normal-loss-009",
+    "test_name": "normal_unprofitable_9"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.65
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-3100",
+      "2150"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "-0.050",
+      "funding_rate_b": "0.00002",
+      "gas_price_gwei": 120.0,
+      "opportunity_id": "fc-0",
+      "orderbook_depth_a": 50.0,
+      "orderbook_depth_b": 75.0,
+      "price_a": "85.000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 4.5
+    },
+    "notes": "Flash crash signature with near-zero depth and extreme negative funding.",
+    "scenario_type": "FLASH_CRASH",
+    "test_id": "flash-crash-000",
+    "test_name": "flash_crash_0"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.65
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-3100",
+      "2150"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "-0.054",
+      "funding_rate_b": "0.00002",
+      "gas_price_gwei": 122.0,
+      "opportunity_id": "fc-1",
+      "orderbook_depth_a": 51.0,
+      "orderbook_depth_b": 76.0,
+      "price_a": "83.8000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 4.6
+    },
+    "notes": "Flash crash signature with near-zero depth and extreme negative funding.",
+    "scenario_type": "FLASH_CRASH",
+    "test_id": "flash-crash-001",
+    "test_name": "flash_crash_1"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.65
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-3100",
+      "2150"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "-0.058",
+      "funding_rate_b": "0.00002",
+      "gas_price_gwei": 124.0,
+      "opportunity_id": "fc-2",
+      "orderbook_depth_a": 52.0,
+      "orderbook_depth_b": 77.0,
+      "price_a": "82.6000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 4.7
+    },
+    "notes": "Flash crash signature with near-zero depth and extreme negative funding.",
+    "scenario_type": "FLASH_CRASH",
+    "test_id": "flash-crash-002",
+    "test_name": "flash_crash_2"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.65
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-3100",
+      "2150"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "-0.062",
+      "funding_rate_b": "0.00002",
+      "gas_price_gwei": 126.0,
+      "opportunity_id": "fc-3",
+      "orderbook_depth_a": 53.0,
+      "orderbook_depth_b": 78.0,
+      "price_a": "81.4000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 4.8
+    },
+    "notes": "Flash crash signature with near-zero depth and extreme negative funding.",
+    "scenario_type": "FLASH_CRASH",
+    "test_id": "flash-crash-003",
+    "test_name": "flash_crash_3"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.65
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-3100",
+      "2150"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "-0.066",
+      "funding_rate_b": "0.00002",
+      "gas_price_gwei": 128.0,
+      "opportunity_id": "fc-4",
+      "orderbook_depth_a": 54.0,
+      "orderbook_depth_b": 79.0,
+      "price_a": "80.2000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 4.9
+    },
+    "notes": "Flash crash signature with near-zero depth and extreme negative funding.",
+    "scenario_type": "FLASH_CRASH",
+    "test_id": "flash-crash-004",
+    "test_name": "flash_crash_4"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.65
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-3100",
+      "2150"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "-0.070",
+      "funding_rate_b": "0.00002",
+      "gas_price_gwei": 130.0,
+      "opportunity_id": "fc-5",
+      "orderbook_depth_a": 55.0,
+      "orderbook_depth_b": 80.0,
+      "price_a": "79.000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 4.5
+    },
+    "notes": "Flash crash signature with near-zero depth and extreme negative funding.",
+    "scenario_type": "FLASH_CRASH",
+    "test_id": "flash-crash-005",
+    "test_name": "flash_crash_5"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.65
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-3100",
+      "2150"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "-0.074",
+      "funding_rate_b": "0.00002",
+      "gas_price_gwei": 132.0,
+      "opportunity_id": "fc-6",
+      "orderbook_depth_a": 56.0,
+      "orderbook_depth_b": 81.0,
+      "price_a": "77.8000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 4.6
+    },
+    "notes": "Flash crash signature with near-zero depth and extreme negative funding.",
+    "scenario_type": "FLASH_CRASH",
+    "test_id": "flash-crash-006",
+    "test_name": "flash_crash_6"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.65
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-3100",
+      "2150"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "-0.078",
+      "funding_rate_b": "0.00002",
+      "gas_price_gwei": 134.0,
+      "opportunity_id": "fc-7",
+      "orderbook_depth_a": 57.0,
+      "orderbook_depth_b": 82.0,
+      "price_a": "76.6000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 4.7
+    },
+    "notes": "Flash crash signature with near-zero depth and extreme negative funding.",
+    "scenario_type": "FLASH_CRASH",
+    "test_id": "flash-crash-007",
+    "test_name": "flash_crash_7"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.65
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-3100",
+      "2150"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "-0.082",
+      "funding_rate_b": "0.00002",
+      "gas_price_gwei": 136.0,
+      "opportunity_id": "fc-8",
+      "orderbook_depth_a": 58.0,
+      "orderbook_depth_b": 83.0,
+      "price_a": "75.4000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 4.8
+    },
+    "notes": "Flash crash signature with near-zero depth and extreme negative funding.",
+    "scenario_type": "FLASH_CRASH",
+    "test_id": "flash-crash-008",
+    "test_name": "flash_crash_8"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.65
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-3100",
+      "2150"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "-0.086",
+      "funding_rate_b": "0.00002",
+      "gas_price_gwei": 138.0,
+      "opportunity_id": "fc-9",
+      "orderbook_depth_a": 59.0,
+      "orderbook_depth_b": 84.0,
+      "price_a": "74.2000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 4.9
+    },
+    "notes": "Flash crash signature with near-zero depth and extreme negative funding.",
+    "scenario_type": "FLASH_CRASH",
+    "test_id": "flash-crash-009",
+    "test_name": "flash_crash_9"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.74
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-540",
+      "410"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.010",
+      "funding_rate_b": "0.0001",
+      "gas_price_gwei": 80.0,
+      "opportunity_id": "fr-0",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Borrow cost pressure should erase the spread edge.",
+    "scenario_type": "FUNDING_RATE_SPIKE",
+    "test_id": "funding-spike-000",
+    "test_name": "funding_rate_spike_0"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.74
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-540",
+      "410"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.011",
+      "funding_rate_b": "0.0001",
+      "gas_price_gwei": 81.0,
+      "opportunity_id": "fr-1",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.2000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Borrow cost pressure should erase the spread edge.",
+    "scenario_type": "FUNDING_RATE_SPIKE",
+    "test_id": "funding-spike-001",
+    "test_name": "funding_rate_spike_1"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.74
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-540",
+      "410"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.012",
+      "funding_rate_b": "0.0001",
+      "gas_price_gwei": 82.0,
+      "opportunity_id": "fr-2",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.4000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Borrow cost pressure should erase the spread edge.",
+    "scenario_type": "FUNDING_RATE_SPIKE",
+    "test_id": "funding-spike-002",
+    "test_name": "funding_rate_spike_2"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.74
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-540",
+      "410"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.013",
+      "funding_rate_b": "0.0001",
+      "gas_price_gwei": 83.0,
+      "opportunity_id": "fr-3",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.6000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Borrow cost pressure should erase the spread edge.",
+    "scenario_type": "FUNDING_RATE_SPIKE",
+    "test_id": "funding-spike-003",
+    "test_name": "funding_rate_spike_3"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.74
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-540",
+      "410"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.014",
+      "funding_rate_b": "0.0001",
+      "gas_price_gwei": 84.0,
+      "opportunity_id": "fr-4",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.8000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Borrow cost pressure should erase the spread edge.",
+    "scenario_type": "FUNDING_RATE_SPIKE",
+    "test_id": "funding-spike-004",
+    "test_name": "funding_rate_spike_4"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.74
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-540",
+      "410"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.015",
+      "funding_rate_b": "0.0001",
+      "gas_price_gwei": 85.0,
+      "opportunity_id": "fr-5",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "105.000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Borrow cost pressure should erase the spread edge.",
+    "scenario_type": "FUNDING_RATE_SPIKE",
+    "test_id": "funding-spike-005",
+    "test_name": "funding_rate_spike_5"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.74
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-540",
+      "410"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.016",
+      "funding_rate_b": "0.0001",
+      "gas_price_gwei": 86.0,
+      "opportunity_id": "fr-6",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "105.2000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Borrow cost pressure should erase the spread edge.",
+    "scenario_type": "FUNDING_RATE_SPIKE",
+    "test_id": "funding-spike-006",
+    "test_name": "funding_rate_spike_6"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.74
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-540",
+      "410"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.017",
+      "funding_rate_b": "0.0001",
+      "gas_price_gwei": 87.0,
+      "opportunity_id": "fr-7",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "105.4000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Borrow cost pressure should erase the spread edge.",
+    "scenario_type": "FUNDING_RATE_SPIKE",
+    "test_id": "funding-spike-007",
+    "test_name": "funding_rate_spike_7"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.55
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-620",
+      "430"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 40.0,
+      "opportunity_id": "zl-0",
+      "orderbook_depth_a": 100.0,
+      "orderbook_depth_b": 75.0,
+      "price_a": "103.5",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 1.2
+    },
+    "notes": "Liquidity is too thin to safely size the trade.",
+    "scenario_type": "ZERO_LIQUIDITY",
+    "test_id": "zero-liquidity-000",
+    "test_name": "zero_liquidity_0"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.55
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-620",
+      "430"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 40.0,
+      "opportunity_id": "zl-1",
+      "orderbook_depth_a": 110.0,
+      "orderbook_depth_b": 83.0,
+      "price_a": "103.5",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 1.2
+    },
+    "notes": "Liquidity is too thin to safely size the trade.",
+    "scenario_type": "ZERO_LIQUIDITY",
+    "test_id": "zero-liquidity-001",
+    "test_name": "zero_liquidity_1"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.55
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-620",
+      "430"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 40.0,
+      "opportunity_id": "zl-2",
+      "orderbook_depth_a": 120.0,
+      "orderbook_depth_b": 91.0,
+      "price_a": "103.5",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 1.2
+    },
+    "notes": "Liquidity is too thin to safely size the trade.",
+    "scenario_type": "ZERO_LIQUIDITY",
+    "test_id": "zero-liquidity-002",
+    "test_name": "zero_liquidity_2"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.55
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-620",
+      "430"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 40.0,
+      "opportunity_id": "zl-3",
+      "orderbook_depth_a": 130.0,
+      "orderbook_depth_b": 99.0,
+      "price_a": "103.5",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 1.2
+    },
+    "notes": "Liquidity is too thin to safely size the trade.",
+    "scenario_type": "ZERO_LIQUIDITY",
+    "test_id": "zero-liquidity-003",
+    "test_name": "zero_liquidity_3"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.55
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-620",
+      "430"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 40.0,
+      "opportunity_id": "zl-4",
+      "orderbook_depth_a": 140.0,
+      "orderbook_depth_b": 107.0,
+      "price_a": "103.5",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 1.2
+    },
+    "notes": "Liquidity is too thin to safely size the trade.",
+    "scenario_type": "ZERO_LIQUIDITY",
+    "test_id": "zero-liquidity-004",
+    "test_name": "zero_liquidity_4"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.55
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-620",
+      "430"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 40.0,
+      "opportunity_id": "zl-5",
+      "orderbook_depth_a": 150.0,
+      "orderbook_depth_b": 115.0,
+      "price_a": "103.5",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 1.2
+    },
+    "notes": "Liquidity is too thin to safely size the trade.",
+    "scenario_type": "ZERO_LIQUIDITY",
+    "test_id": "zero-liquidity-005",
+    "test_name": "zero_liquidity_5"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.55
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-620",
+      "430"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 40.0,
+      "opportunity_id": "zl-6",
+      "orderbook_depth_a": 160.0,
+      "orderbook_depth_b": 123.0,
+      "price_a": "103.5",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 1.2
+    },
+    "notes": "Liquidity is too thin to safely size the trade.",
+    "scenario_type": "ZERO_LIQUIDITY",
+    "test_id": "zero-liquidity-006",
+    "test_name": "zero_liquidity_6"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.55
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-620",
+      "430"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 40.0,
+      "opportunity_id": "zl-7",
+      "orderbook_depth_a": 170.0,
+      "orderbook_depth_b": 131.0,
+      "price_a": "103.5",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 1.2
+    },
+    "notes": "Liquidity is too thin to safely size the trade.",
+    "scenario_type": "ZERO_LIQUIDITY",
+    "test_id": "zero-liquidity-007",
+    "test_name": "zero_liquidity_7"
+  },
+  {
+    "expected_confidence_range": [
+      0.748,
+      0.75
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-450",
+      "700"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 45.0,
+      "opportunity_id": "bc-0",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "103.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.7
+    },
+    "notes": "Boundary case around the decision threshold.",
+    "scenario_type": "BORDERLINE_CONFIDENCE",
+    "test_id": "borderline-confidence-000",
+    "test_name": "borderline_confidence_0_0.749"
+  },
+  {
+    "expected_confidence_range": [
+      0.75,
+      0.752
+    ],
+    "expected_decision": "EXECUTE",
+    "expected_profit_range": [
+      "-450",
+      "700"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 45.0,
+      "opportunity_id": "bc-1",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.7
+    },
+    "notes": "Boundary case around the decision threshold.",
+    "scenario_type": "BORDERLINE_CONFIDENCE",
+    "test_id": "borderline-confidence-001",
+    "test_name": "borderline_confidence_1_0.751"
+  },
+  {
+    "expected_confidence_range": [
+      0.748,
+      0.75
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-450",
+      "700"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 45.0,
+      "opportunity_id": "bc-2",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "103.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.7
+    },
+    "notes": "Boundary case around the decision threshold.",
+    "scenario_type": "BORDERLINE_CONFIDENCE",
+    "test_id": "borderline-confidence-002",
+    "test_name": "borderline_confidence_2_0.749"
+  },
+  {
+    "expected_confidence_range": [
+      0.75,
+      0.752
+    ],
+    "expected_decision": "EXECUTE",
+    "expected_profit_range": [
+      "-450",
+      "700"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 45.0,
+      "opportunity_id": "bc-3",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.7
+    },
+    "notes": "Boundary case around the decision threshold.",
+    "scenario_type": "BORDERLINE_CONFIDENCE",
+    "test_id": "borderline-confidence-003",
+    "test_name": "borderline_confidence_3_0.751"
+  },
+  {
+    "expected_confidence_range": [
+      0.748,
+      0.75
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-450",
+      "700"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 45.0,
+      "opportunity_id": "bc-4",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "103.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.7
+    },
+    "notes": "Boundary case around the decision threshold.",
+    "scenario_type": "BORDERLINE_CONFIDENCE",
+    "test_id": "borderline-confidence-004",
+    "test_name": "borderline_confidence_4_0.749"
+  },
+  {
+    "expected_confidence_range": [
+      0.75,
+      0.752
+    ],
+    "expected_decision": "EXECUTE",
+    "expected_profit_range": [
+      "-450",
+      "700"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 45.0,
+      "opportunity_id": "bc-5",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.7
+    },
+    "notes": "Boundary case around the decision threshold.",
+    "scenario_type": "BORDERLINE_CONFIDENCE",
+    "test_id": "borderline-confidence-005",
+    "test_name": "borderline_confidence_5_0.751"
+  },
+  {
+    "expected_confidence_range": [
+      0.748,
+      0.75
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-450",
+      "700"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 45.0,
+      "opportunity_id": "bc-6",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "103.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.7
+    },
+    "notes": "Boundary case around the decision threshold.",
+    "scenario_type": "BORDERLINE_CONFIDENCE",
+    "test_id": "borderline-confidence-006",
+    "test_name": "borderline_confidence_6_0.749"
+  },
+  {
+    "expected_confidence_range": [
+      0.75,
+      0.752
+    ],
+    "expected_decision": "EXECUTE",
+    "expected_profit_range": [
+      "-450",
+      "700"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 45.0,
+      "opportunity_id": "bc-7",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.7
+    },
+    "notes": "Boundary case around the decision threshold.",
+    "scenario_type": "BORDERLINE_CONFIDENCE",
+    "test_id": "borderline-confidence-007",
+    "test_name": "borderline_confidence_7_0.751"
+  },
+  {
+    "expected_confidence_range": [
+      0.748,
+      0.75
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-450",
+      "700"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 45.0,
+      "opportunity_id": "bc-8",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "103.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.7
+    },
+    "notes": "Boundary case around the decision threshold.",
+    "scenario_type": "BORDERLINE_CONFIDENCE",
+    "test_id": "borderline-confidence-008",
+    "test_name": "borderline_confidence_8_0.749"
+  },
+  {
+    "expected_confidence_range": [
+      0.75,
+      0.752
+    ],
+    "expected_decision": "EXECUTE",
+    "expected_profit_range": [
+      "-450",
+      "700"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 45.0,
+      "opportunity_id": "bc-9",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.7
+    },
+    "notes": "Boundary case around the decision threshold.",
+    "scenario_type": "BORDERLINE_CONFIDENCE",
+    "test_id": "borderline-confidence-009",
+    "test_name": "borderline_confidence_9_0.751"
+  },
+  {
+    "expected_confidence_range": [
+      0.748,
+      0.75
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-450",
+      "700"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 45.0,
+      "opportunity_id": "bc-10",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "103.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.7
+    },
+    "notes": "Boundary case around the decision threshold.",
+    "scenario_type": "BORDERLINE_CONFIDENCE",
+    "test_id": "borderline-confidence-010",
+    "test_name": "borderline_confidence_10_0.749"
+  },
+  {
+    "expected_confidence_range": [
+      0.75,
+      0.752
+    ],
+    "expected_decision": "EXECUTE",
+    "expected_profit_range": [
+      "-450",
+      "700"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 45.0,
+      "opportunity_id": "bc-11",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.7
+    },
+    "notes": "Boundary case around the decision threshold.",
+    "scenario_type": "BORDERLINE_CONFIDENCE",
+    "test_id": "borderline-confidence-011",
+    "test_name": "borderline_confidence_11_0.751"
+  },
+  {
+    "expected_confidence_range": [
+      0.748,
+      0.75
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-450",
+      "700"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 45.0,
+      "opportunity_id": "bc-12",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "103.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.7
+    },
+    "notes": "Boundary case around the decision threshold.",
+    "scenario_type": "BORDERLINE_CONFIDENCE",
+    "test_id": "borderline-confidence-012",
+    "test_name": "borderline_confidence_12_0.749"
+  },
+  {
+    "expected_confidence_range": [
+      0.75,
+      0.752
+    ],
+    "expected_decision": "EXECUTE",
+    "expected_profit_range": [
+      "-450",
+      "700"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 45.0,
+      "opportunity_id": "bc-13",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.7
+    },
+    "notes": "Boundary case around the decision threshold.",
+    "scenario_type": "BORDERLINE_CONFIDENCE",
+    "test_id": "borderline-confidence-013",
+    "test_name": "borderline_confidence_13_0.751"
+  },
+  {
+    "expected_confidence_range": [
+      0.748,
+      0.75
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-450",
+      "700"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 45.0,
+      "opportunity_id": "bc-14",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "103.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.7
+    },
+    "notes": "Boundary case around the decision threshold.",
+    "scenario_type": "BORDERLINE_CONFIDENCE",
+    "test_id": "borderline-confidence-014",
+    "test_name": "borderline_confidence_14_0.749"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.9
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-1000",
+      "1500"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 55.0,
+      "opportunity_id": "es-0",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "110.5000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 1.0
+    },
+    "notes": "Unrealistically large spread should be treated as suspicious data.",
+    "scenario_type": "EXTREME_SPREAD",
+    "test_id": "extreme-spread-000",
+    "test_name": "extreme_spread_0"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.9
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-1000",
+      "1500"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 56.0,
+      "opportunity_id": "es-1",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "111.000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 1.0
+    },
+    "notes": "Unrealistically large spread should be treated as suspicious data.",
+    "scenario_type": "EXTREME_SPREAD",
+    "test_id": "extreme-spread-001",
+    "test_name": "extreme_spread_1"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.9
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-1000",
+      "1500"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 57.0,
+      "opportunity_id": "es-2",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "111.5000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 1.0
+    },
+    "notes": "Unrealistically large spread should be treated as suspicious data.",
+    "scenario_type": "EXTREME_SPREAD",
+    "test_id": "extreme-spread-002",
+    "test_name": "extreme_spread_2"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.9
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-1000",
+      "1500"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 58.0,
+      "opportunity_id": "es-3",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "112.000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 1.0
+    },
+    "notes": "Unrealistically large spread should be treated as suspicious data.",
+    "scenario_type": "EXTREME_SPREAD",
+    "test_id": "extreme-spread-003",
+    "test_name": "extreme_spread_3"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.9
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-1000",
+      "1500"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 59.0,
+      "opportunity_id": "es-4",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "112.5000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 1.0
+    },
+    "notes": "Unrealistically large spread should be treated as suspicious data.",
+    "scenario_type": "EXTREME_SPREAD",
+    "test_id": "extreme-spread-004",
+    "test_name": "extreme_spread_4"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.9
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-1000",
+      "1500"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 60.0,
+      "opportunity_id": "es-5",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "113.000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 1.0
+    },
+    "notes": "Unrealistically large spread should be treated as suspicious data.",
+    "scenario_type": "EXTREME_SPREAD",
+    "test_id": "extreme-spread-005",
+    "test_name": "extreme_spread_5"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.9
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-1000",
+      "1500"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 61.0,
+      "opportunity_id": "es-6",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "113.5000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 1.0
+    },
+    "notes": "Unrealistically large spread should be treated as suspicious data.",
+    "scenario_type": "EXTREME_SPREAD",
+    "test_id": "extreme-spread-006",
+    "test_name": "extreme_spread_6"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.9
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-1000",
+      "1500"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 62.0,
+      "opportunity_id": "es-7",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "114.000",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 1.0
+    },
+    "notes": "Unrealistically large spread should be treated as suspicious data.",
+    "scenario_type": "EXTREME_SPREAD",
+    "test_id": "extreme-spread-007",
+    "test_name": "extreme_spread_7"
+  },
+  {
+    "expected_confidence_range": null,
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-1000",
+      "400"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 35.0,
+      "opportunity_id": "sp-0",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "101.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778514952,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Timestamp is stale and should be rejected by freshness validation.",
+    "scenario_type": "STALE_PRICE",
+    "test_id": "stale-price-000",
+    "test_name": "stale_price_0"
+  },
+  {
+    "expected_confidence_range": null,
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-1000",
+      "400"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 35.0,
+      "opportunity_id": "sp-1",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "101.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778514952,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Timestamp is stale and should be rejected by freshness validation.",
+    "scenario_type": "STALE_PRICE",
+    "test_id": "stale-price-001",
+    "test_name": "stale_price_1"
+  },
+  {
+    "expected_confidence_range": null,
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-1000",
+      "400"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 35.0,
+      "opportunity_id": "sp-2",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "101.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778514952,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Timestamp is stale and should be rejected by freshness validation.",
+    "scenario_type": "STALE_PRICE",
+    "test_id": "stale-price-002",
+    "test_name": "stale_price_2"
+  },
+  {
+    "expected_confidence_range": null,
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-1000",
+      "400"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 35.0,
+      "opportunity_id": "sp-3",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "101.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778514952,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Timestamp is stale and should be rejected by freshness validation.",
+    "scenario_type": "STALE_PRICE",
+    "test_id": "stale-price-003",
+    "test_name": "stale_price_3"
+  },
+  {
+    "expected_confidence_range": null,
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-1000",
+      "400"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 35.0,
+      "opportunity_id": "sp-4",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "101.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778514952,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.6
+    },
+    "notes": "Timestamp is stale and should be rejected by freshness validation.",
+    "scenario_type": "STALE_PRICE",
+    "test_id": "stale-price-004",
+    "test_name": "stale_price_4"
+  },
+  {
+    "expected_confidence_range": [
+      0.2,
+      0.8
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-250",
+      "300"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 40.0,
+      "opportunity_id": "sr-0",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "102.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": -0.02,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.8
+    },
+    "notes": "Price action is already reverting by the time the signal is formed.",
+    "scenario_type": "SPREAD_REVERSION",
+    "test_id": "spread-reversion-000",
+    "test_name": "spread_reversion_0"
+  },
+  {
+    "expected_confidence_range": [
+      0.2,
+      0.8
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-250",
+      "300"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 40.0,
+      "opportunity_id": "sr-1",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "102.3",
+      "price_b": "100.0",
+      "spread_momentum_5s": -0.022,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.8
+    },
+    "notes": "Price action is already reverting by the time the signal is formed.",
+    "scenario_type": "SPREAD_REVERSION",
+    "test_id": "spread-reversion-001",
+    "test_name": "spread_reversion_1"
+  },
+  {
+    "expected_confidence_range": [
+      0.2,
+      0.8
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-250",
+      "300"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 40.0,
+      "opportunity_id": "sr-2",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "102.6",
+      "price_b": "100.0",
+      "spread_momentum_5s": -0.024,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.8
+    },
+    "notes": "Price action is already reverting by the time the signal is formed.",
+    "scenario_type": "SPREAD_REVERSION",
+    "test_id": "spread-reversion-002",
+    "test_name": "spread_reversion_2"
+  },
+  {
+    "expected_confidence_range": [
+      0.2,
+      0.8
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-250",
+      "300"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 40.0,
+      "opportunity_id": "sr-3",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "102.9",
+      "price_b": "100.0",
+      "spread_momentum_5s": -0.026000000000000002,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.8
+    },
+    "notes": "Price action is already reverting by the time the signal is formed.",
+    "scenario_type": "SPREAD_REVERSION",
+    "test_id": "spread-reversion-003",
+    "test_name": "spread_reversion_3"
+  },
+  {
+    "expected_confidence_range": [
+      0.2,
+      0.8
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-250",
+      "300"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 40.0,
+      "opportunity_id": "sr-4",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "103.2",
+      "price_b": "100.0",
+      "spread_momentum_5s": -0.028,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.8
+    },
+    "notes": "Price action is already reverting by the time the signal is formed.",
+    "scenario_type": "SPREAD_REVERSION",
+    "test_id": "spread-reversion-004",
+    "test_name": "spread_reversion_4"
+  },
+  {
+    "expected_confidence_range": [
+      0.2,
+      0.8
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-250",
+      "300"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 40.0,
+      "opportunity_id": "sr-5",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "103.5",
+      "price_b": "100.0",
+      "spread_momentum_5s": -0.03,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.8
+    },
+    "notes": "Price action is already reverting by the time the signal is formed.",
+    "scenario_type": "SPREAD_REVERSION",
+    "test_id": "spread-reversion-005",
+    "test_name": "spread_reversion_5"
+  },
+  {
+    "expected_confidence_range": [
+      0.2,
+      0.8
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-250",
+      "300"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 40.0,
+      "opportunity_id": "sr-6",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "103.8",
+      "price_b": "100.0",
+      "spread_momentum_5s": -0.032,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.8
+    },
+    "notes": "Price action is already reverting by the time the signal is formed.",
+    "scenario_type": "SPREAD_REVERSION",
+    "test_id": "spread-reversion-006",
+    "test_name": "spread_reversion_6"
+  },
+  {
+    "expected_confidence_range": [
+      0.2,
+      0.8
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-250",
+      "300"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 40.0,
+      "opportunity_id": "sr-7",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.1",
+      "price_b": "100.0",
+      "spread_momentum_5s": -0.034,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.8
+    },
+    "notes": "Price action is already reverting by the time the signal is formed.",
+    "scenario_type": "SPREAD_REVERSION",
+    "test_id": "spread-reversion-007",
+    "test_name": "spread_reversion_7"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.8
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-320",
+      "280"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 250.0,
+      "opportunity_id": "gs-0",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.9
+    },
+    "notes": "Gas spike should dominate net profit and suppress execution.",
+    "scenario_type": "GAS_SPIKE",
+    "test_id": "gas-spike-000",
+    "test_name": "gas_spike_0"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.8
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-320",
+      "280"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 260.0,
+      "opportunity_id": "gs-1",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.9
+    },
+    "notes": "Gas spike should dominate net profit and suppress execution.",
+    "scenario_type": "GAS_SPIKE",
+    "test_id": "gas-spike-001",
+    "test_name": "gas_spike_1"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.8
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-320",
+      "280"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 270.0,
+      "opportunity_id": "gs-2",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.9
+    },
+    "notes": "Gas spike should dominate net profit and suppress execution.",
+    "scenario_type": "GAS_SPIKE",
+    "test_id": "gas-spike-002",
+    "test_name": "gas_spike_2"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.8
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-320",
+      "280"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 280.0,
+      "opportunity_id": "gs-3",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.9
+    },
+    "notes": "Gas spike should dominate net profit and suppress execution.",
+    "scenario_type": "GAS_SPIKE",
+    "test_id": "gas-spike-003",
+    "test_name": "gas_spike_3"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.8
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-320",
+      "280"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 290.0,
+      "opportunity_id": "gs-4",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.9
+    },
+    "notes": "Gas spike should dominate net profit and suppress execution.",
+    "scenario_type": "GAS_SPIKE",
+    "test_id": "gas-spike-004",
+    "test_name": "gas_spike_4"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.8
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-320",
+      "280"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 300.0,
+      "opportunity_id": "gs-5",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.9
+    },
+    "notes": "Gas spike should dominate net profit and suppress execution.",
+    "scenario_type": "GAS_SPIKE",
+    "test_id": "gas-spike-005",
+    "test_name": "gas_spike_5"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.8
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-320",
+      "280"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 310.0,
+      "opportunity_id": "gs-6",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.9
+    },
+    "notes": "Gas spike should dominate net profit and suppress execution.",
+    "scenario_type": "GAS_SPIKE",
+    "test_id": "gas-spike-006",
+    "test_name": "gas_spike_6"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.8
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-320",
+      "280"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 320.0,
+      "opportunity_id": "gs-7",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 0.9
+    },
+    "notes": "Gas spike should dominate net profit and suppress execution.",
+    "scenario_type": "GAS_SPIKE",
+    "test_id": "gas-spike-007",
+    "test_name": "gas_spike_7"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.75
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-500",
+      "500"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 70.0,
+      "opportunity_id": "hv-0",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "103.0",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 4.7
+    },
+    "notes": "Volatility is near the top of the risk envelope.",
+    "scenario_type": "HIGH_VOLATILITY",
+    "test_id": "high-volatility-000",
+    "test_name": "high_volatility_0"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.75
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-500",
+      "500"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 70.0,
+      "opportunity_id": "hv-1",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "103.1",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 4.680000000000001
+    },
+    "notes": "Volatility is near the top of the risk envelope.",
+    "scenario_type": "HIGH_VOLATILITY",
+    "test_id": "high-volatility-001",
+    "test_name": "high_volatility_1"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.75
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-500",
+      "500"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 70.0,
+      "opportunity_id": "hv-2",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "103.2",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 4.66
+    },
+    "notes": "Volatility is near the top of the risk envelope.",
+    "scenario_type": "HIGH_VOLATILITY",
+    "test_id": "high-volatility-002",
+    "test_name": "high_volatility_2"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.75
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-500",
+      "500"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 70.0,
+      "opportunity_id": "hv-3",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "103.3",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 4.640000000000001
+    },
+    "notes": "Volatility is near the top of the risk envelope.",
+    "scenario_type": "HIGH_VOLATILITY",
+    "test_id": "high-volatility-003",
+    "test_name": "high_volatility_3"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.75
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-500",
+      "500"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 70.0,
+      "opportunity_id": "hv-4",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "103.4",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 4.62
+    },
+    "notes": "Volatility is near the top of the risk envelope.",
+    "scenario_type": "HIGH_VOLATILITY",
+    "test_id": "high-volatility-004",
+    "test_name": "high_volatility_4"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.75
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-500",
+      "500"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 70.0,
+      "opportunity_id": "hv-5",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "103.5",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 4.6000000000000005
+    },
+    "notes": "Volatility is near the top of the risk envelope.",
+    "scenario_type": "HIGH_VOLATILITY",
+    "test_id": "high-volatility-005",
+    "test_name": "high_volatility_5"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.75
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-500",
+      "500"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 70.0,
+      "opportunity_id": "hv-6",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "103.6",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 4.58
+    },
+    "notes": "Volatility is near the top of the risk envelope.",
+    "scenario_type": "HIGH_VOLATILITY",
+    "test_id": "high-volatility-006",
+    "test_name": "high_volatility_6"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.75
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-500",
+      "500"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 70.0,
+      "opportunity_id": "hv-7",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "103.7",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 4.5600000000000005
+    },
+    "notes": "Volatility is near the top of the risk envelope.",
+    "scenario_type": "HIGH_VOLATILITY",
+    "test_id": "high-volatility-007",
+    "test_name": "high_volatility_7"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.8
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-480",
+      "420"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 90.0,
+      "opportunity_id": "nc-0",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.5",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.0,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 1.1
+    },
+    "notes": "Congestion should delay fills and inflate execution risk.",
+    "scenario_type": "NETWORK_CONGESTION",
+    "test_id": "network-congestion-000",
+    "test_name": "network_congestion_0"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.8
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-480",
+      "420"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 105.0,
+      "opportunity_id": "nc-1",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.5",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.005,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 1.1
+    },
+    "notes": "Congestion should delay fills and inflate execution risk.",
+    "scenario_type": "NETWORK_CONGESTION",
+    "test_id": "network-congestion-001",
+    "test_name": "network_congestion_1"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.8
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-480",
+      "420"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 120.0,
+      "opportunity_id": "nc-2",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.5",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.01,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 1.1
+    },
+    "notes": "Congestion should delay fills and inflate execution risk.",
+    "scenario_type": "NETWORK_CONGESTION",
+    "test_id": "network-congestion-002",
+    "test_name": "network_congestion_2"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.8
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-480",
+      "420"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 135.0,
+      "opportunity_id": "nc-3",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.5",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.015,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 1.1
+    },
+    "notes": "Congestion should delay fills and inflate execution risk.",
+    "scenario_type": "NETWORK_CONGESTION",
+    "test_id": "network-congestion-003",
+    "test_name": "network_congestion_3"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.8
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-480",
+      "420"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 150.0,
+      "opportunity_id": "nc-4",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.5",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.02,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 1.1
+    },
+    "notes": "Congestion should delay fills and inflate execution risk.",
+    "scenario_type": "NETWORK_CONGESTION",
+    "test_id": "network-congestion-004",
+    "test_name": "network_congestion_4"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.8
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-480",
+      "420"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 165.0,
+      "opportunity_id": "nc-5",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.5",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.025,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 1.1
+    },
+    "notes": "Congestion should delay fills and inflate execution risk.",
+    "scenario_type": "NETWORK_CONGESTION",
+    "test_id": "network-congestion-005",
+    "test_name": "network_congestion_5"
+  },
+  {
+    "expected_confidence_range": [
+      0.0,
+      0.8
+    ],
+    "expected_decision": "SKIP",
+    "expected_profit_range": [
+      "-480",
+      "420"
+    ],
+    "input": {
+      "borrow_amount_usdc": "10000",
+      "chain_id": 1337,
+      "correlation_btc": 0.25,
+      "dex_a": "dexA",
+      "dex_b": "dexB",
+      "funding_rate_a": "0.0001",
+      "funding_rate_b": "0.00005",
+      "gas_price_gwei": 180.0,
+      "opportunity_id": "nc-6",
+      "orderbook_depth_a": 50000.0,
+      "orderbook_depth_b": 50000.0,
+      "price_a": "104.5",
+      "price_b": "100.0",
+      "spread_momentum_5s": 0.03,
+      "symbol": "BTC-PERP",
+      "timestamp": 1778515042,
+      "trade_flow_imbalance_a": 0.05,
+      "trade_flow_imbalance_b": -0.02,
+      "volatility_24h": 1.1
+    },
+    "notes": "Congestion should delay fills and inflate execution risk.",
+    "scenario_type": "NETWORK_CONGESTION",
+    "test_id": "network-congestion-006",
+    "test_name": "network_congestion_6"
+  }
+]
