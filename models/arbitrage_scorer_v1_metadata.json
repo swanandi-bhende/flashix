@@ -1,0 +1,23 @@
+{
+  "version": "v1",
+  "sha256": "3e613371caae43650f5415368f636cbcf2d8339cb18b1227152af895c1a58846",
+  "trained_at": "2026-05-11T04:32:06.916517Z",
+  "feature_names": [
+    "gross_spread_percent",
+    "funding_rate_diff",
+    "borrow_amount_log",
+    "orderbook_depth_ratio",
+    "trade_flow_imbalance_diff",
+    "volatility_24h",
+    "correlation_btc",
+    "time_of_day_sin",
+    "time_of_day_cos",
+    "day_of_week",
+    "gas_price_gwei",
+    "spread_momentum_5s"
+  ],
+  "validation_f1": 0.8365591397849462,
+  "validation_precision": 0.8644444444444445,
+  "validation_recall": 0.8104166666666667,
+  "training_samples": 4200
+}

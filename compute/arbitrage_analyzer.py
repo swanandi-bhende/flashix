@@ -1,3 +1,182 @@
+"""
+compute/arbitrage_analyzer.py
+
+Master sealed inference module for on-enclave arbitrage signal generation.
+
+Position in pipeline:
+- Runs inside the TEE sandbox and receives filtered opportunity payloads.
+- Deterministically converts inputs -> features -> model prediction -> signed signal.
+
+Determinism note:
+All functions in this file and its collaborators must be deterministic: fixed seeds,
+use of Decimal for monetary math, explicit float64 numpy dtype, fixed JSON sorting,
+and model version pinning by SHA-256. This ensures identical input -> output mapping
+so sealed computation can be verified by judges.
+"""
+
+from __future__ import annotations
+
+import dataclasses
+from dataclasses import dataclass
+from decimal import Decimal
+from typing import Literal, List
+
+# Define dataclasses and type contracts (no logic here)
+
+@dataclass(frozen=True)
+class InferenceInput:
+    opportunity_id: str
+    symbol: str
+    dex_a: str
+    dex_b: str
+    price_a: Decimal
+    price_b: Decimal
+    borrow_amount_usdc: Decimal
+    funding_rate_a: Decimal
+    funding_rate_b: Decimal
+    orderbook_depth_a: float
+    orderbook_depth_b: float
+    trade_flow_imbalance_a: float
+    trade_flow_imbalance_b: float
+    volatility_24h: float
+    correlation_btc: float
+    timestamp: int
+    chain_id: int
+    # additional fields used by feature extractor
+    gas_price_gwei: float
+    spread_momentum_5s: float
+
+
+@dataclass(frozen=True)
+class InferenceOutput:
+    opportunity_id: str
+    primary_dex: str
+    counter_dex: str
+    borrow_amount: Decimal
+    collateral_required: Decimal
+    expected_profit_usdc: Decimal
+    risk_score: float
+    confidence: float
+    decision: Literal["EXECUTE", "SKIP"]
+    expiry_timestamp: int
+    reasoning: str
+    model_version: str
+    input_hash: str
+    output_hash: str
+    tee_signature: str
+
+
+@dataclass(frozen=True)
+class ModelMetadata:
+    version: str
+    sha256_checksum: str
+    trained_at: str
+    feature_names: List[str]
+    training_sample_size: int
+    validation_accuracy: float
+
+
+# End of dataclass definitions. Implementation follows.
+from compute.model_loader import ModelLoader, ModelIntegrityError, MODEL_SINGLETON
+from compute.feature_extractor import FeatureExtractor, FeatureExtractionError
+from compute.inference_engine import InferenceEngine
+from compute.signal_builder import SignalBuilder
+from compute.tee_signer import TEESigner, SigningError
+
+import json
+import logging
+import time
+from pydantic import BaseModel, ValidationError
+import dataclasses as dc
+
+_logger = logging.getLogger(__name__)
+
+# Instantiate components (deterministic singletons)
+_feature_extractor = FeatureExtractor()
+_inference_engine = InferenceEngine(MODEL_SINGLETON[0], _feature_extractor)
+_signal_builder = SignalBuilder()
+_tee_signer = TEESigner()
+
+
+class InferenceInputModel(BaseModel):
+    opportunity_id: str
+    symbol: str
+    dex_a: str
+    dex_b: str
+    price_a: Decimal
+    price_b: Decimal
+    borrow_amount_usdc: Decimal
+    funding_rate_a: Decimal
+    funding_rate_b: Decimal
+    orderbook_depth_a: float
+    orderbook_depth_b: float
+    trade_flow_imbalance_a: float
+    trade_flow_imbalance_b: float
+    volatility_24h: float
+    correlation_btc: float
+    timestamp: int
+    chain_id: int
+    gas_price_gwei: float
+    spread_momentum_5s: float
+
+
+def _decimal_to_str(obj):
+    if isinstance(obj, Decimal):
+        return str(obj)
+    raise TypeError()
+
+
+def analyze(payload: dict) -> dict:
+    start = time.time()
+    try:
+        # validate payload
+        validated = InferenceInputModel(**payload)
+        inp = InferenceInput(**validated.dict())
+
+        # features
+        features = _feature_extractor.extract(inp)
+
+        # scoring
+        confidence, risk_score = _inference_engine.score_single(inp)
+
+        # expected profit
+        expected_profit = _inference_engine.calculate_expected_profit(inp, confidence)
+
+        # build output
+        out = _signal_builder.build(inp, confidence, risk_score, expected_profit, MODEL_SINGLETON[1])
+
+        # sign
+        signature = _tee_signer.sign_output(out)
+        if not _tee_signer.verify_own_signature(out, signature):
+            raise SigningError("Signature self-check failed")
+        out = dataclasses.replace(out, tee_signature=signature)
+
+        elapsed_ms = int((time.time() - start) * 1000)
+
+        _logger.info(
+            f"INFERENCE_COMPLETE: id={out.opportunity_id}, decision={out.decision}, confidence={out.confidence:.3f}, profit=${out.expected_profit_usdc:.4f}, latency={elapsed_ms}ms"
+        )
+
+        response = dc.asdict(out)
+        # convert Decimal fields to strings
+        for k, v in response.items():
+            if isinstance(v, Decimal):
+                response[k] = str(v)
+
+        return {"result": response}
+
+    except ValidationError as ve:
+        _logger.exception("Validation error in analyze")
+        return {"error": ve.errors(), "opportunity_id": payload.get("opportunity_id"), "timestamp": int(time.time())}
+    except FeatureExtractionError as fe:
+        _logger.exception("Feature extraction failed")
+        return {"error": str(fe), "opportunity_id": payload.get("opportunity_id"), "timestamp": int(time.time())}
+    except ModelIntegrityError as me:
+        _logger.exception("Model integrity error; fatal")
+        raise
+    except Exception as e:
+        _logger.exception("Unexpected error in analyze")
+        return {"error": str(e), "opportunity_id": payload.get("opportunity_id"), "timestamp": int(time.time())}
 import os
 import time
 import pickle
