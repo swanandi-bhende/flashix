@@ -1,7 +1,7 @@
 {
   "version": "v1",
-  "sha256": "3e613371caae43650f5415368f636cbcf2d8339cb18b1227152af895c1a58846",
-  "trained_at": "2026-05-11T04:32:06.916517Z",
+  "sha256": "764a9fa4cb9d8c2cf0b33b5eae849425e943359a69b9ef79de44cdbb200534f0",
+  "trained_at": "2026-05-11T15:06:40.975945Z",
   "feature_names": [
     "gross_spread_percent",
     "funding_rate_diff",

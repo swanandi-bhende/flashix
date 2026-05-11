@@ -5,6 +5,7 @@ langchain-community==0.0.31
 google-generativeai==0.4.1
 web3==6.11.0
 redis==5.0.0
+redis[hiredis]==5.0.0
 pytest==7.4.3
 bandit==1.7.5
 black==23.12.0
