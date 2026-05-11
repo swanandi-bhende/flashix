@@ -41,6 +41,7 @@ def _threshold_for_breaker(breaker_type: BreakerType) -> float:
         BreakerType.POSITION_TIMEOUT: float(POSITION_TIMEOUT_SECONDS),
         BreakerType.INSUFFICIENT_BALANCE: 0.0,
         BreakerType.HUMAN_OVERRIDE: float(LARGE_TRADE_THRESHOLD_USDC),
+        BreakerType.ORACLE_FAILURE: 0.0,
     }
     return float(mapping[breaker_type])
 
