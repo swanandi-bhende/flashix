@@ -22,8 +22,8 @@ echo "3) Run integration tests (python tests/run_integration_tests.py --data-sou
 if ! python3 tests/run_integration_tests.py --data-source SYNTHETIC --n-opportunities 30 | tee /tmp/integration.out; then
   fail "integration tests failed"
 else
-  if ! grep -q "mainnet_deployment_approved=True" /tmp/integration.out; then
-    fail "integration tests did not report mainnet_deployment_approved=True"
+  if ! grep -q "mainnet_release_ready=True" /tmp/integration.out; then
+    fail "integration tests did not report mainnet_release_ready=True"
   fi
 fi
 
@@ -31,8 +31,8 @@ echo "4) Run replay harness (python tests/replay/replay_harness.py --ci-mode)"
 if ! python3 tests/replay/replay_harness.py --ci-mode | tee /tmp/replay.out; then
   fail "replay harness failed"
 else
-  if ! grep -q "deployment_recommended=True" /tmp/replay.out; then
-    fail "replay harness did not recommend deployment"
+  if ! grep -q "release_recommended=True" /tmp/replay.out; then
+    fail "replay harness did not recommend release readiness"
   fi
 fi
 

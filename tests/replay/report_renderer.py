@@ -69,7 +69,7 @@ class ReportRenderer:
             "",
             f"## Executive Summary",
             f"- Badge: {self._badge(report)}",
-            f"- Deployment recommended: {report.deployment_recommended}",
+            f"- Release recommended: {report.deployment_recommended}",
             f"- Determinism pass rate: {report.determinism_pass_rate:.2%}",
             f"- Accuracy pass rate: {report.accuracy_pass_rate:.2%}",
             f"- Signal quality met: {report.signal_quality_met}",

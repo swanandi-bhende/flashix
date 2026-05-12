@@ -239,8 +239,9 @@ def main(argv: list[str] | None = None) -> int:
     summary_status = "PASS" if gate.approved else "FAIL"
     deployment_status = "APPROVED" if gate.approved else "BLOCKED"
     print(
-        f"INTEGRATION TEST RESULT: {summary_status} — {passed}/{total_cases} cases ({pass_rate:.1%}) — Mainnet deployment: {deployment_status}"
+        f"INTEGRATION TEST RESULT: {summary_status} — {passed}/{total_cases} cases ({pass_rate:.1%}) — Mainnet release readiness: {deployment_status}"
     )
+    print(f"mainnet_release_ready={gate.approved}")
     print(latency_markdown)
     print(gate.explanation)
 

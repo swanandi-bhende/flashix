@@ -36,7 +36,7 @@ The report is serialized as `IntegrationTestReport` and contains the following k
 - `session_config`: The replay session configuration, including data source, seed, and acceleration factor.
 - `total_cases`, `passed`, `failed`, `errored`, `skipped`: Aggregate case counts.
 - `pass_rate`: Overall success rate across the full run.
-- `mainnet_deployment_approved`: Binary gate flag. This is `true` only when the suite satisfies the deployment criteria.
+- `mainnet_deployment_approved`: Binary gate flag. This is `true` only when the suite satisfies the release-readiness criteria.
 - `critical_failures`: Any safety-related failures. Any entry here blocks deployment.
 - `pipeline_latency_percentiles`: Stage-level latency evidence used to verify SLA compliance.
 - `profit_accuracy_metrics`: Expected-vs-realized profit accuracy for confirmed trades.
@@ -46,7 +46,7 @@ The report is serialized as `IntegrationTestReport` and contains the following k
 - `latency_profile`: Full per-stage timing series and SLA violations.
 - `accuracy_report`: Aggregate accuracy for executed trades.
 
-The most important field is `mainnet_deployment_approved`. If it is `false`, deployment is blocked even if the suite mostly passes. `critical_failures` is the second hard stop: any safety entry there prevents release. `pipeline_latency_percentiles` is the latency proof the judges can inspect directly.
+The most important field is `mainnet_deployment_approved`. If it is `false`, release is blocked even if the suite mostly passes. `critical_failures` is the second hard stop: any safety entry there prevents release. `pipeline_latency_percentiles` is the latency proof the judges can inspect directly.
 
 ## Edge Case Results Reference
 

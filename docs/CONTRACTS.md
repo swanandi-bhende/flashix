@@ -827,7 +827,7 @@ npx hardhat coverage
 
 ### Manual Testing Checklist
 
-Before mainnet deployment:
+Before a mainnet release window:
 
 - [ ] Deploy to testnet
 - [ ] Verify on 0G Explorer

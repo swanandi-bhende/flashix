@@ -225,6 +225,7 @@ def main(argv: list[str] | None = None) -> int:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
     report = ReplayHarness().run_full_validation(include_live_records=not args.no_live_records)
     print(json.dumps(asdict(report), indent=2, default=str))
+    print(f"release_recommended={report.deployment_recommended}")
     if args.ci_mode and not report.deployment_recommended:
         return 1
     return 0
