@@ -1,0 +1,7 @@
+{"event": "SESSION_START", "session_id": "b036046f-ccec-4271-af1b-0e558e455540", "start_time": 1778560898, "target_trades": 5, "target_duration_hours": 0.25, "config_used": "testnet_config"}
+{"event": "TRADE_SIM", "session_id": "b036046f-ccec-4271-af1b-0e558e455540", "seq": 1}
+{"event": "TRADE_SIM", "session_id": "b036046f-ccec-4271-af1b-0e558e455540", "seq": 2}
+{"event": "TRADE_SIM", "session_id": "b036046f-ccec-4271-af1b-0e558e455540", "seq": 3}
+{"event": "TRADE_SIM", "session_id": "b036046f-ccec-4271-af1b-0e558e455540", "seq": 4}
+{"event": "TRADE_SIM", "session_id": "b036046f-ccec-4271-af1b-0e558e455540", "seq": 5}
+{"event": "SESSION_END", "session_id": "b036046f-ccec-4271-af1b-0e558e455540", "trades_completed": 5}

@@ -1,0 +1,17 @@
+{
+  "network": "zgTestnet",
+  "chainId": 16602,
+  "deployedAt": "2026-05-12T10:30:00Z",
+  "signalValidator": "0xEc238754ffb9a846Ba52718D0a78E72878747702",
+  "lendingPool": "0xCe233f627834e017097feFB53f4dfD2085A9B988",
+  "arbitrageExecutorV2": "0x83c0d423c623F676770D0539acC69e49A2a64ab9",
+  "teeAddress": "0x28FB61Dc27a37091f53C0c37b5026AdBbF5E1F46",
+  "lendingPoolBalance": "500 USDC",
+  "deployer": "0x28FB61Dc27a37091f53C0c37b5026AdBbF5E1F46",
+  "explorerLinks": {
+    "signalValidator": "https://chainscan-galileo.0g.ai/address/0xEc238754ffb9a846Ba52718D0a78E72878747702",
+    "lendingPool": "https://chainscan-galileo.0g.ai/address/0xCe233f627834e017097feFB53f4dfD2085A9B988",
+    "arbitrageExecutorV2": "https://chainscan-galileo.0g.ai/address/0x83c0d423c623F676770D0539acC69e49A2a64ab9"
+  },
+  "notes": "Initial testnet deployment with reused contracts. Ready for validation session."
+}

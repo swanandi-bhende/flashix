@@ -99,3 +99,18 @@ Also record:
 2. Capture and store explorer screenshots for all 3 contracts.
 3. Commit deployments/testnet.json with final addresses and verification links.
 4. Confirm frontend and agent read addresses from contracts/abi files.
+
+## Testnet Pre-deployment Checklist Script
+
+Before any 0G testnet deployment, run the included pre-deployment checklist and ensure it exits cleanly:
+
+- `scripts/testnet_deploy_checklist.sh` — this script compiles contracts, runs unit and integration tests, executes the replay harness checks, verifies RPC reachability, validates deployer balance, and ensures required environment variables are set.
+
+Make the script executable and run it interactively:
+
+```bash
+chmod +x scripts/testnet_deploy_checklist.sh
+./scripts/testnet_deploy_checklist.sh
+```
+
+If the script reports any failures, resolve them before attempting to deploy to 0G testnet.
