@@ -13,6 +13,8 @@ from agent.risk_manager import RiskManager
 from agent.agent_config import AgentConfig
 from fastapi import FastAPI
 import uvicorn
+from agent.metrics.dashboard_api import start_dashboard_server
+from agent.metrics.prometheus_exporter import start_prometheus_server
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +29,15 @@ class PipelineOrchestrator:
         self._stop = threading.Event()
 
     def start(self, dry_run_mode: bool = True):
+        try:
+            start_dashboard_server()
+        except Exception:
+            logger.exception('Failed to start metrics dashboard')
+        try:
+            start_prometheus_server()
+        except Exception:
+            logger.exception('Failed to start prometheus exporter')
+
         # Start workers
         inf_workers = [InferenceWorker(self.qm) for _ in range(2)]
         for w in inf_workers:

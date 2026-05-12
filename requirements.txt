@@ -16,3 +16,5 @@ pydantic==2.5.0
 sqlalchemy==2.0.23
 fastapi==0.115.6
 uvicorn==0.30.6
+colorama==0.4.6
+prometheus-client==0.19.0
