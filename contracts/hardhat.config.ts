@@ -1,6 +1,7 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "@nomicfoundation/hardhat-verify";
+import "hardhat-gas-reporter";
 import "solidity-coverage";
 import "dotenv/config";
 
@@ -77,6 +78,16 @@ const config: HardhatUserConfig = {
   },
   mocha: {
     timeout: 120000,
+  },
+  gasReporter: {
+    enabled: process.env.REPORT_GAS === "true",
+    currency: "USD",
+    coinmarketcap: process.env.CMC_API_KEY,
+    token: "ETH",
+    outputFile: "gas-report.txt",
+    noColors: false,
+    excludeContracts: ["MockERC20", "TestHelper"],
+    src: "./contracts",
   },
   paths: {
     sources: "./contracts",
