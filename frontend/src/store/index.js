@@ -44,21 +44,61 @@ const generateMockActivities = () => {
 };
 const generateMockOpportunities = () => {
     const now = Date.now();
-    return Array.from({ length: 8 }, (_, i) => ({
-        id: `OPP-${1000 + i}`,
-        detectionTime: new Date(now - i * 60000),
-        source: ['mempool', 'scanner', 'cost-engine'][i % 3],
-        type: ['arbitrage', 'funding', 'liquidation'][i % 3],
-        expectedProfit: Math.floor(Math.random() * 4000) + 200,
-        risk: parseFloat((Math.random() * 1.2).toFixed(2)),
-        status: 'pending',
-        freshnessSeconds: i * 12,
-        trace: [
-            { step: 'discovery', detail: 'seen in mempool', timestamp: new Date(now - i * 60000) },
-            { step: 'filtering', detail: 'passed filters', timestamp: new Date(now - i * 50000) },
-            { step: 'cost', detail: 'cost estimated', timestamp: new Date(now - i * 40000) },
-        ],
-    }));
+    return Array.from({ length: 8 }, (_, i) => {
+        const expected = Math.floor(Math.random() * 4000) + 200;
+        const gas = Math.round(expected * 0.02) + Math.floor(Math.random() * 50);
+        const flash = Math.round(expected * 0.01);
+        const slippage = parseFloat((Math.random() * 0.005).toFixed(4));
+        const overhead = Math.round(Math.random() * 20);
+        const fees = Math.round(expected * 0.005);
+        const confidence = parseFloat((Math.random() * 0.5 + 0.5).toFixed(2));
+        const pair = ['ETH/USDC', 'DAI/USDC', 'WBTC/BTC', 'USDT/USDC'][i % 4];
+        const sourcePrices = [
+            { exchange: 'Uniswap', price: parseFloat((100 + Math.random() * 10).toFixed(4)) },
+            { exchange: 'Sushi', price: parseFloat((100 + Math.random() * 10).toFixed(4)) },
+        ];
+        const targetPrices = [
+            { exchange: 'Balancer', price: parseFloat((100 + Math.random() * 10 + 0.2).toFixed(4)) },
+        ];
+        const spread = parseFloat((((targetPrices[0].price - sourcePrices[0].price) / sourcePrices[0].price) * 100).toFixed(3));
+        return {
+            id: `OPP-${1000 + i}`,
+            detectionTime: new Date(now - i * 60000),
+            source: ['mempool', 'scanner', 'cost-engine'][i % 3],
+            type: ['arbitrage', 'funding', 'liquidation'][i % 3],
+            expectedProfit: expected,
+            risk: parseFloat((Math.random() * 1.2).toFixed(2)),
+            status: 'pending',
+            freshnessSeconds: i * 12,
+            trace: [
+                { step: 'discovery', detail: 'seen in mempool', timestamp: new Date(now - i * 60000) },
+                { step: 'filtering', detail: 'passed filters', timestamp: new Date(now - i * 50000) },
+                { step: 'cost', detail: 'cost estimated', timestamp: new Date(now - i * 40000) },
+            ],
+            pair,
+            sourcePrices,
+            targetPrices,
+            spreadPct: spread,
+            gasCost: gas,
+            flashloanCost: flash,
+            slippageEstimate: slippage,
+            executionOverhead: overhead,
+            fees,
+            confidenceScore: confidence,
+            confidenceFactors: ['model_score', 'low_slippage', 'high_liquidity'],
+            riskChecks: {
+                breakerTriggered: Math.random() > 0.95,
+                collateralOk: true,
+                slippageLimitOk: slippage < 0.01,
+                exposureOk: true,
+                warnings: [],
+            },
+            rawPayload: {
+                id: `raw-${1000 + i}`,
+                metadata: { source: 'simulated', score: confidence },
+            },
+        };
+    });
 };
 export const useDashboardStore = create((set, get) => ({
     metrics: generateMockMetrics(),

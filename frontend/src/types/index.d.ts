@@ -48,6 +48,31 @@ export interface Opportunity {
         detail: string;
         timestamp: Date;
     }>;
+    pair?: string;
+    sourcePrices?: Array<{
+        exchange: string;
+        price: number;
+    }>;
+    targetPrices?: Array<{
+        exchange: string;
+        price: number;
+    }>;
+    spreadPct?: number;
+    gasCost?: number;
+    flashloanCost?: number;
+    slippageEstimate?: number;
+    executionOverhead?: number;
+    fees?: number;
+    confidenceScore?: number;
+    confidenceFactors?: string[];
+    riskChecks?: {
+        breakerTriggered?: boolean;
+        collateralOk?: boolean;
+        slippageLimitOk?: boolean;
+        exposureOk?: boolean;
+        warnings?: string[];
+    };
+    rawPayload?: Record<string, any>;
 }
 export interface RiskEvent {
     id: string;

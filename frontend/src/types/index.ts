@@ -63,6 +63,32 @@ export interface Opportunity {
   simulatedResult?: 'valid' | 'marginal' | 'invalid';
   freshnessSeconds?: number;
   trace?: Array<{ step: string; detail: string; timestamp: Date }>;
+  // Market / decision metadata
+  pair?: string;
+  sourcePrices?: Array<{ exchange: string; price: number }>;
+  targetPrices?: Array<{ exchange: string; price: number }>;
+  spreadPct?: number;
+
+  // Cost breakdown
+  gasCost?: number;
+  flashloanCost?: number;
+  slippageEstimate?: number;
+  executionOverhead?: number;
+  fees?: number;
+
+  // Confidence and risk
+  confidenceScore?: number; // 0-1
+  confidenceFactors?: string[];
+  riskChecks?: {
+    breakerTriggered?: boolean;
+    collateralOk?: boolean;
+    slippageLimitOk?: boolean;
+    exposureOk?: boolean;
+    warnings?: string[];
+  };
+
+  // Raw payload for auditing
+  rawPayload?: Record<string, any>;
 }
 
 // Risk event
