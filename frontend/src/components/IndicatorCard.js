@@ -1,0 +1,7 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import StatusBadge from './StatusBadge';
+export const IndicatorCard = ({ title, value, status, statusLabel, description, icon: Icon, onClick, trend, }) => {
+    return (_jsxs("div", { onClick: onClick, className: "card cursor-pointer hover:shadow-elevation-2 transition-all hover:translate-y-[-2px] group", children: [_jsxs("div", { className: "flex items-start justify-between mb-4", children: [_jsxs("div", { children: [_jsx("h3", { className: "text-label-md font-semibold text-on-surface mb-1", children: title }), _jsx("p", { className: "text-body-md font-serif text-primary group-hover:text-primary/80 transition-colors", children: value })] }), _jsx("div", { className: "p-3 bg-primary/10 rounded-lg group-hover:bg-primary/15 transition-colors", children: _jsx(Icon, { className: "w-6 h-6 text-primary" }) })] }), _jsxs("div", { className: "space-y-2", children: [_jsx(StatusBadge, { status: status, label: statusLabel }), _jsx("p", { className: "text-body-md text-on-surface-variant", children: description }), trend && (_jsxs("div", { className: "flex items-center gap-1 text-label-sm", children: [_jsxs("span", { className: trend.direction === 'up' ? 'text-green-600' : 'text-red-600', children: [trend.direction === 'up' ? '↑' : '↓', " ", Math.abs(trend.value)] }), _jsx("span", { className: "text-on-surface-variant", children: "from last hour" })] }))] })] }));
+};
+export default IndicatorCard;
+//# sourceMappingURL=IndicatorCard.js.map
