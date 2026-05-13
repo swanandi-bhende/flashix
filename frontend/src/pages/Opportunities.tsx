@@ -1,117 +1,160 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { Layout } from '@/components';
+import { useDashboardStore } from '@/store';
+import StatusBadge from '@/components/StatusBadge';
 
 export const Opportunities: React.FC = () => {
   const navigate = useNavigate();
+  const opportunities = useDashboardStore((s) => s.opportunities);
+  const simulate = useDashboardStore((s) => s.simulateOpportunity);
+  const approve = useDashboardStore((s) => s.approveOpportunity);
+  const reject = useDashboardStore((s) => s.rejectOpportunity);
+  const addActivity = useDashboardStore((s) => s.addActivity);
 
-  const mockOpportunities = [
-    {
-      id: '1',
-      pair: 'ETH/USDC',
-      expectedProfit: 2450,
-      risk: 0.45,
-      status: 'executing',
-      detectedAt: '2 minutes ago',
-    },
-    {
-      id: '2',
-      pair: 'DAI/USDC',
-      expectedProfit: 1850,
-      risk: 0.32,
-      status: 'pending',
-      detectedAt: '5 minutes ago',
-    },
-    {
-      id: '3',
-      pair: 'WBTC/BTC',
-      expectedProfit: 3200,
-      risk: 0.68,
-      status: 'pending',
-      detectedAt: '12 minutes ago',
-    },
-  ];
+  const [simResult, setSimResult] = useState<{ id: string; result: string } | null>(null);
+  const [traceView, setTraceView] = useState<{ id: string; trace: any[] } | null>(null);
+  const [rejectPrompt, setRejectPrompt] = useState<{ id: string; open: boolean } | null>(null);
+  const [rejectReason, setRejectReason] = useState('');
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'executing':
-        return 'bg-blue-100 text-blue-900';
-      case 'pending':
-        return 'bg-yellow-100 text-yellow-900';
-      case 'completed':
-        return 'bg-green-100 text-green-900';
-      default:
-        return 'bg-gray-100 text-gray-900';
+  const onSimulate = async (id: string) => {
+    const result = await simulate(id);
+    setSimResult({ id, result });
+    addActivity({ id: `sim-${id}`, type: 'execution', timestamp: new Date(), title: `Simulation ${result}`, description: `Simulation for ${id} returned ${result}`, status: 'healthy' });
+  };
+
+  const onApprove = (id: string) => {
+    approve(id);
+    addActivity({ id: `approve-${id}`, type: 'execution', timestamp: new Date(), title: `Approved ${id}`, description: `Operator approved ${id}`, status: 'healthy' });
+  };
+
+  const onReject = (id: string) => {
+    if (!rejectPrompt) {
+      setRejectPrompt({ id, open: true });
+      setRejectReason('');
+      return;
     }
+
+    // handled by confirmReject
+  };
+
+  const confirmReject = () => {
+    if (!rejectPrompt) return;
+    reject(rejectPrompt.id, rejectReason || 'operator_rejected');
+    addActivity({ id: `reject-${rejectPrompt.id}`, type: 'risk_event', timestamp: new Date(), title: `Rejected ${rejectPrompt.id}`, description: rejectReason || 'Rejected by operator', status: 'warning' });
+    setRejectPrompt(null);
+    setRejectReason('');
+  };
+
+  const onOpenTrace = (id: string) => {
+    const o = opportunities.find((x) => x.id === id);
+    setTraceView({ id, trace: o?.trace ?? [] });
   };
 
   return (
     <Layout>
-      <div className="space-y-8">
-        <div className="flex items-center gap-4 mb-6">
-          <button
-            onClick={() => navigate('/')}
-            className="p-2 hover:bg-surface-container rounded-lg transition-colors"
-          >
+      <div className="space-y-6">
+        <div className="flex items-center gap-4 mb-2">
+          <button onClick={() => navigate('/')} className="p-2 hover:bg-surface-container rounded-lg transition-colors">
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-display-lg font-serif text-primary">Opportunities Queue</h1>
-            <p className="text-body-md text-on-surface-variant">
-              All detected arbitrage opportunities with profit expectations
-            </p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div className="card">
-            <p className="text-label-md text-on-surface-variant mb-2">Total Detected</p>
-            <p className="text-headline-md font-serif text-primary">247</p>
-          </div>
-          <div className="card">
-            <p className="text-label-md text-on-surface-variant mb-2">Currently Active</p>
-            <p className="text-headline-md font-serif text-primary">12</p>
-          </div>
-          <div className="card">
-            <p className="text-label-md text-on-surface-variant mb-2">Pending Execution</p>
-            <p className="text-headline-md font-serif text-primary">8</p>
+            <h1 className="text-display-lg font-serif text-primary">Opportunities</h1>
+            <p className="text-body-md text-on-surface-variant">Live queue of filtered trade candidates from mempool and cost engine</p>
           </div>
         </div>
 
         <div className="card">
-          <h2 className="text-headline-sm font-serif mb-6">Active Opportunities</h2>
+          <h2 className="text-headline-sm font-serif mb-4">Live Queue</h2>
+
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-outline-variant/30">
-                  <th className="text-left py-3 px-4 text-label-md text-on-surface-variant">Pair</th>
-                  <th className="text-right py-3 px-4 text-label-md text-on-surface-variant">Expected Profit</th>
-                  <th className="text-right py-3 px-4 text-label-md text-on-surface-variant">Risk %</th>
-                  <th className="text-center py-3 px-4 text-label-md text-on-surface-variant">Status</th>
-                  <th className="text-right py-3 px-4 text-label-md text-on-surface-variant">Detected</th>
+                <tr className="border-b border-outline-variant/30 text-left">
+                  <th className="py-3 px-4 text-label-sm">ID</th>
+                  <th className="py-3 px-4 text-label-sm">Size</th>
+                  <th className="py-3 px-4 text-label-sm">Expected Profit</th>
+                  <th className="py-3 px-4 text-label-sm">Risk</th>
+                  <th className="py-3 px-4 text-label-sm">Freshness</th>
+                  <th className="py-3 px-4 text-label-sm">Disposition</th>
+                  <th className="py-3 px-4 text-label-sm">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {mockOpportunities.map((opp) => (
-                  <tr key={opp.id} className="border-b border-outline-variant/20 hover:bg-surface-container transition-colors">
-                    <td className="py-4 px-4 text-body-md text-on-surface">{opp.pair}</td>
-                    <td className="py-4 px-4 text-right">
-                      <span className="text-body-md text-primary">${opp.expectedProfit}</span>
+                {opportunities.map((opp) => (
+                  <tr key={opp.id} className="border-b border-outline-variant/20 hover:bg-surface-container transition-colors cursor-pointer" onClick={() => navigate(`/opportunity/${opp.id}`)}>
+                    <td className="py-4 px-4 text-body-md">{opp.id}</td>
+                    <td className="py-4 px-4 text-body-md">{(opp.expectedProfit / 10).toFixed(2)}</td>
+                    <td className="py-4 px-4 text-body-md">${opp.expectedProfit}</td>
+                    <td className="py-4 px-4 text-body-md">{opp.risk}</td>
+                    <td className="py-4 px-4 text-body-md">{opp.freshnessSeconds ?? 0}s</td>
+                    <td className="py-4 px-4 text-body-md">
+                      <StatusBadge status={opp.status === 'pending' ? 'healthy' : opp.status === 'executing' ? 'warning' : 'critical'} label={opp.status} />
                     </td>
-                    <td className="py-4 px-4 text-right text-body-md">{opp.risk}%</td>
-                    <td className="py-4 px-4 text-center">
-                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-label-sm font-semibold ${getStatusColor(opp.status)}`}>
-                        {opp.status}
-                      </span>
+                    <td className="py-4 px-4 text-body-md">
+                      <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                        <button className="btn-secondary" onClick={() => navigate(`/opportunity/${opp.id}`)}>View Details</button>
+                        <button className="btn-secondary" onClick={() => onSimulate(opp.id)}>Simulate</button>
+                        <button className="btn-primary" onClick={() => onApprove(opp.id)}>Approve</button>
+                        <button className="btn-secondary" onClick={() => onReject(opp.id)}>Reject</button>
+                        <button className="btn-secondary" onClick={() => onOpenTrace(opp.id)}>Open Trace</button>
+                      </div>
                     </td>
-                    <td className="py-4 px-4 text-right text-label-sm text-on-surface-variant">{opp.detectedAt}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         </div>
+
+        {/* Simulation result modal */}
+        {simResult && (
+          <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
+            <div className="card w-[520px]">
+              <h3 className="text-headline-sm mb-2">Simulation Result</h3>
+              <p className="text-body-md">Opportunity {simResult.id} simulation: {simResult.result}</p>
+              <div className="mt-4 flex justify-end gap-2">
+                <button className="btn-secondary" onClick={() => setSimResult(null)}>Close</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Trace modal */}
+        {traceView && (
+          <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
+            <div className="card w-[720px] max-h-[70vh] overflow-auto">
+              <h3 className="text-headline-sm mb-2">Trace: {traceView.id}</h3>
+              <div className="space-y-2">
+                {traceView.trace.map((t: any, i: number) => (
+                  <div key={i} className="p-3 border rounded-lg">
+                    <p className="text-label-sm text-on-surface-variant">{t.step}</p>
+                    <p className="text-body-md">{t.detail}</p>
+                    <p className="text-label-sm text-on-surface-variant">{new Date(t.timestamp).toLocaleString()}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 flex justify-end gap-2">
+                <button className="btn-secondary" onClick={() => setTraceView(null)}>Close</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Reject prompt modal */}
+        {rejectPrompt && (
+          <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
+            <div className="card w-[520px]">
+              <h3 className="text-headline-sm mb-2">Reject Opportunity {rejectPrompt.id}</h3>
+              <textarea className="w-full p-3 border rounded" rows={4} value={rejectReason} onChange={(e) => setRejectReason(e.target.value)} placeholder="Rejection reason for audit" />
+              <div className="mt-4 flex justify-end gap-2">
+                <button className="btn-secondary" onClick={() => setRejectPrompt(null)}>Cancel</button>
+                <button className="btn-primary" onClick={confirmReject}>Confirm Reject</button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Layout>
   );

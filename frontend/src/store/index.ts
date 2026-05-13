@@ -1,10 +1,11 @@
 import { create } from 'zustand';
-import { 
-  SystemMetrics, 
-  ActivityEvent, 
-  HealthStatus, 
-  PipelineState, 
-  RiskStatus 
+import {
+  SystemMetrics,
+  ActivityEvent,
+  HealthStatus,
+  PipelineState,
+  RiskStatus,
+  Opportunity,
 } from '@/types';
 
 interface DashboardStore {
@@ -12,6 +13,12 @@ interface DashboardStore {
   activities: ActivityEvent[];
   loading: boolean;
   lastRefresh: Date | null;
+  opportunities: Opportunity[];
+  // opportunity actions
+  simulateOpportunity: (id: string) => Promise<'valid' | 'marginal' | 'invalid'>;
+  approveOpportunity: (id: string) => void;
+  rejectOpportunity: (id: string, reason: string) => void;
+  getOpportunity: (id: string) => Opportunity | undefined;
   
   // Actions
   setMetrics: (metrics: SystemMetrics) => void;
@@ -67,9 +74,29 @@ const generateMockActivities = (): ActivityEvent[] => {
   }));
 };
 
-export const useDashboardStore = create<DashboardStore>((set) => ({
+const generateMockOpportunities = (): Opportunity[] => {
+  const now = Date.now();
+  return Array.from({ length: 8 }, (_, i) => ({
+    id: `OPP-${1000 + i}`,
+    detectionTime: new Date(now - i * 60000),
+    source: ['mempool', 'scanner', 'cost-engine'][i % 3],
+    type: ['arbitrage', 'funding', 'liquidation'][i % 3],
+    expectedProfit: Math.floor(Math.random() * 4000) + 200,
+    risk: parseFloat((Math.random() * 1.2).toFixed(2)),
+    status: 'pending',
+    freshnessSeconds: i * 12,
+    trace: [
+      { step: 'discovery', detail: 'seen in mempool', timestamp: new Date(now - i * 60000) },
+      { step: 'filtering', detail: 'passed filters', timestamp: new Date(now - i * 50000) },
+      { step: 'cost', detail: 'cost estimated', timestamp: new Date(now - i * 40000) },
+    ],
+  }));
+};
+
+export const useDashboardStore = create<DashboardStore>((set, get) => ({
   metrics: generateMockMetrics(),
   activities: generateMockActivities(),
+  opportunities: generateMockOpportunities(),
   loading: false,
   lastRefresh: new Date(),
 
@@ -80,6 +107,31 @@ export const useDashboardStore = create<DashboardStore>((set) => ({
   addActivity: (activity) => set((state) => ({
     activities: [activity, ...state.activities].slice(0, 10),
   })),
+
+  // Opportunity actions
+  simulateOpportunity: async (id: string) => {
+    // simulate a pre-flight check (mock)
+    await new Promise((r) => setTimeout(r, 400));
+    const outcome = Math.random();
+    const result: 'valid' | 'marginal' | 'invalid' = outcome > 0.7 ? 'valid' : outcome > 0.4 ? 'marginal' : 'invalid';
+    set((state) => ({
+      opportunities: state.opportunities.map((o) => (o.id === id ? { ...o, simulatedResult: result } : o)),
+    }));
+    return result;
+  },
+
+  approveOpportunity: (id: string) => set((state) => ({
+    opportunities: state.opportunities.map((o) => (o.id === id ? { ...o, status: 'executing' } : o)),
+  })),
+
+  rejectOpportunity: (id: string, reason: string) => set((state) => ({
+    opportunities: state.opportunities.map((o) => (o.id === id ? { ...o, status: 'rejected', rejectionReason: reason } : o)),
+  })),
+
+  getOpportunity: (id: string) => {
+    const s = get();
+    return s.opportunities.find((o: Opportunity) => o.id === id);
+  },
 
   refreshData: async () => {
     set({ loading: true });

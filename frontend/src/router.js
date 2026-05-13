@@ -1,6 +1,6 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 import { createBrowserRouter } from 'react-router-dom';
-import { Dashboard, Pipeline, Opportunities, Risk, Execution, Settlement, MarketData, } from '@/pages';
+import { Dashboard, Pipeline, Opportunities, OpportunityDetail, Risk, Execution, Settlement, MarketData, } from '@/pages';
 export const router = createBrowserRouter([
     {
         path: '/',
@@ -17,6 +17,10 @@ export const router = createBrowserRouter([
     {
         path: '/opportunities',
         element: _jsx(Opportunities, {}),
+    },
+    {
+        path: '/opportunity/:id',
+        element: _jsx(OpportunityDetail, {}),
     },
     {
         path: '/risk',

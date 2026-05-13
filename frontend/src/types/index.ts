@@ -58,7 +58,11 @@ export interface Opportunity {
   type: string;
   expectedProfit: number;
   risk: number;
-  status: 'pending' | 'executing' | 'completed' | 'failed';
+  status: 'pending' | 'executing' | 'completed' | 'failed' | 'rejected';
+  rejectionReason?: string;
+  simulatedResult?: 'valid' | 'marginal' | 'invalid';
+  freshnessSeconds?: number;
+  trace?: Array<{ step: string; detail: string; timestamp: Date }>;
 }
 
 // Risk event

@@ -42,9 +42,28 @@ const generateMockActivities = () => {
         status: ['healthy', 'warning', 'critical'][i % 3],
     }));
 };
-export const useDashboardStore = create((set) => ({
+const generateMockOpportunities = () => {
+    const now = Date.now();
+    return Array.from({ length: 8 }, (_, i) => ({
+        id: `OPP-${1000 + i}`,
+        detectionTime: new Date(now - i * 60000),
+        source: ['mempool', 'scanner', 'cost-engine'][i % 3],
+        type: ['arbitrage', 'funding', 'liquidation'][i % 3],
+        expectedProfit: Math.floor(Math.random() * 4000) + 200,
+        risk: parseFloat((Math.random() * 1.2).toFixed(2)),
+        status: 'pending',
+        freshnessSeconds: i * 12,
+        trace: [
+            { step: 'discovery', detail: 'seen in mempool', timestamp: new Date(now - i * 60000) },
+            { step: 'filtering', detail: 'passed filters', timestamp: new Date(now - i * 50000) },
+            { step: 'cost', detail: 'cost estimated', timestamp: new Date(now - i * 40000) },
+        ],
+    }));
+};
+export const useDashboardStore = create((set, get) => ({
     metrics: generateMockMetrics(),
     activities: generateMockActivities(),
+    opportunities: generateMockOpportunities(),
     loading: false,
     lastRefresh: new Date(),
     setMetrics: (metrics) => set({ metrics }),
@@ -53,6 +72,27 @@ export const useDashboardStore = create((set) => ({
     addActivity: (activity) => set((state) => ({
         activities: [activity, ...state.activities].slice(0, 10),
     })),
+    // Opportunity actions
+    simulateOpportunity: async (id) => {
+        // simulate a pre-flight check (mock)
+        await new Promise((r) => setTimeout(r, 400));
+        const outcome = Math.random();
+        const result = outcome > 0.7 ? 'valid' : outcome > 0.4 ? 'marginal' : 'invalid';
+        set((state) => ({
+            opportunities: state.opportunities.map((o) => (o.id === id ? { ...o, simulatedResult: result } : o)),
+        }));
+        return result;
+    },
+    approveOpportunity: (id) => set((state) => ({
+        opportunities: state.opportunities.map((o) => (o.id === id ? { ...o, status: 'executing' } : o)),
+    })),
+    rejectOpportunity: (id, reason) => set((state) => ({
+        opportunities: state.opportunities.map((o) => (o.id === id ? { ...o, status: 'rejected', rejectionReason: reason } : o)),
+    })),
+    getOpportunity: (id) => {
+        const s = get();
+        return s.opportunities.find((o) => o.id === id);
+    },
     refreshData: async () => {
         set({ loading: true });
         try {

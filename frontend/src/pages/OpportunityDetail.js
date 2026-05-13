@@ -1,0 +1,23 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { useMemo } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Layout } from '@/components';
+import { useDashboardStore } from '@/store';
+import StatusBadge from '@/components/StatusBadge';
+export const OpportunityDetail = () => {
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const getOpportunity = useDashboardStore((s) => s.getOpportunity);
+    const opp = getOpportunity(id ?? '');
+    const whySection = useMemo(() => {
+        if (!opp)
+            return null;
+        return (_jsxs("div", { className: "space-y-3", children: [_jsx("p", { className: "text-label-sm text-on-surface-variant", children: "Signal origin" }), _jsxs("p", { className: "text-body-md", children: ["Source: ", opp.source] }), _jsx("p", { className: "text-label-sm text-on-surface-variant", children: "Detected at" }), _jsx("p", { className: "text-body-md", children: new Date(opp.detectionTime).toLocaleString() })] }));
+    }, [opp]);
+    if (!opp) {
+        return (_jsx(Layout, { children: _jsxs("div", { className: "card", children: [_jsx("p", { className: "text-body-md", children: "Opportunity not found" }), _jsx("button", { className: "btn-secondary mt-4", onClick: () => navigate('/opportunities'), children: "Back to queue" })] }) }));
+    }
+    return (_jsx(Layout, { children: _jsxs("div", { className: "space-y-6", children: [_jsxs("div", { className: "flex items-center justify-between", children: [_jsxs("div", { children: [_jsxs("h1", { className: "text-display-lg font-serif text-primary", children: ["Opportunity ", opp.id] }), _jsx("p", { className: "text-body-md text-on-surface-variant", children: "Detailed view and next-step controls" })] }), _jsx("div", { children: _jsx(StatusBadge, { status: opp.status === 'pending' ? 'healthy' : opp.status === 'executing' ? 'warning' : 'critical', label: opp.status }) })] }), _jsxs("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-4", children: [_jsxs("div", { className: "card", children: [_jsx("h2", { className: "text-headline-sm font-serif mb-3", children: "Why this trade exists" }), whySection, _jsxs("div", { className: "mt-4", children: [_jsx("p", { className: "text-label-sm text-on-surface-variant", children: "Estimated spread" }), _jsxs("p", { className: "text-body-md", children: [(opp.expectedProfit / 100).toFixed(2), "%"] })] }), _jsxs("div", { className: "mt-3", children: [_jsx("p", { className: "text-label-sm text-on-surface-variant", children: "Confidence / risk" }), _jsxs("p", { className: "text-body-md", children: ["Score: ", (1 - opp.risk).toFixed(2), " \u00B7 Risk: ", opp.risk] })] })] }), _jsxs("div", { className: "card", children: [_jsx("h2", { className: "text-headline-sm font-serif mb-3", children: "Cost analysis" }), _jsxs("p", { className: "text-body-md", children: ["Estimated costs and gas: $", Math.round(opp.expectedProfit * 0.05)] }), _jsxs("p", { className: "text-label-sm text-on-surface-variant mt-2", children: ["Net expected profit: $", opp.expectedProfit - Math.round(opp.expectedProfit * 0.05)] }), _jsxs("div", { className: "mt-4", children: [_jsx("p", { className: "text-label-sm text-on-surface-variant", children: "Simulation" }), _jsxs("p", { className: "text-body-md", children: ["Last simulation result: ", opp.simulatedResult ?? 'not run'] })] })] }), _jsxs("div", { className: "card", children: [_jsx("h2", { className: "text-headline-sm font-serif mb-3", children: "Next steps" }), _jsx("p", { className: "text-body-md", children: "Approve to move into execution, Reject to remove from the active path, or run a simulation to re-evaluate." }), _jsxs("div", { className: "mt-4 grid grid-cols-1 gap-2", children: [_jsx("button", { className: "btn-primary", children: "Approve" }), _jsx("button", { className: "btn-secondary", children: "Simulate" }), _jsx("button", { className: "btn-secondary", children: "Open Trace" })] })] })] }), _jsxs("div", { className: "card", children: [_jsx("h2", { className: "text-headline-sm font-serif mb-3", children: "Trace" }), _jsx("div", { className: "space-y-2", children: opp.trace?.map((t, i) => (_jsxs("div", { className: "p-3 border rounded-lg", children: [_jsx("p", { className: "text-label-sm text-on-surface-variant", children: t.step }), _jsx("p", { className: "text-body-md", children: t.detail }), _jsx("p", { className: "text-label-sm text-on-surface-variant", children: new Date(t.timestamp).toLocaleString() })] }, i))) })] })] }) }));
+};
+export default OpportunityDetail;
+//# sourceMappingURL=OpportunityDetail.js.map

@@ -30,8 +30,8 @@ export const Dashboard: React.FC = () => {
       processing: 'Workers actively processing opportunities',
       degraded: 'System degraded, some workers offline',
       halted: 'Pipeline halted, immediate action required',
-    };
-    return descriptions[metrics.pipelineState];
+    } as const;
+    return descriptions[metrics.pipelineState as keyof typeof descriptions];
   };
 
   const getRiskStatusDescription = () => {
@@ -39,8 +39,8 @@ export const Dashboard: React.FC = () => {
       green: 'System operating normally, all metrics green',
       elevated: 'Risk elevated, breakers may trigger soon',
       blocked: 'Risk breaker triggered, trading halted',
-    };
-    return descriptions[metrics.riskStatus];
+    } as const;
+    return descriptions[metrics.riskStatus as keyof typeof descriptions];
   };
 
   const getExecutionHealthDescription = () => {
@@ -48,8 +48,8 @@ export const Dashboard: React.FC = () => {
       healthy: 'All executions completing successfully',
       warning: 'Some execution failures detected',
       critical: 'Critical execution failures, investigate immediately',
-    };
-    return descriptions[metrics.executionHealth];
+    } as const;
+    return descriptions[metrics.executionHealth as keyof typeof descriptions];
   };
 
   const getSettlementStatusDescription = () => {
@@ -57,8 +57,8 @@ export const Dashboard: React.FC = () => {
       healthy: 'All settlements completing on schedule',
       warning: 'Some settlements delayed, monitoring',
       critical: 'Settlement failures, manual intervention needed',
-    };
-    return descriptions[metrics.settlementStatus];
+    } as const;
+    return descriptions[metrics.settlementStatus as keyof typeof descriptions];
   };
 
   const getPipelineHealthStatus = () => {

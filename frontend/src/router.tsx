@@ -3,6 +3,7 @@ import {
   Dashboard,
   Pipeline,
   Opportunities,
+  OpportunityDetail,
   Risk,
   Execution,
   Settlement,
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
   {
     path: '/opportunities',
     element: <Opportunities />,
+  },
+  {
+    path: '/opportunity/:id',
+    element: <OpportunityDetail />,
   },
   {
     path: '/risk',
