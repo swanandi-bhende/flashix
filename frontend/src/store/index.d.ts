@@ -1,4 +1,4 @@
-import { SystemMetrics, ActivityEvent, Opportunity, RiskCenter, ExecutionCenter, BroadcastState, OnChainOutcome, SettlementCenter, MarketDataCenter, OracleFeedStatus, ComputeCenter } from '@/types';
+import { SystemMetrics, ActivityEvent, Opportunity, RiskCenter, ExecutionCenter, BroadcastState, OnChainOutcome, SettlementCenter, MarketDataCenter, OracleFeedStatus, ComputeCenter, AdminCenter, Provider, AuditLogEntry, AuditActionType } from '@/types';
 interface DashboardStore {
     metrics: SystemMetrics;
     activities: ActivityEvent[];
@@ -42,6 +42,19 @@ interface DashboardStore {
     replayInference: (requestId: string) => Promise<void>;
     viewTrace: (requestId: string) => void;
     inspectSignature: (requestId: string) => void;
+    adminCenter: AdminCenter;
+    editProvider: (providerId: string) => void;
+    updateProvider: (providerId: string, config: Partial<Provider>) => Promise<void>;
+    updateContract: (contractId: string) => void;
+    saveConfig: () => Promise<void>;
+    searchAuditLog: (filters: {
+        actionType?: AuditActionType;
+        subsystem?: string;
+        startDate?: Date;
+        endDate?: Date;
+    }) => AuditLogEntry[];
+    filterAuditByType: (actionType: AuditActionType) => AuditLogEntry[];
+    downloadReplayReport: () => void;
 }
 export declare const useDashboardStore: import("zustand").UseBoundStore<import("zustand").StoreApi<DashboardStore>>;
 export {};

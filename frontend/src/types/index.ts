@@ -407,3 +407,78 @@ export interface ComputeCenter {
   overallHealth: 'green' | 'elevated' | 'blocked';
   lastUpdated: Date;
 }
+
+// Provider configuration (external dependencies)
+export interface Provider {
+  id: string;
+  name: string;
+  type: 'market_data' | 'rpc' | 'tee' | 'execution';
+  endpoint: string;
+  status: 'active' | 'inactive' | 'degraded';
+  isHealthy: boolean;
+  lastHealthCheck: Date;
+  failureCount: number;
+  averageLatencyMs: number;
+  details: Record<string, any>;
+}
+
+// Contract configuration
+export interface ContractConfig {
+  id: string;
+  name: string;
+  address: string;
+  network: string;
+  version: string;
+  deploymentTime: Date;
+  verificationStatus: 'verified' | 'unverified' | 'pending';
+  isActive: boolean;
+  lastUpdateTime: Date;
+  compilationDetails?: Record<string, any>;
+}
+
+// Configuration change tracking
+export interface ConfigChange {
+  id: string;
+  timestamp: Date;
+  changedBy: string;
+  changeType: 'provider_update' | 'contract_update' | 'setting_change' | 'config_save';
+  affectedResource: string;
+  previousValue?: Record<string, any>;
+  newValue: Record<string, any>;
+  status: 'pending' | 'active' | 'reverted';
+  description: string;
+}
+
+// Audit log entry
+export type AuditActionType = 
+  | 'config_change' 
+  | 'contract_update' 
+  | 'operator_action' 
+  | 'trade_decision' 
+  | 'security_event' 
+  | 'system_alert';
+
+export interface AuditLogEntry {
+  id: string;
+  timestamp: Date;
+  actionType: AuditActionType;
+  actor: string;
+  subsystem: 'admin' | 'pipeline' | 'execution' | 'settlement' | 'risk' | 'market_data' | 'compute';
+  description: string;
+  details: Record<string, any>;
+  severity: 'info' | 'warning' | 'critical';
+  linkedResourceId?: string;
+}
+
+// Admin and settings control plane
+export interface AdminCenter {
+  providers: Provider[];
+  contracts: ContractConfig[];
+  configChanges: ConfigChange[];
+  auditLog: AuditLogEntry[];
+  lastSaveTime?: Date;
+  lastSavedBy?: string;
+  unsavedChanges: boolean;
+  replayReportUrl?: string;
+  lastUpdated: Date;
+}

@@ -9,6 +9,7 @@ import {
   Settlement,
   MarketData,
   Compute,
+  Admin,
 } from '@/pages';
 
 export const router = createBrowserRouter([
@@ -51,5 +52,9 @@ export const router = createBrowserRouter([
   {
     path: '/compute',
     element: <Compute />,
+  },
+  {
+    path: '/admin',
+    element: <Admin />,
   },
 ]);

@@ -25,6 +25,12 @@ import {
   PayloadValidation,
   SignatureCheck,
   TraceLink,
+  AdminCenter,
+  Provider,
+  ContractConfig,
+  ConfigChange,
+  AuditLogEntry,
+  AuditActionType,
 } from '@/types';
 
 interface DashboardStore {
@@ -80,6 +86,16 @@ interface DashboardStore {
   replayInference: (requestId: string) => Promise<void>;
   viewTrace: (requestId: string) => void;
   inspectSignature: (requestId: string) => void;
+
+  // Admin and settings center state and actions
+  adminCenter: AdminCenter;
+  editProvider: (providerId: string) => void;
+  updateProvider: (providerId: string, config: Partial<Provider>) => Promise<void>;
+  updateContract: (contractId: string) => void;
+  saveConfig: () => Promise<void>;
+  searchAuditLog: (filters: { actionType?: AuditActionType; subsystem?: string; startDate?: Date; endDate?: Date }) => AuditLogEntry[];
+  filterAuditByType: (actionType: AuditActionType) => AuditLogEntry[];
+  downloadReplayReport: () => void;
 }
 
 // Mock data generator for development
@@ -284,6 +300,203 @@ const generateMockComputeCenter = (): ComputeCenter => {
     signatures,
     traces,
     overallHealth: Math.random() > 0.2 ? 'green' : Math.random() > 0.1 ? 'elevated' : 'blocked',
+    lastUpdated: new Date(),
+  };
+};
+
+const generateMockAdminCenter = (): AdminCenter => {
+  const now = Date.now();
+
+  const providers: Provider[] = [
+    {
+      id: 'pyth-market',
+      name: 'Pyth Network',
+      type: 'market_data',
+      endpoint: 'https://api.pyth.network/v1/price',
+      status: 'active',
+      isHealthy: true,
+      lastHealthCheck: new Date(now - 30000),
+      failureCount: 0,
+      averageLatencyMs: 145,
+      details: { network: 'mainnet', updateFrequency: '5s' },
+    },
+    {
+      id: 'chainlink-market',
+      name: 'Chainlink',
+      type: 'market_data',
+      endpoint: 'https://api.chain.link/v1/feeds',
+      status: 'active',
+      isHealthy: true,
+      lastHealthCheck: new Date(now - 45000),
+      failureCount: 1,
+      averageLatencyMs: 210,
+      details: { network: 'mainnet', updateFrequency: '10s' },
+    },
+    {
+      id: 'alchemy-rpc',
+      name: 'Alchemy RPC',
+      type: 'rpc',
+      endpoint: 'https://eth-mainnet.alchemy.com/v2/...',
+      status: 'active',
+      isHealthy: true,
+      lastHealthCheck: new Date(now - 15000),
+      failureCount: 0,
+      averageLatencyMs: 89,
+      details: { network: 'ethereum', tier: 'premium' },
+    },
+    {
+      id: 'uniswap-executor',
+      name: 'Uniswap Router',
+      type: 'execution',
+      endpoint: 'https://api.uniswap.org/v3/router',
+      status: 'active',
+      isHealthy: true,
+      lastHealthCheck: new Date(now - 20000),
+      failureCount: 2,
+      averageLatencyMs: 320,
+      details: { version: 'v3', chainId: 1 },
+    },
+    {
+      id: 'tee-inference',
+      name: 'TEE Inference Endpoint',
+      type: 'tee',
+      endpoint: 'https://tee.flashix.io/infer',
+      status: 'active',
+      isHealthy: true,
+      lastHealthCheck: new Date(now - 60000),
+      failureCount: 0,
+      averageLatencyMs: 450,
+      details: { enclave: 'sgx', version: '1.2.0' },
+    },
+  ];
+
+  const contracts: ContractConfig[] = [
+    {
+      id: 'signal-validator',
+      name: 'SignalValidator',
+      address: '0x742d35Cc6634C0532925a3b844Bc9e7595f42e6b',
+      network: 'ethereum-mainnet',
+      version: '2.1.0',
+      deploymentTime: new Date(now - 30 * 24 * 3600000),
+      verificationStatus: 'verified',
+      isActive: true,
+      lastUpdateTime: new Date(now - 7 * 24 * 3600000),
+      compilationDetails: { solidityVersion: '0.8.20', optimizer: 'enabled' },
+    },
+    {
+      id: 'lending-pool',
+      name: 'LendingPool',
+      address: '0xE8Bd8cE55cd2b7C74B0d3d9a30d2C5E2A1B3C4D5',
+      network: 'ethereum-mainnet',
+      version: '1.5.2',
+      deploymentTime: new Date(now - 60 * 24 * 3600000),
+      verificationStatus: 'verified',
+      isActive: true,
+      lastUpdateTime: new Date(now - 14 * 24 * 3600000),
+      compilationDetails: { solidityVersion: '0.8.19', optimizer: 'enabled' },
+    },
+  ];
+
+  const configChanges: ConfigChange[] = [
+    {
+      id: 'change-1',
+      timestamp: new Date(now - 3600000),
+      changedBy: 'admin@flashix.com',
+      changeType: 'provider_update',
+      affectedResource: 'pyth-market',
+      previousValue: { endpoint: 'https://api.pyth.network/v1/price_feed' },
+      newValue: { endpoint: 'https://api.pyth.network/v1/price' },
+      status: 'active',
+      description: 'Updated Pyth endpoint to latest API version',
+    },
+    {
+      id: 'change-2',
+      timestamp: new Date(now - 7200000),
+      changedBy: 'admin@flashix.com',
+      changeType: 'config_save',
+      affectedResource: 'system-settings',
+      newValue: { maxSlippageBps: 50, maxGasPrice: 200 },
+      status: 'active',
+      description: 'Updated system-wide trading parameters',
+    },
+    {
+      id: 'change-3',
+      timestamp: new Date(now - 86400000),
+      changedBy: 'admin@flashix.com',
+      changeType: 'contract_update',
+      affectedResource: 'signal-validator',
+      previousValue: { version: '2.0.0' },
+      newValue: { version: '2.1.0' },
+      status: 'active',
+      description: 'Deployed SignalValidator v2.1.0',
+    },
+  ];
+
+  const auditLog: AuditLogEntry[] = [
+    {
+      id: 'audit-1',
+      timestamp: new Date(now - 300000),
+      actionType: 'trade_decision',
+      actor: 'system',
+      subsystem: 'pipeline',
+      description: 'Executed arbitrage opportunity OPP-1234',
+      details: { opportunityId: 'OPP-1234', profit: 2450, gasUsed: 120000 },
+      severity: 'info',
+      linkedResourceId: 'OPP-1234',
+    },
+    {
+      id: 'audit-2',
+      timestamp: new Date(now - 600000),
+      actionType: 'config_change',
+      actor: 'admin@flashix.com',
+      subsystem: 'admin',
+      description: 'Updated Pyth endpoint configuration',
+      details: { provider: 'pyth-market', oldUrl: 'v1/price_feed', newUrl: 'v1/price' },
+      severity: 'info',
+      linkedResourceId: 'change-1',
+    },
+    {
+      id: 'audit-3',
+      timestamp: new Date(now - 900000),
+      actionType: 'security_event',
+      actor: 'system',
+      subsystem: 'risk',
+      description: 'Daily loss limit breached',
+      details: { threshold: 50000, currentLoss: 52100 },
+      severity: 'critical',
+    },
+    {
+      id: 'audit-4',
+      timestamp: new Date(now - 1200000),
+      actionType: 'contract_update',
+      actor: 'admin@flashix.com',
+      subsystem: 'admin',
+      description: 'Deployed new SignalValidator contract',
+      details: { contract: 'signal-validator', version: '2.1.0', txHash: '0xabc123...' },
+      severity: 'warning',
+      linkedResourceId: 'signal-validator',
+    },
+    {
+      id: 'audit-5',
+      timestamp: new Date(now - 1800000),
+      actionType: 'operator_action',
+      actor: 'operator@flashix.com',
+      subsystem: 'execution',
+      description: 'Manually broadcast pending trade execution',
+      details: { executionId: 'exec-456', txHash: '0xdef456...' },
+      severity: 'info',
+    },
+  ];
+
+  return {
+    providers,
+    contracts,
+    configChanges,
+    auditLog,
+    lastSaveTime: new Date(now - 3600000),
+    lastSavedBy: 'admin@flashix.com',
+    unsavedChanges: false,
+    replayReportUrl: 'https://reports.flashix.io/replay/2024-05-13.json',
     lastUpdated: new Date(),
   };
 };
@@ -601,6 +814,7 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
   marketDataCenter: generateMockMarketDataCenter(),
   settlementCenter: generateMockSettlementCenter(),
   computeCenter: generateMockComputeCenter(),
+  adminCenter: generateMockAdminCenter(),
   loading: false,
   lastRefresh: new Date(),
 
@@ -996,5 +1210,95 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
         status: signature.signatureStatus === 'verified' ? 'healthy' : 'warning',
       });
     }
+  },
+
+  // Admin and settings center actions
+  editProvider: (providerId: string) => {
+    get().addActivity({
+      id: `edit-provider-${Date.now()}`,
+      type: 'execution',
+      timestamp: new Date(),
+      title: 'Provider configuration opened',
+      description: `Provider ${providerId} opened for editing`,
+      status: 'healthy',
+    });
+  },
+
+  updateProvider: async (providerId: string, config: Partial<Provider>) => {
+    set((state) => ({
+      adminCenter: {
+        ...state.adminCenter,
+        providers: state.adminCenter.providers.map((p) =>
+          p.id === providerId ? { ...p, ...config } : p
+        ),
+        unsavedChanges: true,
+      },
+    }));
+
+    get().addActivity({
+      id: `update-provider-${Date.now()}`,
+      type: 'execution',
+      timestamp: new Date(),
+      title: 'Provider updated',
+      description: `Provider ${providerId} configuration updated (unsaved)`,
+      status: 'warning',
+    });
+  },
+
+  updateContract: (contractId: string) => {
+    get().addActivity({
+      id: `update-contract-${Date.now()}`,
+      type: 'execution',
+      timestamp: new Date(),
+      title: 'Contract details opened',
+      description: `Contract ${contractId} deployment details opened for review`,
+      status: 'healthy',
+    });
+  },
+
+  saveConfig: async () => {
+    set((state) => ({
+      adminCenter: {
+        ...state.adminCenter,
+        unsavedChanges: false,
+        lastSaveTime: new Date(),
+        lastSavedBy: 'current-user',
+      },
+    }));
+
+    get().addActivity({
+      id: `save-config-${Date.now()}`,
+      type: 'execution',
+      timestamp: new Date(),
+      title: 'Configuration saved',
+      description: 'System configuration changes have been saved and are now active',
+      status: 'healthy',
+    });
+  },
+
+  searchAuditLog: (filters: { actionType?: AuditActionType; subsystem?: string; startDate?: Date; endDate?: Date }) => {
+    const auditLog = get().adminCenter.auditLog;
+    return auditLog.filter((entry) => {
+      if (filters.actionType && entry.actionType !== filters.actionType) return false;
+      if (filters.subsystem && entry.subsystem !== filters.subsystem) return false;
+      if (filters.startDate && entry.timestamp < filters.startDate) return false;
+      if (filters.endDate && entry.timestamp > filters.endDate) return false;
+      return true;
+    });
+  },
+
+  filterAuditByType: (actionType: AuditActionType) => {
+    return get().adminCenter.auditLog.filter((entry) => entry.actionType === actionType);
+  },
+
+  downloadReplayReport: () => {
+    get().addActivity({
+      id: `download-report-${Date.now()}`,
+      type: 'execution',
+      timestamp: new Date(),
+      title: 'Replay report downloaded',
+      description: 'Complete historical snapshot of system behavior exported',
+      status: 'healthy',
+    });
   },
 }));
