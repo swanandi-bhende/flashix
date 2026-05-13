@@ -7,6 +7,9 @@ import {
   RiskStatus,
   Opportunity,
   RiskCenter,
+  ExecutionCenter,
+  BroadcastState,
+  OnChainOutcome,
 } from '@/types';
 
 interface DashboardStore {
@@ -16,6 +19,7 @@ interface DashboardStore {
   lastRefresh: Date | null;
   opportunities: Opportunity[];
   riskCenter: RiskCenter;
+  executionCenter: ExecutionCenter;
   // opportunity actions
   simulateOpportunity: (id: string) => Promise<'valid' | 'marginal' | 'invalid'>;
   approveOpportunity: (id: string) => void;
@@ -34,6 +38,14 @@ interface DashboardStore {
   acknowledgeOverride: (overrideId: string) => void;
   triggerEmergencyStop: (reason: string, by: string) => void;
   clearEmergencyStop: () => void;
+
+  // Execution center actions
+  runSimulation: (executionId: string) => Promise<void>;
+  broadcastTrade: (executionId: string) => Promise<void>;
+  retryExecution: (executionId: string) => Promise<void>;
+  updateBroadcastState: (executionId: string, state: BroadcastState) => void;
+  updateOnChainOutcome: (executionId: string, outcome: OnChainOutcome) => void;
+  getExecution: (executionId: string) => ExecutionCenter;
 }
 
 // Mock data generator for development
@@ -198,11 +210,69 @@ const generateMockRiskCenter = (): RiskCenter => {
   };
 };
 
+const generateMockExecutionCenter = (): ExecutionCenter => {
+  const now = Date.now();
+  const states: Array<'awaiting_simulation' | 'simulated' | 'queued_broadcast' | 'broadcasting' | 'confirmed' | 'failed' | 'partial_success'> = [
+    'awaiting_simulation',
+    'simulated',
+    'queued_broadcast',
+    'broadcasting',
+    'confirmed',
+    'failed',
+  ];
+  const currentState = states[Math.floor(Math.random() * states.length)];
+  const txHash = `0x${Math.random().toString(16).substring(2).padEnd(64, '0')}`;
+  
+  return {
+    id: `exec-${Math.random().toString(36).substring(2, 9)}`,
+    opportunityId: `opp-${Math.random().toString(36).substring(2, 9)}`,
+    currentState,
+    simulation: {
+      id: `sim-${Math.random().toString(36).substring(2, 9)}`,
+      status: ['pending', 'success', 'failed'][Math.floor(Math.random() * 3)] as 'pending' | 'success' | 'failed',
+      pass: Math.random() > 0.2,
+      expectedOutput: `${(Math.random() * 100).toFixed(4)} USDC`,
+      expectedAmount: Math.random() * 100000,
+      warnings: Math.random() > 0.6 ? ['High slippage detected', 'Low liquidity pool'] : [],
+      gasEstimatedUnits: Math.floor(Math.random() * 500000) + 100000,
+      executedAt: new Date(now - Math.floor(Math.random() * 300000)),
+    },
+    gasEstimate: {
+      gasUsageUnits: Math.floor(Math.random() * 500000) + 100000,
+      gasPriceWei: Math.floor(Math.random() * 100) + 20,
+      totalFeeUSD: parseFloat((Math.random() * 500 + 50).toFixed(2)),
+      totalFeeETH: parseFloat((Math.random() * 0.5 + 0.05).toFixed(4)),
+      profitAfterGasUSD: parseFloat((Math.random() * 5000 + 500).toFixed(2)),
+      profitMarginPct: parseFloat((Math.random() * 10 + 1).toFixed(2)),
+      remainsProfitable: Math.random() > 0.2,
+    },
+    broadcastState: {
+      status: currentState === 'awaiting_simulation' ? 'not_sent' : currentState === 'queued_broadcast' ? 'submitted' : currentState === 'broadcasting' ? 'pending' : 'mined',
+      transactionHash: ['confirmed', 'partial_success'].includes(currentState) ? txHash : undefined,
+      submittedAt: ['broadcasting', 'confirmed', 'partial_success'].includes(currentState) ? new Date(now - Math.floor(Math.random() * 300000)) : undefined,
+      minedAt: ['confirmed', 'partial_success'].includes(currentState) ? new Date(now - Math.floor(Math.random() * 60000)) : undefined,
+      blockNumber: ['confirmed', 'partial_success'].includes(currentState) ? Math.floor(Math.random() * 20000000) + 19000000 : undefined,
+      confirmations: ['confirmed', 'partial_success'].includes(currentState) ? Math.floor(Math.random() * 50) + 1 : undefined,
+    },
+    onChainOutcome: {
+      status: currentState === 'confirmed' ? 'success' : currentState === 'failed' ? 'reverted' : 'pending',
+      blockNumber: ['confirmed', 'partial_success'].includes(currentState) ? Math.floor(Math.random() * 20000000) + 19000000 : undefined,
+      transactionIndex: ['confirmed', 'partial_success'].includes(currentState) ? Math.floor(Math.random() * 100) : undefined,
+      gasUsedActual: ['confirmed', 'partial_success'].includes(currentState) ? Math.floor(Math.random() * 500000) + 100000 : undefined,
+      actualOutput: ['confirmed', 'partial_success'].includes(currentState) ? Math.random() * 100000 : undefined,
+      errorReason: currentState === 'failed' ? 'Insufficient output amount' : undefined,
+      settledAt: ['confirmed', 'partial_success'].includes(currentState) ? new Date(now - Math.floor(Math.random() * 60000)) : undefined,
+    },
+    lastUpdated: new Date(),
+  };
+};
+
 export const useDashboardStore = create<DashboardStore>((set, get) => ({
   metrics: generateMockMetrics(),
   activities: generateMockActivities(),
   opportunities: generateMockOpportunities(),
   riskCenter: generateMockRiskCenter(),
+  executionCenter: generateMockExecutionCenter(),
   loading: false,
   lastRefresh: new Date(),
 
@@ -293,4 +363,144 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
       overrides: state.riskCenter.overrides.map((o) => ({ ...o, active: false })),
     },
   })),
+
+  // Execution center actions
+  runSimulation: async (_executionId: string) => {
+    set((state) => ({
+      executionCenter: {
+        ...state.executionCenter,
+        currentState: 'awaiting_simulation',
+        simulation: { ...state.executionCenter.simulation, status: 'pending' },
+      },
+    }));
+    
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    
+    const success = Math.random() > 0.3;
+    set((state) => ({
+      executionCenter: {
+        ...state.executionCenter,
+        currentState: success ? 'simulated' : 'awaiting_simulation',
+        simulation: {
+          ...state.executionCenter.simulation,
+          status: success ? 'success' : 'failed',
+          pass: success,
+          executedAt: new Date(),
+          errorMessage: success ? undefined : 'Simulation failed: insufficient output',
+        },
+      },
+    }));
+
+    get().addActivity({
+      id: `sim-${Date.now()}`,
+      type: 'execution',
+      timestamp: new Date(),
+      title: success ? 'Simulation passed' : 'Simulation failed',
+      description: success ? 'Trade simulation completed successfully' : 'Trade simulation revealed issues',
+      status: success ? 'healthy' : 'critical',
+    });
+  },
+
+  broadcastTrade: async (_executionId: string) => {
+    set((state) => ({
+      executionCenter: {
+        ...state.executionCenter,
+        currentState: 'queued_broadcast',
+        broadcastState: { ...state.executionCenter.broadcastState, status: 'submitted' },
+      },
+    }));
+
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    const txHash = `0x${Math.random().toString(16).substring(2).padEnd(64, '0')}`;
+    set((state) => ({
+      executionCenter: {
+        ...state.executionCenter,
+        currentState: 'broadcasting',
+        broadcastState: {
+          ...state.executionCenter.broadcastState,
+          status: 'pending',
+          transactionHash: txHash,
+          submittedAt: new Date(),
+        },
+      },
+    }));
+
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
+    const success = Math.random() > 0.2;
+    const blockNumber = Math.floor(Math.random() * 20000000) + 19000000;
+    set((state) => ({
+      executionCenter: {
+        ...state.executionCenter,
+        currentState: success ? 'confirmed' : 'failed',
+        broadcastState: {
+          ...state.executionCenter.broadcastState,
+          status: 'mined',
+          minedAt: new Date(),
+          blockNumber,
+          confirmations: success ? Math.floor(Math.random() * 50) + 1 : 0,
+        },
+        onChainOutcome: {
+          ...state.executionCenter.onChainOutcome,
+          status: success ? 'success' : 'reverted',
+          blockNumber,
+          transactionIndex: Math.floor(Math.random() * 100),
+          gasUsedActual: Math.floor(Math.random() * 500000) + 100000,
+          actualOutput: success ? Math.random() * 100000 : undefined,
+          errorReason: success ? undefined : 'Reverted: insufficient output',
+          settledAt: new Date(),
+        },
+      },
+    }));
+
+    get().addActivity({
+      id: `broadcast-${Date.now()}`,
+      type: 'execution',
+      timestamp: new Date(),
+      title: success ? 'Trade executed successfully' : 'Trade execution failed',
+      description: success ? `Confirmed on-chain at block ${blockNumber}` : 'Transaction reverted on-chain',
+      status: success ? 'healthy' : 'critical',
+    });
+  },
+
+  retryExecution: async (_executionId: string) => {
+    set((state) => ({
+      executionCenter: {
+        ...state.executionCenter,
+        currentState: 'awaiting_simulation',
+        simulation: { ...state.executionCenter.simulation, status: 'pending' },
+        onChainOutcome: { ...state.executionCenter.onChainOutcome, status: 'pending' },
+      },
+    }));
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    
+    get().addActivity({
+      id: `retry-${Date.now()}`,
+      type: 'execution',
+      timestamp: new Date(),
+      title: 'Execution retry initiated',
+      description: 'Failed execution queued for re-simulation and retry',
+      status: 'warning',
+    });
+  },
+
+  updateBroadcastState: (_executionId: string, state: BroadcastState) =>
+    set((s) => ({
+      executionCenter: {
+        ...s.executionCenter,
+        broadcastState: state,
+      },
+    })),
+
+  updateOnChainOutcome: (_executionId: string, outcome: OnChainOutcome) =>
+    set((s) => ({
+      executionCenter: {
+        ...s.executionCenter,
+        onChainOutcome: outcome,
+      },
+    })),
+
+  getExecution: (_executionId: string) => get().executionCenter,
 }));

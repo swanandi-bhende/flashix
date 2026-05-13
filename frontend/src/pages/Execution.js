@@ -1,51 +1,91 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Copy, ExternalLink, AlertTriangle, CheckCircle2, Clock, Zap } from 'lucide-react';
 import { Layout } from '@/components';
+import { useDashboardStore } from '@/store';
+import StatusBadge from '@/components/StatusBadge';
 export const Execution = () => {
     const navigate = useNavigate();
-    const recentExecutions = [
-        {
-            id: '1',
-            txHash: '0x1234...5678',
-            pair: 'ETH/USDC',
-            status: 'confirmed',
-            gasCost: 120,
-            profit: 2450,
-            timestamp: '2 minutes ago',
-        },
-        {
-            id: '2',
-            txHash: '0x9abc...def0',
-            pair: 'DAI/USDC',
-            status: 'confirmed',
-            gasCost: 95,
-            profit: 1850,
-            timestamp: '8 minutes ago',
-        },
-        {
-            id: '3',
-            txHash: '0x5def...1234',
-            pair: 'USDT/USDC',
-            status: 'failed',
-            gasCost: 85,
-            profit: 0,
-            timestamp: '18 minutes ago',
-        },
-    ];
-    const getStatusBadgeClass = (status) => {
-        switch (status) {
+    const execution = useDashboardStore((s) => s.executionCenter);
+    const runSimulation = useDashboardStore((s) => s.runSimulation);
+    const broadcastTrade = useDashboardStore((s) => s.broadcastTrade);
+    const retryExecution = useDashboardStore((s) => s.retryExecution);
+    const [simulating, setSimulating] = useState(false);
+    const [broadcasting, setBroadcasting] = useState(false);
+    const [copiedTx, setCopiedTx] = useState(false);
+    const getStateColor = (state) => {
+        switch (state) {
+            case 'awaiting_simulation':
+                return 'bg-yellow-50 border-yellow-300';
+            case 'simulated':
+                return 'bg-green-50 border-green-300';
+            case 'queued_broadcast':
+                return 'bg-blue-50 border-blue-300';
+            case 'broadcasting':
+                return 'bg-purple-50 border-purple-300';
             case 'confirmed':
-                return 'bg-green-100 text-green-900';
-            case 'pending':
-                return 'bg-yellow-100 text-yellow-900';
+                return 'bg-green-100 border-green-400';
             case 'failed':
-                return 'bg-red-100 text-red-900';
+                return 'bg-red-50 border-red-300';
+            case 'partial_success':
+                return 'bg-orange-50 border-orange-300';
             default:
-                return 'bg-gray-100 text-gray-900';
+                return 'bg-gray-50 border-gray-300';
         }
     };
-    return (_jsx(Layout, { children: _jsxs("div", { className: "space-y-8", children: [_jsxs("div", { className: "flex items-center gap-4 mb-6", children: [_jsx("button", { onClick: () => navigate('/'), className: "p-2 hover:bg-surface-container rounded-lg transition-colors", children: _jsx(ArrowLeft, { className: "w-5 h-5" }) }), _jsxs("div", { children: [_jsx("h1", { className: "text-display-lg font-serif text-primary", children: "Execution History" }), _jsx("p", { className: "text-body-md text-on-surface-variant", children: "Track all executed trades, gas costs, and profitability" })] })] }), _jsxs("div", { className: "grid grid-cols-1 md:grid-cols-4 gap-4 mb-6", children: [_jsxs("div", { className: "card", children: [_jsx("p", { className: "text-label-md text-on-surface-variant mb-2", children: "Executed Today" }), _jsx("p", { className: "text-headline-md font-serif text-primary", children: "142" }), _jsx("p", { className: "text-label-sm text-on-surface-variant mt-2", children: "Success rate: 94.4%" })] }), _jsxs("div", { className: "card", children: [_jsx("p", { className: "text-label-md text-on-surface-variant mb-2", children: "Total Profit" }), _jsx("p", { className: "text-headline-md font-serif text-primary", children: "$45.8K" }), _jsx("p", { className: "text-label-sm text-on-surface-variant mt-2", children: "Net of gas costs" })] }), _jsxs("div", { className: "card", children: [_jsx("p", { className: "text-label-md text-on-surface-variant mb-2", children: "Avg Gas Cost" }), _jsx("p", { className: "text-headline-md font-serif text-primary", children: "$108" }), _jsx("p", { className: "text-label-sm text-on-surface-variant mt-2", children: "Current: $95-120" })] }), _jsxs("div", { className: "card", children: [_jsx("p", { className: "text-label-md text-on-surface-variant mb-2", children: "Failed Executions" }), _jsx("p", { className: "text-headline-md font-serif text-error", children: "8" }), _jsx("p", { className: "text-label-sm text-on-surface-variant mt-2", children: "5.6% failure rate" })] })] }), _jsxs("div", { className: "card", children: [_jsx("h2", { className: "text-headline-sm font-serif mb-6", children: "Recent Executions" }), _jsx("div", { className: "overflow-x-auto", children: _jsxs("table", { className: "w-full", children: [_jsx("thead", { children: _jsxs("tr", { className: "border-b border-outline-variant/30", children: [_jsx("th", { className: "text-left py-3 px-4 text-label-md text-on-surface-variant", children: "TX Hash" }), _jsx("th", { className: "text-left py-3 px-4 text-label-md text-on-surface-variant", children: "Pair" }), _jsx("th", { className: "text-right py-3 px-4 text-label-md text-on-surface-variant", children: "Gas Cost" }), _jsx("th", { className: "text-right py-3 px-4 text-label-md text-on-surface-variant", children: "Profit" }), _jsx("th", { className: "text-center py-3 px-4 text-label-md text-on-surface-variant", children: "Status" }), _jsx("th", { className: "text-right py-3 px-4 text-label-md text-on-surface-variant", children: "Time" })] }) }), _jsx("tbody", { children: recentExecutions.map((exec) => (_jsxs("tr", { className: "border-b border-outline-variant/20 hover:bg-surface-container transition-colors", children: [_jsx("td", { className: "py-4 px-4 font-body-md text-primary cursor-pointer hover:underline", children: exec.txHash }), _jsx("td", { className: "py-4 px-4 text-body-md", children: exec.pair }), _jsxs("td", { className: "py-4 px-4 text-right text-body-md", children: ["$", exec.gasCost] }), _jsx("td", { className: "py-4 px-4 text-right", children: _jsxs("span", { className: exec.profit > 0 ? 'text-green-600 font-semibold' : 'text-gray-600', children: ["$", exec.profit] }) }), _jsx("td", { className: "py-4 px-4 text-center", children: _jsx("span", { className: `inline-flex items-center px-3 py-1 rounded-full text-label-sm font-semibold ${getStatusBadgeClass(exec.status)}`, children: exec.status }) }), _jsx("td", { className: "py-4 px-4 text-right text-label-sm text-on-surface-variant", children: exec.timestamp })] }, exec.id))) })] }) })] })] }) }));
+    const getStateLabel = (state) => {
+        const labels = {
+            awaiting_simulation: 'Awaiting Simulation',
+            simulated: 'Simulation Passed',
+            queued_broadcast: 'Queued for Broadcast',
+            broadcasting: 'Broadcasting to Network',
+            confirmed: 'Confirmed On-Chain',
+            failed: 'Execution Failed',
+            partial_success: 'Partial Success',
+        };
+        return labels[state];
+    };
+    const getStateStatusBadge = (state) => {
+        if (['simulated', 'confirmed'].includes(state))
+            return 'healthy';
+        if (['awaiting_simulation', 'queued_broadcast', 'broadcasting'].includes(state))
+            return 'warning';
+        return 'critical';
+    };
+    const handleSimulate = async () => {
+        setSimulating(true);
+        await runSimulation(execution.id);
+        setSimulating(false);
+    };
+    const handleBroadcast = async () => {
+        setBroadcasting(true);
+        await broadcastTrade(execution.id);
+        setBroadcasting(false);
+    };
+    const handleRetry = async () => {
+        await retryExecution(execution.id);
+    };
+    const copyToClipboard = () => {
+        if (execution.broadcastState.transactionHash) {
+            navigator.clipboard.writeText(execution.broadcastState.transactionHash);
+            setCopiedTx(true);
+            setTimeout(() => setCopiedTx(false), 2000);
+        }
+    };
+    const chainExplorerUrl = execution.broadcastState.transactionHash
+        ? `https://etherscan.io/tx/${execution.broadcastState.transactionHash}`
+        : '';
+    return (_jsx(Layout, { children: _jsxs("div", { className: "space-y-6", children: [_jsx("div", { className: "flex items-center justify-between", children: _jsxs("div", { className: "flex items-center gap-4", children: [_jsx("button", { onClick: () => navigate('/opportunities'), className: "p-2 hover:bg-surface-container rounded-lg transition-colors", children: _jsx(ArrowLeft, { className: "w-5 h-5" }) }), _jsxs("div", { children: [_jsx("h1", { className: "text-display-lg font-serif text-primary", children: "Execution Center" }), _jsx("p", { className: "text-body-md text-on-surface-variant", children: "Live trade execution and settlement tracking" })] })] }) }), _jsx("div", { className: `card border-2 ${getStateColor(execution.currentState)}`, children: _jsxs("div", { className: "flex items-start justify-between", children: [_jsxs("div", { children: [_jsx("p", { className: "text-label-md text-on-surface-variant uppercase tracking-wider mb-2", children: "Execution State" }), _jsx("h2", { className: "text-display-md font-serif mb-3", children: getStateLabel(execution.currentState) }), _jsxs("p", { className: "text-body-md text-on-surface-variant max-w-2xl", children: [execution.currentState === 'awaiting_simulation' && 'Ready to run pre-flight simulation. This checks whether the trade is safe to execute on-chain.', execution.currentState === 'simulated' && 'Simulation passed. The trade is approved for broadcast to the network.', execution.currentState === 'queued_broadcast' && 'Trade queued for broadcast. Will be submitted to the network momentarily.', execution.currentState === 'broadcasting' && 'Broadcast in progress. Transaction submitted to network, waiting for confirmation.', execution.currentState === 'confirmed' && 'Trade execution completed on-chain. Settlement record is ready for review.', execution.currentState === 'failed' && 'Execution failed on-chain. Review the error and decide whether to retry.', execution.currentState === 'partial_success' && 'Trade partially executed. Some legs completed, others failed or reverted.'] })] }), _jsx(StatusBadge, { status: getStateStatusBadge(execution.currentState), label: execution.currentState })] }) }), _jsxs("div", { className: "card border-2 border-blue-300", children: [_jsxs("div", { className: "flex items-center gap-2 mb-4", children: [_jsx(Zap, { className: "w-5 h-5 text-blue-600" }), _jsx("h2", { className: "text-headline-sm font-serif", children: "Pre-Flight Simulation" }), _jsx("span", { className: "text-label-sm text-on-surface-variant", children: "Determines trade safety" })] }), _jsxs("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-6 mb-6", children: [_jsxs("div", { children: [_jsx("p", { className: "text-label-md text-on-surface-variant mb-2", children: "Simulation Status" }), _jsxs("div", { className: "flex items-center gap-2", children: [execution.simulation.status === 'success' && (_jsxs(_Fragment, { children: [_jsx(CheckCircle2, { className: "w-6 h-6 text-green-600" }), _jsx("span", { className: "text-body-lg font-semibold text-green-600", children: "PASSED" })] })), execution.simulation.status === 'failed' && (_jsxs(_Fragment, { children: [_jsx(AlertTriangle, { className: "w-6 h-6 text-red-600" }), _jsx("span", { className: "text-body-lg font-semibold text-red-600", children: "FAILED" })] })), execution.simulation.status === 'pending' && (_jsxs(_Fragment, { children: [_jsx(Clock, { className: "w-6 h-6 text-yellow-600" }), _jsx("span", { className: "text-body-lg font-semibold text-yellow-600", children: "PENDING" })] }))] })] }), _jsxs("div", { children: [_jsx("p", { className: "text-label-md text-on-surface-variant mb-2", children: "Safe to Execute" }), _jsx("p", { className: "text-headline-md font-serif", children: execution.simulation.pass ? 'Yes' : 'No' }), !execution.simulation.pass && execution.simulation.errorMessage && (_jsx("p", { className: "text-label-sm text-red-600 mt-1", children: execution.simulation.errorMessage }))] })] }), execution.simulation.executedAt && (_jsxs("p", { className: "text-label-sm text-on-surface-variant mb-3", children: ["Simulated at ", new Date(execution.simulation.executedAt).toLocaleString()] })), _jsxs("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-4 mb-4", children: [_jsxs("div", { children: [_jsx("p", { className: "text-label-md text-on-surface-variant", children: "Expected Output" }), _jsx("p", { className: "text-headline-sm font-serif text-primary", children: execution.simulation.expectedOutput }), _jsxs("p", { className: "text-label-sm text-on-surface-variant mt-1", children: ["$", execution.simulation.expectedAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })] })] }), _jsxs("div", { children: [_jsx("p", { className: "text-label-md text-on-surface-variant", children: "Estimated Gas" }), _jsxs("p", { className: "text-headline-sm font-serif text-primary", children: [execution.simulation.gasEstimatedUnits.toLocaleString(), " units"] }), _jsxs("p", { className: "text-label-sm text-on-surface-variant mt-1", children: ["~", (execution.simulation.gasEstimatedUnits / 1000).toFixed(1), "k Gwei"] })] })] }), execution.simulation.warnings.length > 0 && (_jsxs("div", { className: "mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg", children: [_jsx("p", { className: "text-label-md font-semibold text-yellow-900 mb-2", children: "Warnings" }), _jsx("ul", { className: "space-y-1", children: execution.simulation.warnings.map((w, i) => (_jsxs("li", { className: "text-label-sm text-yellow-800", children: ["\u2022 ", w] }, i))) })] }))] }), _jsxs("div", { className: "card border-2 border-purple-300", children: [_jsxs("div", { className: "flex items-center gap-2 mb-4", children: [_jsx(Zap, { className: "w-5 h-5 text-purple-600" }), _jsx("h2", { className: "text-headline-sm font-serif", children: "Gas Cost Analysis" }), _jsx("span", { className: "text-label-sm text-on-surface-variant", children: "Execution cost & profitability" })] }), _jsxs("div", { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4", children: [_jsxs("div", { children: [_jsx("p", { className: "text-label-md text-on-surface-variant", children: "Gas Usage" }), _jsx("p", { className: "text-headline-sm font-serif", children: execution.gasEstimate.gasUsageUnits.toLocaleString() }), _jsx("p", { className: "text-label-sm text-on-surface-variant mt-1", children: "units" })] }), _jsxs("div", { children: [_jsx("p", { className: "text-label-md text-on-surface-variant", children: "Gas Price" }), _jsx("p", { className: "text-headline-sm font-serif", children: execution.gasEstimate.gasPriceWei.toFixed(0) }), _jsx("p", { className: "text-label-sm text-on-surface-variant mt-1", children: "Gwei" })] }), _jsxs("div", { children: [_jsx("p", { className: "text-label-md text-on-surface-variant", children: "Total Fee" }), _jsxs("p", { className: "text-headline-sm font-serif", children: ["$", execution.gasEstimate.totalFeeUSD.toFixed(2)] }), _jsxs("p", { className: "text-label-sm text-on-surface-variant mt-1", children: [execution.gasEstimate.totalFeeETH.toFixed(4), " ETH"] })] }), _jsxs("div", { className: `p-4 rounded-lg border ${execution.gasEstimate.remainsProfitable ? 'bg-green-50 border-green-300' : 'bg-red-50 border-red-300'}`, children: [_jsx("p", { className: "text-label-md text-on-surface-variant mb-1", children: "Profit After Gas" }), _jsxs("p", { className: `text-headline-sm font-serif ${execution.gasEstimate.remainsProfitable ? 'text-green-600' : 'text-red-600'}`, children: ["$", execution.gasEstimate.profitAfterGasUSD.toFixed(2)] }), _jsxs("p", { className: `text-label-sm mt-1 ${execution.gasEstimate.remainsProfitable ? 'text-green-600' : 'text-red-600'}`, children: [execution.gasEstimate.profitMarginPct.toFixed(1), "% margin"] })] })] }), _jsx("div", { className: "mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg", children: _jsx("p", { className: `text-label-md font-semibold ${execution.gasEstimate.remainsProfitable ? 'text-green-900' : 'text-red-900'}`, children: execution.gasEstimate.remainsProfitable
+                                    ? '✓ Trade remains profitable after all gas costs'
+                                    : '✗ Trade becomes unprofitable after gas costs - consider cancelling' }) })] }), _jsxs("div", { className: "card border-2 border-indigo-300", children: [_jsxs("div", { className: "flex items-center gap-2 mb-4", children: [_jsx(Clock, { className: "w-5 h-5 text-indigo-600" }), _jsx("h2", { className: "text-headline-sm font-serif", children: "Broadcast State" }), _jsx("span", { className: "text-label-sm text-on-surface-variant", children: "Transaction journey" })] }), _jsx("div", { className: "grid grid-cols-2 md:grid-cols-4 gap-3 mb-6", children: ['not_sent', 'submitted', 'pending', 'mined'].map((status) => (_jsxs("div", { className: `p-3 rounded-lg border ${['not_sent', 'submitted', 'pending', 'mined'].indexOf(execution.broadcastState.status) >=
+                                    ['not_sent', 'submitted', 'pending', 'mined'].indexOf(status)
+                                    ? 'bg-green-50 border-green-300'
+                                    : 'bg-gray-50 border-gray-300'}`, children: [_jsx("p", { className: "text-label-sm text-on-surface-variant capitalize", children: status.replace('_', ' ') }), execution.broadcastState.status === status && (_jsx("p", { className: "text-label-md font-semibold text-green-600 mt-1", children: "\u2713 Current" }))] }, status))) }), _jsxs("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-4", children: [execution.broadcastState.submittedAt && (_jsxs("div", { children: [_jsx("p", { className: "text-label-md text-on-surface-variant", children: "Submitted At" }), _jsx("p", { className: "text-body-md mt-1", children: new Date(execution.broadcastState.submittedAt).toLocaleString() })] })), execution.broadcastState.minedAt && (_jsxs("div", { children: [_jsx("p", { className: "text-label-md text-on-surface-variant", children: "Mined At" }), _jsx("p", { className: "text-body-md mt-1", children: new Date(execution.broadcastState.minedAt).toLocaleString() })] })), execution.broadcastState.confirmations !== undefined && (_jsxs("div", { children: [_jsx("p", { className: "text-label-md text-on-surface-variant", children: "Confirmations" }), _jsxs("p", { className: "text-body-md mt-1", children: [execution.broadcastState.confirmations, " block(s)"] })] })), execution.broadcastState.blockNumber && (_jsxs("div", { children: [_jsx("p", { className: "text-label-md text-on-surface-variant", children: "Block Number" }), _jsxs("p", { className: "text-body-md mt-1", children: ["#", execution.broadcastState.blockNumber.toLocaleString()] })] }))] })] }), execution.broadcastState.transactionHash && (_jsxs("div", { className: "card bg-gray-50 border-2 border-gray-300", children: [_jsxs("div", { className: "flex items-center justify-between mb-3", children: [_jsxs("div", { children: [_jsx("p", { className: "text-label-md text-on-surface-variant mb-2", children: "Transaction Hash" }), _jsx("p", { className: "text-body-md font-mono text-primary truncate", children: execution.broadcastState.transactionHash })] }), _jsxs("div", { className: "flex gap-2", children: [_jsx("button", { onClick: copyToClipboard, className: "p-3 hover:bg-white rounded-lg transition-colors border border-outline-variant", title: "Copy transaction hash", children: _jsx(Copy, { className: "w-5 h-5" }) }), _jsx("a", { href: chainExplorerUrl, target: "_blank", rel: "noopener noreferrer", className: "p-3 hover:bg-white rounded-lg transition-colors border border-outline-variant flex items-center gap-1", children: _jsx(ExternalLink, { className: "w-5 h-5" }) })] })] }), copiedTx && (_jsx("p", { className: "text-label-sm text-green-600", children: "\u2713 Copied to clipboard" }))] })), _jsxs("div", { className: `card border-2 ${execution.onChainOutcome.status === 'success'
+                        ? 'bg-green-50 border-green-300'
+                        : execution.onChainOutcome.status === 'reverted'
+                            ? 'bg-red-50 border-red-300'
+                            : 'bg-yellow-50 border-yellow-300'}`, children: [_jsxs("div", { className: "flex items-center gap-2 mb-4", children: [execution.onChainOutcome.status === 'success' && (_jsxs(_Fragment, { children: [_jsx(CheckCircle2, { className: "w-5 h-5 text-green-600" }), _jsx("h2", { className: "text-headline-sm font-serif text-green-900", children: "On-Chain Outcome" })] })), execution.onChainOutcome.status === 'reverted' && (_jsxs(_Fragment, { children: [_jsx(AlertTriangle, { className: "w-5 h-5 text-red-600" }), _jsx("h2", { className: "text-headline-sm font-serif text-red-900", children: "On-Chain Outcome" })] })), !['success', 'reverted'].includes(execution.onChainOutcome.status) && (_jsxs(_Fragment, { children: [_jsx(Clock, { className: "w-5 h-5 text-yellow-600" }), _jsx("h2", { className: "text-headline-sm font-serif text-yellow-900", children: "On-Chain Outcome" })] }))] }), _jsxs("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-4 mb-4", children: [_jsxs("div", { children: [_jsx("p", { className: "text-label-md text-on-surface-variant", children: "Status" }), _jsx("p", { className: "text-headline-sm font-serif mt-1 capitalize", children: execution.onChainOutcome.status.replace('_', ' ').toUpperCase() })] }), execution.onChainOutcome.blockNumber && (_jsxs("div", { children: [_jsx("p", { className: "text-label-md text-on-surface-variant", children: "Block Number" }), _jsxs("p", { className: "text-headline-sm font-serif mt-1", children: ["#", execution.onChainOutcome.blockNumber.toLocaleString()] })] })), execution.onChainOutcome.gasUsedActual && (_jsxs("div", { children: [_jsx("p", { className: "text-label-md text-on-surface-variant", children: "Actual Gas Used" }), _jsx("p", { className: "text-headline-sm font-serif mt-1", children: execution.onChainOutcome.gasUsedActual.toLocaleString() })] })), execution.onChainOutcome.actualOutput && (_jsxs("div", { children: [_jsx("p", { className: "text-label-md text-on-surface-variant", children: "Actual Output" }), _jsxs("p", { className: "text-headline-sm font-serif mt-1", children: ["$", execution.onChainOutcome.actualOutput.toLocaleString(undefined, { maximumFractionDigits: 2 })] })] }))] }), execution.onChainOutcome.errorReason && (_jsxs("div", { className: "p-3 bg-red-100 border border-red-300 rounded-lg", children: [_jsx("p", { className: "text-label-md font-semibold text-red-900", children: "Error" }), _jsx("p", { className: "text-label-sm text-red-800 mt-1", children: execution.onChainOutcome.errorReason })] })), execution.onChainOutcome.settledAt && (_jsxs("p", { className: "text-label-sm text-on-surface-variant mt-4", children: ["Settled at ", new Date(execution.onChainOutcome.settledAt).toLocaleString()] }))] }), _jsxs("div", { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3", children: [_jsx("button", { onClick: handleSimulate, disabled: simulating, className: "btn-primary disabled:opacity-50", children: simulating ? 'Running Simulation...' : 'Simulate' }), _jsx("button", { onClick: handleBroadcast, disabled: broadcasting || !execution.simulation.pass, className: "btn-primary disabled:opacity-50", children: broadcasting ? 'Broadcasting...' : 'Broadcast' }), ['failed', 'partial_success'].includes(execution.currentState) && (_jsx("button", { onClick: handleRetry, className: "btn-secondary", children: "Retry Execution" })), execution.broadcastState.transactionHash && (_jsxs("a", { href: chainExplorerUrl, target: "_blank", rel: "noopener noreferrer", className: "btn-secondary flex items-center justify-center gap-2", children: ["View on Chain", _jsx(ExternalLink, { className: "w-4 h-4" })] })), _jsx("button", { onClick: () => navigate('/opportunities'), className: "btn-secondary", children: "Back to Queue" })] }), _jsxs("div", { className: "card bg-blue-50 border-2 border-blue-300", children: [_jsx("h3", { className: "text-headline-sm font-serif mb-3 text-blue-900", children: "Decision Checklist" }), _jsxs("ul", { className: "space-y-2 text-label-md", children: [_jsxs("li", { className: `flex items-start gap-2 ${execution.simulation.pass ? 'text-green-700' : 'text-gray-600'}`, children: [_jsx("span", { className: `mt-0.5 ${execution.simulation.pass ? '✓' : '○'}` }), _jsx("span", { children: "Did the simulation pass?" })] }), _jsxs("li", { className: `flex items-start gap-2 ${['queued_broadcast', 'broadcasting', 'confirmed'].includes(execution.currentState) ? 'text-green-700' : 'text-gray-600'}`, children: [_jsx("span", { className: `mt-0.5 ${['queued_broadcast', 'broadcasting', 'confirmed'].includes(execution.currentState) ? '✓' : '○'}` }), _jsx("span", { children: "Was the trade broadcast?" })] }), _jsxs("li", { className: `flex items-start gap-2 ${execution.onChainOutcome.status === 'success' ? 'text-green-700' : 'text-gray-600'}`, children: [_jsx("span", { className: `mt-0.5 ${execution.onChainOutcome.status === 'success' ? '✓' : '○'}` }), _jsx("span", { children: "What happened on-chain?" })] })] })] })] }) }));
 };
 export default Execution;
 //# sourceMappingURL=Execution.js.map

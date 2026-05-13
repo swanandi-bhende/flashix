@@ -149,4 +149,51 @@ export interface RiskCenter {
     overrides: HumanOverride[];
     lastUpdated: Date;
 }
+export interface SimulationResult {
+    id: string;
+    status: 'pending' | 'success' | 'failed';
+    pass: boolean;
+    expectedOutput: string;
+    expectedAmount: number;
+    warnings: string[];
+    gasEstimatedUnits: number;
+    executedAt?: Date;
+    errorMessage?: string;
+}
+export interface GasEstimate {
+    gasUsageUnits: number;
+    gasPriceWei: number;
+    totalFeeUSD: number;
+    totalFeeETH: number;
+    profitAfterGasUSD: number;
+    profitMarginPct: number;
+    remainsProfitable: boolean;
+}
+export interface BroadcastState {
+    status: 'not_sent' | 'submitted' | 'pending' | 'mined';
+    transactionHash?: string;
+    submittedAt?: Date;
+    minedAt?: Date;
+    blockNumber?: number;
+    confirmations?: number;
+}
+export interface OnChainOutcome {
+    status: 'success' | 'reverted' | 'partial_fail' | 'unexpected' | 'pending';
+    blockNumber?: number;
+    transactionIndex?: number;
+    gasUsedActual?: number;
+    actualOutput?: number;
+    errorReason?: string;
+    settledAt?: Date;
+}
+export interface ExecutionCenter {
+    id: string;
+    opportunityId: string;
+    currentState: 'awaiting_simulation' | 'simulated' | 'queued_broadcast' | 'broadcasting' | 'confirmed' | 'failed' | 'partial_success';
+    simulation: SimulationResult;
+    gasEstimate: GasEstimate;
+    broadcastState: BroadcastState;
+    onChainOutcome: OnChainOutcome;
+    lastUpdated: Date;
+}
 //# sourceMappingURL=index.d.ts.map
