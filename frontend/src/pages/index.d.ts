@@ -6,4 +6,5 @@ export { default as Risk } from './Risk';
 export { default as Execution } from './Execution';
 export { default as Settlement } from './Settlement';
 export { default as MarketData } from './MarketData';
+export { default as Compute } from './Compute';
 //# sourceMappingURL=index.d.ts.map

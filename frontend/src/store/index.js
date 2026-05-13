@@ -42,6 +42,155 @@ const generateMockActivities = () => {
         status: ['healthy', 'warning', 'critical'][i % 3],
     }));
 };
+const generateMockMarketDataCenter = () => {
+    const now = Date.now();
+    const feeds = [
+        {
+            id: 'pyth',
+            name: 'Pyth',
+            isLive: true,
+            status: 'healthy',
+            lastUpdate: new Date(now - 8000),
+            latestPrice: 3452.18,
+            priceWindowLow: 3428.11,
+            priceWindowHigh: 3468.54,
+            stalenessSeconds: 8,
+            updateFrequencySeconds: 5,
+            failureCount: 0,
+            lastSuccessfulSample: new Date(now - 8000),
+            acceptedDeviationPct: 0.45,
+        },
+        {
+            id: 'chainlink',
+            name: 'Chainlink',
+            isLive: true,
+            status: 'degraded',
+            lastUpdate: new Date(now - 22000),
+            latestPrice: 3450.76,
+            priceWindowLow: 3427.92,
+            priceWindowHigh: 3467.9,
+            stalenessSeconds: 22,
+            warning: 'Update cadence slower than normal',
+            updateFrequencySeconds: 10,
+            failureCount: 1,
+            lastSuccessfulSample: new Date(now - 22000),
+            acceptedDeviationPct: 0.65,
+        },
+        {
+            id: 'fallback',
+            name: 'Fallback',
+            isLive: true,
+            status: 'healthy',
+            lastUpdate: new Date(now - 4000),
+            latestPrice: 3451.9,
+            priceWindowLow: 3429.4,
+            priceWindowHigh: 3465.22,
+            stalenessSeconds: 4,
+            warning: 'Synthetic aggregator engaged during primary source drift',
+            updateFrequencySeconds: 3,
+            failureCount: 0,
+            lastSuccessfulSample: new Date(now - 4000),
+            acceptedDeviationPct: 0.8,
+        },
+    ];
+    const fallbackEvents = [
+        {
+            id: 'fallback-1',
+            primarySource: 'Chainlink',
+            fallbackSource: 'Fallback',
+            triggeredAt: new Date(now - 900000),
+            resolvedAt: new Date(now - 780000),
+            triggerReason: 'Chainlink feed exceeded freshness threshold',
+            durationSeconds: 120,
+        },
+        {
+            id: 'fallback-2',
+            primarySource: 'Pyth',
+            fallbackSource: 'Fallback',
+            triggeredAt: new Date(now - 300000),
+            triggerReason: 'Pyth sample timeout during burst volatility',
+        },
+    ];
+    const comparison = {
+        pythVsChainlinkPct: 0.04,
+        pythVsFallbackPct: 0.02,
+        chainlinkVsFallbackPct: 0.06,
+        hasMaterialMismatch: false,
+        trustForExecution: true,
+    };
+    const summary = {
+        overallStatus: 'healthy',
+        healthySources: 2,
+        totalSources: 3,
+        freshestPriceAgeSeconds: Math.min(...feeds.map((feed) => feed.stalenessSeconds)),
+        acceptableFreshnessSeconds: 30,
+        trustForExecution: true,
+        message: 'At least two sources are healthy and prices are within the execution window.',
+    };
+    return {
+        summary,
+        feeds,
+        comparison,
+        fallbackEvents,
+        refreshedAt: new Date(),
+    };
+};
+const generateMockComputeCenter = () => {
+    const now = Date.now();
+    const statuses = ['submitted', 'validating', 'validated', 'processing', 'completed', 'failed'];
+    const validationStatuses = ['passed', 'failed'];
+    const signatureStatuses = ['verified', 'failed', 'pending'];
+    const inferenceRequests = Array.from({ length: 6 }, (_, i) => ({
+        id: `INF-${5000 + i}`,
+        timestamp: new Date(now - i * 60000),
+        sourceOpportunityId: `OPP-${1000 + i}`,
+        payload: {
+            pair: ['ETH/USDC', 'DAI/USDC', 'WBTC/BTC'][i % 3],
+            amount: Math.floor(Math.random() * 100000) + 10000,
+            minOutput: Math.floor(Math.random() * 90000) + 5000,
+            slippageBps: Math.floor(Math.random() * 100) + 10,
+        },
+        status: statuses[i % statuses.length],
+        processingTimeMs: ['completed', 'failed'].includes(statuses[i % statuses.length]) ? Math.floor(Math.random() * 2000) + 500 : undefined,
+    }));
+    const validations = inferenceRequests.map((req, i) => ({
+        requestId: req.id,
+        status: validationStatuses[Math.floor(Math.random() * validationStatuses.length)],
+        schemaValid: Math.random() > 0.1,
+        requiredFieldsMissing: Math.random() > 0.8 ? ['amount', 'slippageBps'] : [],
+        malformedInputs: Math.random() > 0.85 ? ['amount: negative value'] : [],
+        rejectionReason: Math.random() > 0.85 ? 'Schema validation failed: missing required fields' : undefined,
+        validatedAt: new Date(now - i * 60000 + 5000),
+    }));
+    const signatures = inferenceRequests.map((req, i) => ({
+        requestId: req.id,
+        signerIdentity: `signer-${Math.random().toString(36).substring(2, 11)}`,
+        signatureStatus: signatureStatuses[Math.floor(Math.random() * signatureStatuses.length)],
+        verificationResult: Math.random() > 0.1,
+        mismatchWarning: Math.random() > 0.9 ? 'Signer key rotation detected' : undefined,
+        verifiedAt: Math.random() > 0.2 ? new Date(now - i * 60000 + 10000) : undefined,
+    }));
+    const traces = inferenceRequests.filter((_, i) => i < 4).map((req, i) => ({
+        requestId: req.id,
+        opportunityId: req.sourceOpportunityId,
+        traceId: `TRACE-${Math.random().toString(36).substring(2, 11).toUpperCase()}`,
+        linkedDecisionRecord: {
+            decision: 'execute',
+            confidence: parseFloat((Math.random() * 0.5 + 0.5).toFixed(2)),
+            timestamp: new Date(now - i * 60000 + 15000),
+        },
+        downstreamConsumer: ['execution_engine', 'settlement_monitor'][i % 2],
+        linkedStage: ['execution', 'settlement'][i % 2],
+    }));
+    return {
+        inferenceRequests,
+        validations,
+        signatures,
+        traces,
+        overallHealth: Math.random() > 0.2 ? 'green' : Math.random() > 0.1 ? 'elevated' : 'blocked',
+        lastUpdated: new Date(),
+    };
+};
 const generateMockOpportunities = () => {
     const now = Date.now();
     return Array.from({ length: 8 }, (_, i) => {
@@ -209,12 +358,140 @@ const generateMockExecutionCenter = () => {
         lastUpdated: new Date(),
     };
 };
+const generateMockSettlementCenter = () => {
+    const now = Date.now();
+    const realizedPnLList = [
+        {
+            tradeId: 'trade-1',
+            symbol: 'ETH/USDC',
+            plannedProfit: 2500,
+            actualGasCost: 120,
+            actualProfit: 2380,
+            realizationTime: new Date(now - 300000),
+            status: 'completed',
+        },
+        {
+            tradeId: 'trade-2',
+            symbol: 'DAI/USDC',
+            plannedProfit: 1800,
+            actualGasCost: 95,
+            actualProfit: 1705,
+            realizationTime: new Date(now - 600000),
+            status: 'completed',
+        },
+        {
+            tradeId: 'trade-3',
+            symbol: 'USDT/USDC',
+            plannedProfit: 950,
+            actualGasCost: 85,
+            actualProfit: 865,
+            realizationTime: new Date(now - 900000),
+            status: 'completed',
+        },
+    ];
+    const openPositions = [
+        {
+            id: 'pos-1',
+            tradeId: 'trade-pending-1',
+            symbol: 'WBTC/BTC',
+            size: 0.25,
+            entryTime: new Date(now - 1800000),
+            entryPrice: 42500,
+            currentMark: 43200,
+            exposure: 10800,
+            unrealizedPnL: 175,
+            status: 'active',
+        },
+        {
+            id: 'pos-2',
+            tradeId: 'trade-pending-2',
+            symbol: 'AAVE/USDC',
+            size: 5,
+            entryTime: new Date(now - 3600000),
+            entryPrice: 280,
+            currentMark: 285,
+            exposure: 1425,
+            unrealizedPnL: 25,
+            status: 'active',
+        },
+    ];
+    const repaymentStatuses = [
+        {
+            id: 'repay-1',
+            obligationType: 'flashloan',
+            amount: 50000,
+            borrowedAt: new Date(now - 300000),
+            repaidAmount: 50000,
+            status: 'completed',
+            linkedExecutionId: 'exec-1',
+        },
+        {
+            id: 'repay-2',
+            obligationType: 'settlement_fee',
+            amount: 125,
+            borrowedAt: new Date(now - 1800000),
+            dueDate: new Date(now + 86400000),
+            repaidAmount: 0,
+            status: 'pending',
+            linkedExecutionId: 'exec-2',
+        },
+    ];
+    const ledgerEntries = [
+        {
+            id: 'led-1',
+            tradeId: 'trade-1',
+            amount: 2380,
+            timestamp: new Date(now - 300000),
+            entryType: 'profit',
+            balanceAfter: 102380,
+            description: 'ETH/USDC arb execution settled',
+            linkedSettlement: 'exec-1',
+        },
+        {
+            id: 'led-2',
+            tradeId: 'trade-2',
+            amount: 1705,
+            timestamp: new Date(now - 600000),
+            entryType: 'profit',
+            balanceAfter: 100000,
+            description: 'DAI/USDC arb execution settled',
+            linkedSettlement: 'exec-2',
+        },
+        {
+            id: 'led-3',
+            tradeId: 'repay-1',
+            amount: -50000,
+            timestamp: new Date(now - 400000),
+            entryType: 'loan_repayment',
+            balanceAfter: 98295,
+            description: 'Flashloan repayment for trade-1',
+            linkedSettlement: 'exec-1',
+        },
+    ];
+    const totalRealizedPnL = realizedPnLList.reduce((sum, pnl) => sum + pnl.actualProfit, 0);
+    const totalUnrealizedPnL = openPositions.reduce((sum, pos) => sum + pos.unrealizedPnL, 0);
+    return {
+        overallStatus: Math.random() > 0.7 ? 'healthy' : Math.random() > 0.3 ? 'at_risk' : 'critical',
+        totalRealizedPnL,
+        totalUnrealizedPnL,
+        portfolioBalance: 102380 + totalUnrealizedPnL,
+        accountingBalance: 102295,
+        realizedPnLList,
+        openPositions,
+        repaymentStatuses,
+        ledgerEntries,
+        lastUpdated: new Date(),
+    };
+};
 export const useDashboardStore = create((set, get) => ({
     metrics: generateMockMetrics(),
     activities: generateMockActivities(),
     opportunities: generateMockOpportunities(),
     riskCenter: generateMockRiskCenter(),
     executionCenter: generateMockExecutionCenter(),
+    marketDataCenter: generateMockMarketDataCenter(),
+    settlementCenter: generateMockSettlementCenter(),
+    computeCenter: generateMockComputeCenter(),
     loading: false,
     lastRefresh: new Date(),
     setMetrics: (metrics) => set({ metrics }),
@@ -416,5 +693,144 @@ export const useDashboardStore = create((set, get) => ({
         },
     })),
     getExecution: (_executionId) => get().executionCenter,
+    // Settlement center actions
+    closePosition: (positionId) => {
+        set((state) => ({
+            settlementCenter: {
+                ...state.settlementCenter,
+                openPositions: state.settlementCenter.openPositions.map((pos) => pos.id === positionId ? { ...pos, status: 'liquidating' } : pos),
+            },
+        }));
+        get().addActivity({
+            id: `close-${Date.now()}`,
+            type: 'settlement',
+            timestamp: new Date(),
+            title: 'Position liquidation initiated',
+            description: `Position ${positionId} marked for closing`,
+            status: 'warning',
+        });
+    },
+    recordRepayment: (repaymentId, amount) => {
+        set((state) => ({
+            settlementCenter: {
+                ...state.settlementCenter,
+                repaymentStatuses: state.settlementCenter.repaymentStatuses.map((rep) => rep.id === repaymentId
+                    ? {
+                        ...rep,
+                        repaidAmount: rep.repaidAmount + amount,
+                        status: rep.repaidAmount + amount >= rep.amount
+                            ? 'completed'
+                            : 'partially_repaid',
+                    }
+                    : rep),
+            },
+        }));
+        get().addActivity({
+            id: `repay-${Date.now()}`,
+            type: 'settlement',
+            timestamp: new Date(),
+            title: 'Repayment recorded',
+            description: `$${amount.toLocaleString()} recorded for obligation ${repaymentId}`,
+            status: 'healthy',
+        });
+    },
+    generateLedgerExport: (_timeRange) => {
+        get().addActivity({
+            id: `export-${Date.now()}`,
+            type: 'settlement',
+            timestamp: new Date(),
+            title: 'Ledger export generated',
+            description: 'Portfolio report generated and ready for download',
+            status: 'healthy',
+        });
+    },
+    compareExpectedVsRealized: (tradeId) => {
+        get().addActivity({
+            id: `compare-${Date.now()}`,
+            type: 'settlement',
+            timestamp: new Date(),
+            title: 'Performance analysis',
+            description: `Expected vs realized comparison for ${tradeId}`,
+            status: 'healthy',
+        });
+    },
+    refreshFeeds: () => {
+        set({ marketDataCenter: generateMockMarketDataCenter() });
+        get().addActivity({
+            id: `market-refresh-${Date.now()}`,
+            type: 'market_feed',
+            timestamp: new Date(),
+            title: 'Market feeds refreshed',
+            description: 'Oracle feeds refreshed for Pyth, Chainlink, and fallback sources',
+            status: 'healthy',
+        });
+    },
+    getFeedByName: (name) => get().marketDataCenter.feeds.find((feed) => feed.name === name),
+    // Compute and TEE center actions
+    verifyPayload: async (requestId) => {
+        set((state) => ({
+            computeCenter: {
+                ...state.computeCenter,
+                validations: state.computeCenter.validations.map((v) => v.requestId === requestId ? { ...v, status: 'passed' } : v),
+            },
+        }));
+        get().addActivity({
+            id: `verify-${Date.now()}`,
+            type: 'execution',
+            timestamp: new Date(),
+            title: 'Payload verification completed',
+            description: `Request ${requestId} payload verified and passed validation`,
+            status: 'healthy',
+        });
+    },
+    replayInference: async (requestId) => {
+        set((state) => ({
+            computeCenter: {
+                ...state.computeCenter,
+                inferenceRequests: state.computeCenter.inferenceRequests.map((req) => req.id === requestId ? { ...req, status: 'processing' } : req),
+            },
+        }));
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        set((state) => ({
+            computeCenter: {
+                ...state.computeCenter,
+                inferenceRequests: state.computeCenter.inferenceRequests.map((req) => req.id === requestId ? { ...req, status: 'completed', processingTimeMs: Math.floor(Math.random() * 2000) + 500 } : req),
+            },
+        }));
+        get().addActivity({
+            id: `replay-${Date.now()}`,
+            type: 'execution',
+            timestamp: new Date(),
+            title: 'Inference replay completed',
+            description: `Request ${requestId} reprocessed and completed successfully`,
+            status: 'healthy',
+        });
+    },
+    viewTrace: (requestId) => {
+        const trace = get().computeCenter.traces.find((t) => t.requestId === requestId);
+        if (trace) {
+            get().addActivity({
+                id: `trace-view-${Date.now()}`,
+                type: 'execution',
+                timestamp: new Date(),
+                title: 'Trace record accessed',
+                description: `Trace ${trace.traceId} for request ${requestId} opened for inspection`,
+                status: 'healthy',
+            });
+        }
+    },
+    inspectSignature: (requestId) => {
+        const signature = get().computeCenter.signatures.find((s) => s.requestId === requestId);
+        if (signature) {
+            get().addActivity({
+                id: `sig-inspect-${Date.now()}`,
+                type: 'execution',
+                timestamp: new Date(),
+                title: 'Signature details inspected',
+                description: `Signature verification for request ${requestId} opened: ${signature.signatureStatus}`,
+                status: signature.signatureStatus === 'verified' ? 'healthy' : 'warning',
+            });
+        }
+    },
 }));
 //# sourceMappingURL=index.js.map

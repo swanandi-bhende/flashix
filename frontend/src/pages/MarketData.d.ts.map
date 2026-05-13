@@ -1,1 +1,1 @@
-{"version":3,"file":"MarketData.d.ts","sourceRoot":"","sources":["MarketData.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,OAAO,CAAC;AAM1B,eAAO,MAAM,UAAU,EAAE,KAAK,CAAC,EAuJ9B,CAAC;AAEF,eAAe,UAAU,CAAC"}
+{"version":3,"file":"MarketData.d.ts","sourceRoot":"","sources":["MarketData.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAmB,MAAM,OAAO,CAAC;AAcxC,eAAO,MAAM,UAAU,EAAE,KAAK,CAAC,EA2S9B,CAAC;AAEF,eAAe,UAAU,CAAC"}

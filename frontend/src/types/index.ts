@@ -129,6 +129,59 @@ export interface MarketDataFeed {
   samples: number;
 }
 
+export interface OracleFeedStatus {
+  id: string;
+  name: 'Pyth' | 'Chainlink' | 'Fallback';
+  isLive: boolean;
+  status: 'healthy' | 'delayed' | 'degraded' | 'offline';
+  lastUpdate: Date;
+  latestPrice: number;
+  priceWindowLow: number;
+  priceWindowHigh: number;
+  stalenessSeconds: number;
+  warning?: string;
+  updateFrequencySeconds: number;
+  failureCount: number;
+  lastSuccessfulSample: Date;
+  acceptedDeviationPct: number;
+}
+
+export interface MarketFallbackEvent {
+  id: string;
+  primarySource: 'Pyth' | 'Chainlink';
+  fallbackSource: 'Fallback';
+  triggeredAt: Date;
+  resolvedAt?: Date;
+  triggerReason: string;
+  durationSeconds?: number;
+}
+
+export interface MarketComparison {
+  pythVsChainlinkPct: number;
+  pythVsFallbackPct: number;
+  chainlinkVsFallbackPct: number;
+  hasMaterialMismatch: boolean;
+  trustForExecution: boolean;
+}
+
+export interface MarketDataHealthSummary {
+  overallStatus: 'healthy' | 'delayed' | 'degraded' | 'critical';
+  healthySources: number;
+  totalSources: number;
+  freshestPriceAgeSeconds: number;
+  acceptableFreshnessSeconds: number;
+  trustForExecution: boolean;
+  message: string;
+}
+
+export interface MarketDataCenter {
+  summary: MarketDataHealthSummary;
+  feeds: OracleFeedStatus[];
+  comparison: MarketComparison;
+  fallbackEvents: MarketFallbackEvent[];
+  refreshedAt: Date;
+}
+
 // Circuit breakers
 export interface CircuitBreaker {
   id: string;
@@ -238,5 +291,119 @@ export interface ExecutionCenter {
   gasEstimate: GasEstimate;
   broadcastState: BroadcastState;
   onChainOutcome: OnChainOutcome;
+  lastUpdated: Date;
+}
+
+// Realized PnL tracking
+export interface RealizedPnL {
+  tradeId: string;
+  symbol: string;
+  plannedProfit: number;
+  actualGasCost: number;
+  actualProfit: number;
+  realizationTime: Date;
+  status: 'completed' | 'partial' | 'failed';
+}
+
+// Portfolio position tracking
+export interface PortfolioPosition {
+  id: string;
+  tradeId: string;
+  symbol: string;
+  size: number;
+  entryTime: Date;
+  entryPrice: number;
+  currentMark: number;
+  exposure: number;
+  unrealizedPnL: number;
+  status: 'active' | 'liquidating' | 'at_risk';
+}
+
+// Repayment obligation
+export interface RepaymentStatus {
+  id: string;
+  obligationType: 'flashloan' | 'borrowed_collateral' | 'settlement_fee' | 'other';
+  amount: number;
+  borrowedAt: Date;
+  dueDate?: Date;
+  repaidAmount: number;
+  status: 'pending' | 'partially_repaid' | 'completed' | 'overdue';
+  linkedExecutionId?: string;
+}
+
+// Ledger entry for accounting
+export interface LedgerEntry {
+  id: string;
+  tradeId: string;
+  amount: number;
+  timestamp: Date;
+  entryType: 'profit' | 'loss' | 'gas_fee' | 'loan_repayment' | 'withdrawal' | 'deposit' | 'adjustment';
+  balanceAfter: number;
+  description: string;
+  linkedSettlement?: string;
+}
+
+// Settlement and portfolio center
+export interface SettlementCenter {
+  overallStatus: 'healthy' | 'at_risk' | 'critical';
+  totalRealizedPnL: number;
+  totalUnrealizedPnL: number;
+  portfolioBalance: number;
+  accountingBalance: number;
+  realizedPnLList: RealizedPnL[];
+  openPositions: PortfolioPosition[];
+  repaymentStatuses: RepaymentStatus[];
+  ledgerEntries: LedgerEntry[];
+  lastUpdated: Date;
+}
+
+// Inference request (TEE input)
+export interface InferenceRequest {
+  id: string;
+  timestamp: Date;
+  sourceOpportunityId: string;
+  payload: Record<string, any>;
+  status: 'submitted' | 'validating' | 'validated' | 'processing' | 'completed' | 'failed';
+  processingTimeMs?: number;
+}
+
+// Payload validation result
+export interface PayloadValidation {
+  requestId: string;
+  status: 'passed' | 'failed';
+  schemaValid: boolean;
+  requiredFieldsMissing: string[];
+  malformedInputs: string[];
+  rejectionReason?: string;
+  validatedAt: Date;
+}
+
+// Signature verification check
+export interface SignatureCheck {
+  requestId: string;
+  signerIdentity: string;
+  signatureStatus: 'verified' | 'failed' | 'pending';
+  verificationResult: boolean;
+  mismatchWarning?: string;
+  verifiedAt?: Date;
+}
+
+// Trace linking (connects inference to reasoning path)
+export interface TraceLink {
+  requestId: string;
+  opportunityId: string;
+  traceId: string;
+  linkedDecisionRecord: Record<string, any>;
+  downstreamConsumer: string;
+  linkedStage: string;
+}
+
+// Compute and TEE center state
+export interface ComputeCenter {
+  inferenceRequests: InferenceRequest[];
+  validations: PayloadValidation[];
+  signatures: SignatureCheck[];
+  traces: TraceLink[];
+  overallHealth: 'green' | 'elevated' | 'blocked';
   lastUpdated: Date;
 }

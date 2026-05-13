@@ -1,6 +1,6 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 import { createBrowserRouter } from 'react-router-dom';
-import { Dashboard, Pipeline, Opportunities, OpportunityDetail, Risk, Execution, Settlement, MarketData, } from '@/pages';
+import { Dashboard, Pipeline, Opportunities, OpportunityDetail, Risk, Execution, Settlement, MarketData, Compute, } from '@/pages';
 export const router = createBrowserRouter([
     {
         path: '/',
@@ -37,6 +37,10 @@ export const router = createBrowserRouter([
     {
         path: '/market-data',
         element: _jsx(MarketData, {}),
+    },
+    {
+        path: '/compute',
+        element: _jsx(Compute, {}),
     },
 ]);
 //# sourceMappingURL=router.js.map
