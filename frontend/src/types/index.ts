@@ -128,3 +128,58 @@ export interface MarketDataFeed {
   isHealthy: boolean;
   samples: number;
 }
+
+// Circuit breakers
+export interface CircuitBreaker {
+  id: string;
+  name: string;
+  trigger: string; // e.g., "Daily Loss", "Slippage", "Exposure"
+  threshold: number;
+  current: number;
+  status: 'healthy' | 'warning' | 'triggered';
+  activatedAt?: Date;
+  affectedTradeCount?: number;
+}
+
+// Portfolio limits
+export interface PortfolioLimits {
+  dailyLossLimit: number;
+  currentDailyLoss: number;
+  collateralRatio: number;
+  collateralLimit: number;
+  maxConcurrentPositions: number;
+  currentPositions: number;
+  slippageLimitPct: number;
+  currentSlippagePct: number;
+}
+
+// Open position
+export interface OpenPosition {
+  id: string;
+  tradeName: string;
+  exposureSize: number;
+  entryTime: Date;
+  currentState: 'active' | 'at_risk' | 'critical';
+  affectsBreakerIds?: string[];
+  affectsLimits?: string[];
+}
+
+// Human override
+export interface HumanOverride {
+  id: string;
+  triggeredBy: string;
+  triggeredAt: Date;
+  reason: string;
+  active: boolean;
+  pausesTrading: boolean;
+}
+
+// Risk center state
+export interface RiskCenter {
+  overallStatus: 'green' | 'elevated' | 'blocked' | 'emergency';
+  breakers: CircuitBreaker[];
+  limits: PortfolioLimits;
+  positions: OpenPosition[];
+  overrides: HumanOverride[];
+  lastUpdated: Date;
+}

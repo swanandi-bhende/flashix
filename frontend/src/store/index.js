@@ -100,10 +100,65 @@ const generateMockOpportunities = () => {
         };
     });
 };
+const generateMockRiskCenter = () => {
+    const now = Date.now();
+    return {
+        overallStatus: Math.random() > 0.7 ? 'green' : Math.random() > 0.4 ? 'elevated' : 'blocked',
+        breakers: [
+            {
+                id: 'breaker-1',
+                name: 'Daily Loss',
+                trigger: 'Cumulative loss exceeds $50k',
+                threshold: 50000,
+                current: Math.floor(Math.random() * 60000),
+                status: Math.random() > 0.8 ? 'triggered' : Math.random() > 0.4 ? 'warning' : 'healthy',
+                activatedAt: Math.random() > 0.7 ? new Date(now - Math.floor(Math.random() * 3600000)) : undefined,
+                affectedTradeCount: Math.floor(Math.random() * 10),
+            },
+            {
+                id: 'breaker-2',
+                name: 'Slippage',
+                trigger: 'Single trade slippage > 1%',
+                threshold: 1,
+                current: parseFloat((Math.random() * 1.5).toFixed(2)),
+                status: Math.random() > 0.85 ? 'warning' : 'healthy',
+                affectedTradeCount: Math.floor(Math.random() * 5),
+            },
+            {
+                id: 'breaker-3',
+                name: 'Exposure',
+                trigger: 'Concurrent position > $5M',
+                threshold: 5000000,
+                current: Math.floor(Math.random() * 6000000),
+                status: 'healthy',
+            },
+        ],
+        limits: {
+            dailyLossLimit: 50000,
+            currentDailyLoss: Math.floor(Math.random() * 60000),
+            collateralRatio: 2.5,
+            collateralLimit: 2.0,
+            maxConcurrentPositions: 20,
+            currentPositions: Math.floor(Math.random() * 22),
+            slippageLimitPct: 1,
+            currentSlippagePct: parseFloat((Math.random() * 0.8).toFixed(2)),
+        },
+        positions: [
+            { id: 'pos-1', tradeName: 'ETH/USDC Arb', exposureSize: 250000, entryTime: new Date(now - 3600000), currentState: 'active', affectsBreakerIds: ['breaker-1'], affectsLimits: [] },
+            { id: 'pos-2', tradeName: 'DAI/USDC Arb', exposureSize: 180000, entryTime: new Date(now - 7200000), currentState: 'active', affectsLimits: [] },
+            { id: 'pos-3', tradeName: 'WBTC/BTC Arb', exposureSize: 420000, entryTime: new Date(now - 1800000), currentState: 'at_risk', affectsBreakerIds: ['breaker-3'] },
+        ],
+        overrides: [
+            { id: 'override-1', triggeredBy: 'admin@flashix.com', triggeredAt: new Date(now - 7200000), reason: 'Manual override for maintenance', active: false, pausesTrading: true },
+        ],
+        lastUpdated: new Date(),
+    };
+};
 export const useDashboardStore = create((set, get) => ({
     metrics: generateMockMetrics(),
     activities: generateMockActivities(),
     opportunities: generateMockOpportunities(),
+    riskCenter: generateMockRiskCenter(),
     loading: false,
     lastRefresh: new Date(),
     setMetrics: (metrics) => set({ metrics }),
@@ -150,5 +205,38 @@ export const useDashboardStore = create((set, get) => ({
             set({ loading: false });
         }
     },
+    // Risk center actions
+    acknowledgeBreaker: (breakerId) => set((state) => ({
+        riskCenter: {
+            ...state.riskCenter,
+            breakers: state.riskCenter.breakers.map((b) => (b.id === breakerId ? { ...b, status: 'healthy' } : b)),
+        },
+    })),
+    acknowledgeOverride: (overrideId) => set((state) => ({
+        riskCenter: {
+            ...state.riskCenter,
+            overrides: state.riskCenter.overrides.map((o) => (o.id === overrideId ? { ...o, active: false } : o)),
+        },
+    })),
+    triggerEmergencyStop: (reason, by) => set((state) => ({
+        riskCenter: {
+            ...state.riskCenter,
+            overallStatus: 'emergency',
+            overrides: [...state.riskCenter.overrides, {
+                    id: `override-${Date.now()}`,
+                    triggeredBy: by,
+                    triggeredAt: new Date(),
+                    reason,
+                    active: true,
+                    pausesTrading: true,
+                }],
+        },
+    })),
+    clearEmergencyStop: () => set((state) => ({
+        riskCenter: {
+            ...state.riskCenter,
+            overrides: state.riskCenter.overrides.map((o) => ({ ...o, active: false })),
+        },
+    })),
 }));
 //# sourceMappingURL=index.js.map

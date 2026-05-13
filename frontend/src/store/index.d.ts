@@ -1,10 +1,11 @@
-import { SystemMetrics, ActivityEvent, Opportunity } from '@/types';
+import { SystemMetrics, ActivityEvent, Opportunity, RiskCenter } from '@/types';
 interface DashboardStore {
     metrics: SystemMetrics;
     activities: ActivityEvent[];
     loading: boolean;
     lastRefresh: Date | null;
     opportunities: Opportunity[];
+    riskCenter: RiskCenter;
     simulateOpportunity: (id: string) => Promise<'valid' | 'marginal' | 'invalid'>;
     approveOpportunity: (id: string) => void;
     rejectOpportunity: (id: string, reason: string) => void;
@@ -14,6 +15,10 @@ interface DashboardStore {
     setLoading: (loading: boolean) => void;
     addActivity: (activity: ActivityEvent) => void;
     refreshData: () => Promise<void>;
+    acknowledgeBreaker: (breakerId: string) => void;
+    acknowledgeOverride: (overrideId: string) => void;
+    triggerEmergencyStop: (reason: string, by: string) => void;
+    clearEmergencyStop: () => void;
 }
 export declare const useDashboardStore: import("zustand").UseBoundStore<import("zustand").StoreApi<DashboardStore>>;
 export {};
