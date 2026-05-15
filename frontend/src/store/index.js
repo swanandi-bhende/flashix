@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 // Mock data generator for development
+let activitySequence = 0;
 const generateMockMetrics = () => ({
     pipelineState: ['idle', 'processing', 'degraded', 'halted'][Math.floor(Math.random() * 4)],
     totalOpportunities: Math.floor(Math.random() * 500) + 50,
@@ -690,7 +691,7 @@ export const useDashboardStore = create((set, get) => ({
     setActivities: (activities) => set({ activities }),
     setLoading: (loading) => set({ loading }),
     addActivity: (activity) => set((state) => ({
-        activities: [activity, ...state.activities].slice(0, 10),
+        activities: [{ ...activity, id: `${activity.id}-${++activitySequence}` }, ...state.activities].slice(0, 10),
     })),
     // Opportunity actions
     simulateOpportunity: async (id) => {
@@ -772,18 +773,17 @@ export const useDashboardStore = create((set, get) => ({
                 simulation: { ...state.executionCenter.simulation, status: 'pending' },
             },
         }));
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        const success = Math.random() > 0.3;
+        await new Promise((resolve) => setTimeout(resolve, 1200));
         set((state) => ({
             executionCenter: {
                 ...state.executionCenter,
-                currentState: success ? 'simulated' : 'awaiting_simulation',
+                currentState: 'simulated',
                 simulation: {
                     ...state.executionCenter.simulation,
-                    status: success ? 'success' : 'failed',
-                    pass: success,
+                    status: 'success',
+                    pass: true,
                     executedAt: new Date(),
-                    errorMessage: success ? undefined : 'Simulation failed: insufficient output',
+                    errorMessage: undefined,
                 },
             },
         }));
@@ -791,9 +791,9 @@ export const useDashboardStore = create((set, get) => ({
             id: `sim-${Date.now()}`,
             type: 'execution',
             timestamp: new Date(),
-            title: success ? 'Simulation passed' : 'Simulation failed',
-            description: success ? 'Trade simulation completed successfully' : 'Trade simulation revealed issues',
-            status: success ? 'healthy' : 'critical',
+            title: 'Simulation passed',
+            description: 'Trade simulation completed successfully',
+            status: 'healthy',
         });
     },
     broadcastTrade: async (_executionId) => {
@@ -804,8 +804,8 @@ export const useDashboardStore = create((set, get) => ({
                 broadcastState: { ...state.executionCenter.broadcastState, status: 'submitted' },
             },
         }));
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        const txHash = `0x${Math.random().toString(16).substring(2).padEnd(64, '0')}`;
+        await new Promise((resolve) => setTimeout(resolve, 700));
+        const txHash = '0x988f19ef91be9000000000000000000000000000000000000000000000000000';
         set((state) => ({
             executionCenter: {
                 ...state.executionCenter,
@@ -818,28 +818,27 @@ export const useDashboardStore = create((set, get) => ({
                 },
             },
         }));
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        const success = Math.random() > 0.2;
-        const blockNumber = Math.floor(Math.random() * 20000000) + 19000000;
+        await new Promise((resolve) => setTimeout(resolve, 1200));
+        const blockNumber = 27669207;
         set((state) => ({
             executionCenter: {
                 ...state.executionCenter,
-                currentState: success ? 'confirmed' : 'failed',
+                currentState: 'confirmed',
                 broadcastState: {
                     ...state.executionCenter.broadcastState,
                     status: 'mined',
                     minedAt: new Date(),
                     blockNumber,
-                    confirmations: success ? Math.floor(Math.random() * 50) + 1 : 0,
+                    confirmations: 40,
                 },
                 onChainOutcome: {
                     ...state.executionCenter.onChainOutcome,
-                    status: success ? 'success' : 'reverted',
+                    status: 'success',
                     blockNumber,
-                    transactionIndex: Math.floor(Math.random() * 100),
-                    gasUsedActual: Math.floor(Math.random() * 500000) + 100000,
-                    actualOutput: success ? Math.random() * 100000 : undefined,
-                    errorReason: success ? undefined : 'Reverted: insufficient output',
+                    transactionIndex: 14,
+                    gasUsedActual: 470064,
+                    actualOutput: 74707.19,
+                    errorReason: undefined,
                     settledAt: new Date(),
                 },
             },
@@ -848,9 +847,9 @@ export const useDashboardStore = create((set, get) => ({
             id: `broadcast-${Date.now()}`,
             type: 'execution',
             timestamp: new Date(),
-            title: success ? 'Trade executed successfully' : 'Trade execution failed',
-            description: success ? `Confirmed on-chain at block ${blockNumber}` : 'Transaction reverted on-chain',
-            status: success ? 'healthy' : 'critical',
+            title: 'Trade executed successfully',
+            description: `Confirmed on-chain at block ${blockNumber}`,
+            status: 'healthy',
         });
     },
     retryExecution: async (_executionId) => {
@@ -964,6 +963,7 @@ export const useDashboardStore = create((set, get) => ({
             computeCenter: {
                 ...state.computeCenter,
                 validations: state.computeCenter.validations.map((v) => v.requestId === requestId ? { ...v, status: 'passed' } : v),
+                inferenceRequests: state.computeCenter.inferenceRequests.map((req) => req.id === requestId ? { ...req, status: 'validated' } : req),
             },
         }));
         get().addActivity({

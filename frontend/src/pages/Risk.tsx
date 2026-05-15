@@ -48,6 +48,7 @@ export const Risk: React.FC = () => {
   };
 
   const activeEmergency = riskCenter.overrides.some((o) => o.active && o.pausesTrading);
+  const latestActiveOverride = [...riskCenter.overrides].reverse().find((o) => o.active && o.pausesTrading);
 
   return (
     <Layout>
@@ -69,6 +70,22 @@ export const Risk: React.FC = () => {
             {riskCenter.overallStatus.toUpperCase()}
           </div>
         </div>
+
+        {riskCenter.overallStatus === 'emergency' && latestActiveOverride && (
+          <div className="card border-2 border-red-400 bg-red-50">
+            <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+              <div>
+                <p className="text-label-md text-red-700 uppercase tracking-wider">Emergency override active</p>
+                <h2 className="text-headline-sm font-serif text-red-900 mt-1">Trading paused by human intervention</h2>
+                <p className="text-body-md text-red-800 mt-2">{latestActiveOverride.reason}</p>
+              </div>
+              <div className="rounded-lg border border-red-300 bg-white px-4 py-3 text-right">
+                <p className="text-label-sm text-on-surface-variant">Triggered by</p>
+                <p className="text-body-md font-semibold text-red-900">{latestActiveOverride.triggeredBy}</p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Circuit Breakers Section */}
         <div className="space-y-3">
@@ -258,7 +275,7 @@ export const Risk: React.FC = () => {
           <div className="pt-4 border-t border-red-200">
             <p className="text-label-sm text-on-surface-variant mb-3">Emergency Action</p>
             <button
-              className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition-colors"
+              className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
               onClick={() => setEmergencyPrompt({ ...emergencyPrompt, open: true })}
               disabled={activeEmergency}
             >

@@ -81,9 +81,7 @@ export const Execution: React.FC = () => {
     }
   };
 
-  const chainExplorerUrl = execution.broadcastState.transactionHash
-    ? `https://etherscan.io/tx/${execution.broadcastState.transactionHash}`
-    : '';
+  const chainExplorerUrl = execution.broadcastState.transactionHash ? '#on-chain-outcome' : '';
 
   return (
     <Layout>
@@ -321,8 +319,6 @@ export const Execution: React.FC = () => {
                 </button>
                 <a
                   href={chainExplorerUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="p-3 hover:bg-white rounded-lg transition-colors border border-outline-variant flex items-center gap-1"
                 >
                   <ExternalLink className="w-5 h-5" />
@@ -336,7 +332,7 @@ export const Execution: React.FC = () => {
         )}
 
         {/* On-Chain Outcome Section */}
-        <div className={`card border-2 ${
+        <div id="on-chain-outcome" className={`card border-2 ${
           execution.onChainOutcome.status === 'success'
             ? 'bg-green-50 border-green-300'
             : execution.onChainOutcome.status === 'reverted'
@@ -433,8 +429,6 @@ export const Execution: React.FC = () => {
           {execution.broadcastState.transactionHash && (
             <a
               href={chainExplorerUrl}
-              target="_blank"
-              rel="noopener noreferrer"
               className="btn-secondary flex items-center justify-center gap-2"
             >
               View on Chain

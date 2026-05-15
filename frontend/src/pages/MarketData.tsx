@@ -21,6 +21,11 @@ export const MarketData: React.FC = () => {
 
   const selectedFeed = marketData.feeds.find((feed) => feed.name === selectedFeedName) ?? marketData.feeds[0];
 
+  const focusSource = (feedName: 'Pyth' | 'Chainlink' | 'Fallback') => {
+    setSelectedFeedName(feedName);
+    scrollToSection('feed-breakdown');
+  };
+
   const handleRefresh = () => {
     refreshFeeds();
     setSelectedFeedName('Pyth');
@@ -150,7 +155,7 @@ export const MarketData: React.FC = () => {
                     Window range: ${(feed.priceWindowHigh - feed.priceWindowLow).toLocaleString(undefined, { maximumFractionDigits: 2 })}
                   </div>
                   <button
-                    onClick={() => setSelectedFeedName(feed.name)}
+                    onClick={() => focusSource(feed.name)}
                     className="btn-secondary text-sm inline-flex items-center gap-2"
                   >
                     View Source Breakdown
@@ -195,12 +200,15 @@ export const MarketData: React.FC = () => {
               <Activity className="w-5 h-5 text-primary" />
               <h2 className="text-headline-sm font-serif">Source Breakdown</h2>
             </div>
+            <div className="mb-4 rounded-lg border border-primary/15 bg-primary/5 px-4 py-3 text-body-sm text-on-surface-variant">
+              Focused source: <span className="font-semibold text-primary">{selectedFeed.name}</span> with {selectedFeed.stalenessSeconds}s staleness and {selectedFeed.failureCount} recent failure(s).
+            </div>
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 {marketData.feeds.map((feed) => (
                   <button
                     key={feed.id}
-                    onClick={() => setSelectedFeedName(feed.name)}
+                    onClick={() => focusSource(feed.name)}
                     className={`px-3 py-2 rounded-full text-sm border transition-colors ${selectedFeed.name === feed.name ? 'bg-primary text-white border-primary' : 'bg-white border-outline-variant text-on-surface-variant hover:bg-surface-container'}`}
                   >
                     {feed.name}

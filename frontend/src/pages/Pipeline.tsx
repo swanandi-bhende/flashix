@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import {
   ArrowLeft,
-  ArrowRight,
   Activity,
   Brain,
   Filter,
@@ -229,102 +228,94 @@ export const Pipeline: React.FC = () => {
               </div>
             </div>
 
-            <div className="overflow-x-auto pb-2">
-              <div className="min-w-[1120px] grid grid-cols-6 gap-4 items-stretch">
-                {stageOrder.map((stageKey, index) => {
-                  const stage = stageMeta[stageKey];
-                  const selected = stageKey === selectedStageKey;
-                  const activePath = highlightedPath[index]?.active;
-                  const currentItem = selectedItem.stage === stageKey;
+            <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-6 gap-4 items-stretch">
+              {stageOrder.map((stageKey, index) => {
+                const stage = stageMeta[stageKey];
+                const selected = stageKey === selectedStageKey;
+                const activePath = highlightedPath[index]?.active;
+                const currentItem = selectedItem.stage === stageKey;
 
-                  return (
-                    <div key={stage.key} className="relative flex flex-col">
+                return (
+                  <div key={stage.key} className="flex flex-col h-full">
+                    <button
+                      onClick={() => goToStage(stage.key)}
+                      className={`card text-left h-full transition-all hover:-translate-y-1 hover:shadow-elevation-2 ${
+                        selected ? 'ring-2 ring-primary/30 bg-surface-container-low' : ''
+                      } ${activePath ? 'border-primary/20' : ''}`}
+                    >
+                      <div className="flex items-start justify-between gap-3 mb-4">
+                        <div>
+                          <p className="text-label-sm uppercase tracking-[0.08em] text-on-surface-variant">
+                            {stage.label}
+                          </p>
+                          <h3 className="text-headline-sm font-serif text-primary mt-1 break-words leading-tight">{stage.worker}</h3>
+                        </div>
+                        <div className={`p-3 rounded-lg ${stage.status === 'healthy' ? 'bg-green-100' : stage.status === 'warning' ? 'bg-yellow-100' : 'bg-red-100'}`}>
+                          {React.createElement(stage.icon, { className: 'w-5 h-5 text-primary' })}
+                        </div>
+                      </div>
+
+                      <p className="text-body-md text-on-surface-variant mb-4">{stage.description}</p>
+
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between gap-3">
+                          <StatusBadge status={stage.status} label={statusLabel[stage.status]} />
+                          <span className="text-label-sm text-on-surface-variant">{stage.backlog} waiting</span>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3 text-label-sm text-on-surface-variant">
+                          <div className="rounded-lg bg-surface-container-low p-3">
+                            <p className="uppercase tracking-[0.05em]">Throughput</p>
+                            <p className="mt-1 text-body-md text-primary">{stage.processedRecently}/h</p>
+                          </div>
+                          <div className="rounded-lg bg-surface-container-low p-3">
+                            <p className="uppercase tracking-[0.05em]">Latency</p>
+                            <p className="mt-1 text-body-md text-primary">{stage.latencyMs} ms</p>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 text-label-sm text-on-surface-variant">
+                          <span className="rounded-full bg-surface-container-low px-3 py-1">Queue: {stage.queue}</span>
+                          <span className="rounded-full bg-surface-container-low px-3 py-1">Worker: {stage.worker}</span>
+                        </div>
+
+                        {currentItem && (
+                          <div className="rounded-lg border border-primary/20 bg-primary/5 p-3">
+                            <p className="text-label-sm text-primary">Selected item is here</p>
+                            <p className="mt-1 text-body-md text-on-surface">{selectedItem.id}</p>
+                            <p className="text-label-sm text-on-surface-variant">Next: {stage.nextStage ? stageMeta[stage.nextStage].label : 'Complete'}</p>
+                          </div>
+                        )}
+                      </div>
+                    </button>
+
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      <button
+                        onClick={() => goToStage(stage.key, 'queue')}
+                        className="btn-secondary flex-1 min-w-[110px]"
+                      >
+                        View Queue
+                      </button>
+                      <button
+                        onClick={() => goToStage(stage.key, 'logs')}
+                        className="btn-secondary flex-1 min-w-[110px]"
+                      >
+                        Open Logs
+                      </button>
                       <button
                         onClick={() => goToStage(stage.key)}
-                        className={`card text-left transition-all hover:-translate-y-1 hover:shadow-elevation-2 ${
-                          selected ? 'ring-2 ring-primary/30 bg-surface-container-low' : ''
-                        } ${activePath ? 'border-primary/20' : ''}`}
+                        className="btn-primary flex-1 min-w-[110px]"
                       >
-                        <div className="flex items-start justify-between gap-3 mb-4">
-                          <div>
-                            <p className="text-label-sm uppercase tracking-[0.08em] text-on-surface-variant">
-                              {stage.label}
-                            </p>
-                            <h3 className="text-headline-sm font-serif text-primary mt-1">{stage.worker}</h3>
-                          </div>
-                          <div className={`p-3 rounded-lg ${stage.status === 'healthy' ? 'bg-green-100' : stage.status === 'warning' ? 'bg-yellow-100' : 'bg-red-100'}`}>
-                            {React.createElement(stage.icon, { className: 'w-5 h-5 text-primary' })}
-                          </div>
-                        </div>
-
-                        <p className="text-body-md text-on-surface-variant mb-4">{stage.description}</p>
-
-                        <div className="space-y-3">
-                          <div className="flex items-center justify-between gap-3">
-                            <StatusBadge status={stage.status} label={statusLabel[stage.status]} />
-                            <span className="text-label-sm text-on-surface-variant">{stage.backlog} waiting</span>
-                          </div>
-
-                          <div className="grid grid-cols-2 gap-3 text-label-sm text-on-surface-variant">
-                            <div className="rounded-lg bg-surface-container-low p-3">
-                              <p className="uppercase tracking-[0.05em]">Throughput</p>
-                              <p className="mt-1 text-body-md text-primary">{stage.processedRecently}/h</p>
-                            </div>
-                            <div className="rounded-lg bg-surface-container-low p-3">
-                              <p className="uppercase tracking-[0.05em]">Latency</p>
-                              <p className="mt-1 text-body-md text-primary">{stage.latencyMs} ms</p>
-                            </div>
-                          </div>
-
-                          <div className="flex flex-wrap gap-2 text-label-sm text-on-surface-variant">
-                            <span className="rounded-full bg-surface-container-low px-3 py-1">Queue: {stage.queue}</span>
-                            <span className="rounded-full bg-surface-container-low px-3 py-1">Worker: {stage.worker}</span>
-                          </div>
-
-                          {currentItem && (
-                            <div className="rounded-lg border border-primary/20 bg-primary/5 p-3">
-                              <p className="text-label-sm text-primary">Selected item is here</p>
-                              <p className="mt-1 text-body-md text-on-surface">{selectedItem.id}</p>
-                              <p className="text-label-sm text-on-surface-variant">Next: {stage.nextStage ? stageMeta[stage.nextStage].label : 'Complete'}</p>
-                            </div>
-                          )}
-                        </div>
+                        Drill Down
                       </button>
-
-                      {index < stageOrder.length - 1 && (
-                        <div className="hidden xl:flex absolute right-[-28px] top-1/2 -translate-y-1/2 items-center text-primary/50 z-10">
-                          <ArrowRight className="w-6 h-6" />
-                        </div>
-                      )}
-
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        <button
-                          onClick={() => goToStage(stage.key, 'queue')}
-                          className="btn-secondary flex-1 min-w-[110px]"
-                        >
-                          View Queue
-                        </button>
-                        <button
-                          onClick={() => goToStage(stage.key, 'logs')}
-                          className="btn-secondary flex-1 min-w-[110px]"
-                        >
-                          Open Logs
-                        </button>
-                        <button
-                          onClick={() => goToStage(stage.key)}
-                          className="btn-primary flex-1 min-w-[110px]"
-                        >
-                          Drill Down
-                        </button>
-                      </div>
                     </div>
-                  );
-                })}
-              </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-6 lg:sticky lg:top-24">
             <div className="card space-y-4">
               <h2 className="text-headline-sm font-serif text-primary">Stage detail</h2>
               <div>

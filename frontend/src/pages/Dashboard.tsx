@@ -116,6 +116,12 @@ export const Dashboard: React.FC = () => {
       icon: Database,
       path: '/market-data',
     },
+    {
+      id: 'compute',
+      label: 'Open Compute',
+      icon: Cpu,
+      path: '/compute',
+    },
   ];
 
   return (
