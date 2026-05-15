@@ -32,7 +32,7 @@ from agent.pipeline.queue_manager import QueueManager
 from agent.risk.position_watchdog import PositionWatchdog
 from agent.risk.risk_registry import RiskRegistry
 from agent.settlement.ledger import SettlementLedger
-from tests.replay.inference_recorder import InferenceRecorder
+from agent.metrics.inference_recorder import InferenceRecorder
 
 logger = logging.getLogger(__name__)
 

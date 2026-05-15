@@ -15,13 +15,13 @@ from agent.metrics import METRICS_API_PORT, MetricName
 from agent.metrics.alert_engine import AlertEngine
 from agent.metrics.bottleneck_profiler import BottleneckProfiler
 from agent.metrics.collector import MetricsCollector
+from agent.metrics.inference_recorder import InferenceRecorder
 from agent.metrics.financial_metrics import FinancialMetricsCalculator
 from agent.metrics.metrics_store import MetricsStore
 from agent.pipeline.queue_manager import QueueManager
 from agent.risk.position_watchdog import PositionWatchdog
 from agent.risk.risk_registry import RiskRegistry
 from agent.settlement.ledger import SettlementLedger
-from tests.replay.inference_recorder import InferenceRecorder
 
 logger = logging.getLogger(__name__)
 
