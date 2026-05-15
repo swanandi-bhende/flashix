@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: flashix-backend
+    env: python
+    plan: starter
+    buildCommand: python -m pip install --upgrade pip && pip install -r requirements.txt
+    startCommand: uvicorn agent.backend_app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: PIP_ONLY_BINARY
+        value: ":all:"
+
+  - type: redis
+    name: flashix-redis
+    plan: starter
+    ipAllowList: []
