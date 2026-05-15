@@ -20,6 +20,7 @@ export const OpportunityDetail: React.FC = () => {
   const [simRunning, setSimRunning] = React.useState(false);
   const [rejectPromptOpen, setRejectPromptOpen] = React.useState(false);
   const [rejectReason, setRejectReason] = React.useState('');
+  const [actionBanner, setActionBanner] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     // keep context; could pre-run a quick simulate when page loads if desired
@@ -40,19 +41,22 @@ export const OpportunityDetail: React.FC = () => {
     setSimRunning(true);
     const result = await simulate(opp.id);
     addActivity({ id: `sim-${opp.id}`, type: 'execution', timestamp: new Date(), title: `Simulation ${result}`, description: `Simulation returned ${result}`, status: 'healthy' });
+    setActionBanner(`Simulation completed as ${result.toUpperCase()}.`);
     setSimRunning(false);
   };
 
   const sendToExecution = () => {
     approve(opp.id);
     addActivity({ id: `exec-${opp.id}`, type: 'execution', timestamp: new Date(), title: `Sent ${opp.id} to execution`, description: 'Operator sent to execution', status: 'healthy' });
-    navigate('/opportunities');
+    setActionBanner('Opportunity approved and moved to execution state.');
+    window.setTimeout(() => navigate('/opportunities'), 700);
   };
 
   const markIgnored = (reason: string) => {
     reject(opp.id, reason);
     addActivity({ id: `rej-${opp.id}`, type: 'risk_event', timestamp: new Date(), title: `Ignored ${opp.id}`, description: reason, status: 'warning' });
-    navigate('/opportunities');
+    setActionBanner('Opportunity rejected and logged for audit.');
+    window.setTimeout(() => navigate('/opportunities'), 700);
   };
 
   return (
@@ -67,6 +71,31 @@ export const OpportunityDetail: React.FC = () => {
             <StatusBadge status={opp.status === 'pending' ? 'healthy' : opp.status === 'executing' ? 'warning' : 'critical'} label={opp.status} />
           </div>
         </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="card border-2 border-primary/20">
+            <p className="text-label-md text-on-surface-variant mb-2">Expected profit</p>
+            <p className="text-display-sm font-serif text-primary">${opp.expectedProfit.toLocaleString()}</p>
+          </div>
+          <div className="card border-2 border-green-200">
+            <p className="text-label-md text-on-surface-variant mb-2">Confidence</p>
+            <p className="text-display-sm font-serif text-primary">{(opp.confidenceScore ?? 0).toFixed(2)}</p>
+          </div>
+          <div className="card border-2 border-yellow-200">
+            <p className="text-label-md text-on-surface-variant mb-2">Spread</p>
+            <p className="text-display-sm font-serif text-primary">{opp.spreadPct?.toFixed(3)}%</p>
+          </div>
+          <div className="card border-2 border-purple-200">
+            <p className="text-label-md text-on-surface-variant mb-2">Status</p>
+            <p className="text-display-sm font-serif text-primary">{opp.status.toUpperCase()}</p>
+          </div>
+        </div>
+
+        {actionBanner && (
+          <div className="card border-2 border-primary/20 bg-primary/5">
+            <p className="text-body-md text-primary font-semibold">{actionBanner}</p>
+          </div>
+        )}
 
         {/* Tabs */}
         <div className="flex gap-3 items-center">
@@ -107,6 +136,11 @@ export const OpportunityDetail: React.FC = () => {
               <div className="mt-4">
                 <p className="text-label-sm text-on-surface-variant">Spread</p>
                 <p className="text-headline-sm font-serif">{opp.spreadPct?.toFixed(3)}%</p>
+              </div>
+
+              <div className="mt-4 rounded-lg border border-outline-variant/20 bg-surface-container-low p-4">
+                <p className="text-label-sm text-on-surface-variant">Decision note</p>
+                <p className="text-body-md mt-1">This opportunity now carries a visible action trail, so operators can see the effect of simulate, approve, and reject immediately.</p>
               </div>
             </div>
           )}
@@ -220,6 +254,7 @@ export const OpportunityDetail: React.FC = () => {
           <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
             <div className="card w-[520px]">
               <h3 className="text-headline-sm mb-2">Mark {opp.id} Ignored</h3>
+              <p className="text-label-sm text-on-surface-variant mb-3">Rejected opportunities stay auditable in the activity feed and queue state.</p>
               <textarea className="w-full p-3 border rounded" rows={4} value={rejectReason} onChange={(e) => setRejectReason(e.target.value)} placeholder="Reason for ignoring (audit)" />
               <div className="mt-4 flex justify-end gap-2">
                 <button className="btn-secondary" onClick={() => setRejectPromptOpen(false)}>Cancel</button>

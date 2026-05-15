@@ -100,6 +100,7 @@ interface DashboardStore {
 
 // Mock data generator for development
 let activitySequence = 0;
+let marketRefreshSequence = 0;
 
 const generateMockMetrics = (): SystemMetrics => ({
   pipelineState: ['idle', 'processing', 'degraded', 'halted'][Math.floor(Math.random() * 4)] as PipelineState,
@@ -146,22 +147,24 @@ const generateMockActivities = (): ActivityEvent[] => {
   }));
 };
 
-const generateMockMarketDataCenter = (): MarketDataCenter => {
+const generateMockMarketDataCenter = (refreshTick = 0): MarketDataCenter => {
   const now = Date.now();
+  const priceShift = refreshTick * 0.85;
+  const freshnessShift = refreshTick % 4;
   const feeds: OracleFeedStatus[] = [
     {
       id: 'pyth',
       name: 'Pyth',
       isLive: true,
       status: 'healthy',
-      lastUpdate: new Date(now - 8000),
-      latestPrice: 3452.18,
-      priceWindowLow: 3428.11,
-      priceWindowHigh: 3468.54,
-      stalenessSeconds: 8,
+      lastUpdate: new Date(now - (8000 + refreshTick * 2000)),
+      latestPrice: 3452.18 + priceShift,
+      priceWindowLow: 3428.11 + priceShift,
+      priceWindowHigh: 3468.54 + priceShift,
+      stalenessSeconds: 8 + freshnessShift,
       updateFrequencySeconds: 5,
       failureCount: 0,
-      lastSuccessfulSample: new Date(now - 8000),
+      lastSuccessfulSample: new Date(now - (8000 + refreshTick * 2000)),
       acceptedDeviationPct: 0.45,
     },
     {
@@ -169,15 +172,15 @@ const generateMockMarketDataCenter = (): MarketDataCenter => {
       name: 'Chainlink',
       isLive: true,
       status: 'degraded',
-      lastUpdate: new Date(now - 22000),
-      latestPrice: 3450.76,
-      priceWindowLow: 3427.92,
-      priceWindowHigh: 3467.9,
-      stalenessSeconds: 22,
+      lastUpdate: new Date(now - (22000 + refreshTick * 2500)),
+      latestPrice: 3450.76 + priceShift * 0.75,
+      priceWindowLow: 3427.92 + priceShift * 0.75,
+      priceWindowHigh: 3467.9 + priceShift * 0.75,
+      stalenessSeconds: 22 + freshnessShift,
       warning: 'Update cadence slower than normal',
       updateFrequencySeconds: 10,
       failureCount: 1,
-      lastSuccessfulSample: new Date(now - 22000),
+      lastSuccessfulSample: new Date(now - (22000 + refreshTick * 2500)),
       acceptedDeviationPct: 0.65,
     },
     {
@@ -185,15 +188,15 @@ const generateMockMarketDataCenter = (): MarketDataCenter => {
       name: 'Fallback',
       isLive: true,
       status: 'healthy',
-      lastUpdate: new Date(now - 4000),
-      latestPrice: 3451.9,
-      priceWindowLow: 3429.4,
-      priceWindowHigh: 3465.22,
-      stalenessSeconds: 4,
+      lastUpdate: new Date(now - (4000 + refreshTick * 1500)),
+      latestPrice: 3451.9 + priceShift * 1.1,
+      priceWindowLow: 3429.4 + priceShift * 1.1,
+      priceWindowHigh: 3465.22 + priceShift * 1.1,
+      stalenessSeconds: 4 + freshnessShift,
       warning: 'Synthetic aggregator engaged during primary source drift',
       updateFrequencySeconds: 3,
       failureCount: 0,
-      lastSuccessfulSample: new Date(now - 4000),
+      lastSuccessfulSample: new Date(now - (4000 + refreshTick * 1500)),
       acceptedDeviationPct: 0.8,
     },
   ];
@@ -226,13 +229,15 @@ const generateMockMarketDataCenter = (): MarketDataCenter => {
   };
 
   const summary: MarketDataHealthSummary = {
-    overallStatus: 'healthy',
-    healthySources: 2,
+    overallStatus: refreshTick % 3 === 0 ? 'healthy' : 'delayed',
+    healthySources: refreshTick % 2 === 0 ? 2 : 3,
     totalSources: 3,
     freshestPriceAgeSeconds: Math.min(...feeds.map((feed) => feed.stalenessSeconds)),
     acceptableFreshnessSeconds: 30,
     trustForExecution: true,
-    message: 'At least two sources are healthy and prices are within the execution window.',
+    message: refreshTick === 0
+      ? 'At least two sources are healthy and prices are within the execution window.'
+      : `Refresh cycle #${refreshTick}: source prices and freshness have been re-evaluated.`,
   };
 
   return {
@@ -272,6 +277,7 @@ const generateMockComputeCenter = (): ComputeCenter => {
     malformedInputs: Math.random() > 0.85 ? ['amount: negative value'] : [],
     rejectionReason: Math.random() > 0.85 ? 'Schema validation failed: missing required fields' : undefined,
     validatedAt: new Date(now - i * 60000 + 5000),
+    verificationCount: 0,
   }));
 
   const signatures: SignatureCheck[] = inferenceRequests.map((req, i) => ({
@@ -1119,7 +1125,8 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
   },
 
   refreshFeeds: () => {
-    set({ marketDataCenter: generateMockMarketDataCenter() });
+    marketRefreshSequence += 1;
+    set({ marketDataCenter: generateMockMarketDataCenter(marketRefreshSequence) });
     get().addActivity({
       id: `market-refresh-${Date.now()}`,
       type: 'market_feed',
@@ -1138,7 +1145,18 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
       computeCenter: {
         ...state.computeCenter,
         validations: state.computeCenter.validations.map((v) =>
-          v.requestId === requestId ? { ...v, status: 'passed' as const } : v
+          v.requestId === requestId
+            ? {
+                ...v,
+                status: 'passed' as const,
+                schemaValid: true,
+                requiredFieldsMissing: [],
+                malformedInputs: [],
+                rejectionReason: undefined,
+                validatedAt: new Date(),
+                verificationCount: v.verificationCount + 1,
+              }
+            : v
         ),
         inferenceRequests: state.computeCenter.inferenceRequests.map((req) =>
           req.id === requestId ? { ...req, status: 'validated' as const } : req

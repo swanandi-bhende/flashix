@@ -313,6 +313,7 @@ export interface PayloadValidation {
     malformedInputs: string[];
     rejectionReason?: string;
     validatedAt: Date;
+    verificationCount: number;
 }
 export interface SignatureCheck {
     requestId: string;

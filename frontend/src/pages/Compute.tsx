@@ -242,6 +242,10 @@ export default function Compute() {
                         {validation.schemaValid ? '✓ Yes' : '✗ No'}
                       </span>
                     </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-gray-600">Verification Count:</span>
+                            <span className="font-medium text-gray-900">{validation.verificationCount}</span>
+                          </div>
                     {validation.requiredFieldsMissing.length > 0 && (
                       <div className="bg-red-50 border border-red-200 rounded p-2">
                         <p className="text-red-700 font-medium text-xs mb-1">Missing Fields:</p>
@@ -401,6 +405,17 @@ export default function Compute() {
 
               {selectedAction.type === 'verify' && (
                 <div className="space-y-3">
+                  {computeCenter.validations.find((v) => v.requestId === selectedAction.requestId) && (
+                    <div className="bg-white border border-green-200 rounded p-4">
+                      <p className="text-gray-700 font-semibold">Request {selectedAction.requestId} verified</p>
+                      <p className="text-gray-600 text-sm mt-1">
+                        Verification count: {computeCenter.validations.find((v) => v.requestId === selectedAction.requestId)?.verificationCount}
+                      </p>
+                      <p className="text-gray-600 text-sm mt-1">
+                        Validation now reads {computeCenter.validations.find((v) => v.requestId === selectedAction.requestId)?.status.toUpperCase()}.
+                      </p>
+                    </div>
+                  )}
                   <div className="bg-green-50 border border-green-200 rounded p-4">
                     <p className="text-green-700 font-semibold">✓ Payload verification passed</p>
                     <p className="text-green-600 text-sm mt-1">The request {selectedAction.requestId} has been validated against the schema and all required fields are present.</p>

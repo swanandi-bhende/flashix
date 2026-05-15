@@ -71,6 +71,7 @@ export const MarketData: React.FC = () => {
                 <span>{marketData.summary.healthySources}/{marketData.summary.totalSources} sources healthy</span>
                 <span>Freshest price age: {marketData.summary.freshestPriceAgeSeconds}s</span>
                 <span>Freshness limit: {marketData.summary.acceptableFreshnessSeconds}s</span>
+                <span>Refreshed at: {new Date(marketData.refreshedAt).toLocaleTimeString()}</span>
               </div>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -203,6 +204,10 @@ export const MarketData: React.FC = () => {
             <div className="mb-4 rounded-lg border border-primary/15 bg-primary/5 px-4 py-3 text-body-sm text-on-surface-variant">
               Focused source: <span className="font-semibold text-primary">{selectedFeed.name}</span> with {selectedFeed.stalenessSeconds}s staleness and {selectedFeed.failureCount} recent failure(s).
             </div>
+              <div className="mb-4 flex flex-wrap gap-2 text-label-sm text-on-surface-variant">
+                <span className="rounded-full bg-white border border-outline-variant/30 px-3 py-1">Cycle: {marketData.summary.message.includes('Refresh cycle') ? marketData.summary.message.match(/#(\d+)/)?.[1] ?? '0' : '0'}</span>
+                <span className="rounded-full bg-white border border-outline-variant/30 px-3 py-1">Source freshness updates on refresh</span>
+              </div>
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 {marketData.feeds.map((feed) => (

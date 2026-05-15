@@ -18,6 +18,13 @@ export const Opportunities: React.FC = () => {
   const [rejectPrompt, setRejectPrompt] = useState<{ id: string; open: boolean } | null>(null);
   const [rejectReason, setRejectReason] = useState('');
 
+  const pendingCount = opportunities.filter((opp) => opp.status === 'pending').length;
+  const executingCount = opportunities.filter((opp) => opp.status === 'executing').length;
+  const rejectedCount = opportunities.filter((opp) => opp.status === 'rejected').length;
+  const averageConfidence = opportunities.length
+    ? opportunities.reduce((sum, opp) => sum + (opp.confidenceScore ?? 0), 0) / opportunities.length
+    : 0;
+
   const onSimulate = async (id: string) => {
     const result = await simulate(id);
     setSimResult({ id, result });
@@ -65,6 +72,36 @@ export const Opportunities: React.FC = () => {
           </div>
         </div>
 
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="card border-2 border-primary/20">
+            <p className="text-label-md text-on-surface-variant mb-2">Queue size</p>
+            <p className="text-display-sm font-serif text-primary">{opportunities.length}</p>
+          </div>
+          <div className="card border-2 border-green-200">
+            <p className="text-label-md text-on-surface-variant mb-2">Pending</p>
+            <p className="text-display-sm font-serif text-primary">{pendingCount}</p>
+          </div>
+          <div className="card border-2 border-blue-200">
+            <p className="text-label-md text-on-surface-variant mb-2">Executing</p>
+            <p className="text-display-sm font-serif text-primary">{executingCount}</p>
+          </div>
+          <div className="card border-2 border-purple-200">
+            <p className="text-label-md text-on-surface-variant mb-2">Avg confidence</p>
+            <p className="text-display-sm font-serif text-primary">{averageConfidence.toFixed(2)}</p>
+            <p className="text-label-sm text-on-surface-variant mt-1">Rejected: {rejectedCount}</p>
+          </div>
+        </div>
+
+        <div className="card border-2 border-primary/20 bg-primary/5">
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            <div>
+              <p className="text-label-md text-on-surface-variant uppercase tracking-wider mb-2">Decision flow</p>
+              <h2 className="text-headline-md font-serif">Every candidate now keeps a visible action trail.</h2>
+            </div>
+            <div className="text-label-md text-on-surface-variant">Open a row for the full decision screen and trace.</div>
+          </div>
+        </div>
+
         <div className="card">
           <h2 className="text-headline-sm font-serif mb-4">Live Queue</h2>
 
@@ -91,6 +128,9 @@ export const Opportunities: React.FC = () => {
                     <td className="py-4 px-4 text-body-md">{opp.freshnessSeconds ?? 0}s</td>
                     <td className="py-4 px-4 text-body-md">
                       <StatusBadge status={opp.status === 'pending' ? 'healthy' : opp.status === 'executing' ? 'warning' : 'critical'} label={opp.status} />
+                      {opp.simulatedResult && (
+                        <p className="mt-2 text-label-sm text-on-surface-variant">Simulation: <span className="font-semibold text-primary">{opp.simulatedResult.toUpperCase()}</span></p>
+                      )}
                     </td>
                     <td className="py-4 px-4 text-body-md">
                       <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
@@ -114,6 +154,7 @@ export const Opportunities: React.FC = () => {
             <div className="card w-[520px]">
               <h3 className="text-headline-sm mb-2">Simulation Result</h3>
               <p className="text-body-md">Opportunity {simResult.id} simulation: {simResult.result}</p>
+              <p className="text-label-sm text-on-surface-variant mt-2">The queue row keeps this result so the state is visible after you close the modal.</p>
               <div className="mt-4 flex justify-end gap-2">
                 <button className="btn-secondary" onClick={() => setSimResult(null)}>Close</button>
               </div>
@@ -126,6 +167,7 @@ export const Opportunities: React.FC = () => {
           <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
             <div className="card w-[720px] max-h-[70vh] overflow-auto">
               <h3 className="text-headline-sm mb-2">Trace: {traceView.id}</h3>
+              <p className="text-label-sm text-on-surface-variant mb-3">This is the exact decision trail attached to the current queue item.</p>
               <div className="space-y-2">
                 {traceView.trace.map((t: any, i: number) => (
                   <div key={i} className="p-3 border rounded-lg">
@@ -147,6 +189,7 @@ export const Opportunities: React.FC = () => {
           <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
             <div className="card w-[520px]">
               <h3 className="text-headline-sm mb-2">Reject Opportunity {rejectPrompt.id}</h3>
+              <p className="text-label-sm text-on-surface-variant mb-3">Rejected opportunities stay auditable in the activity feed and queue state.</p>
               <textarea className="w-full p-3 border rounded" rows={4} value={rejectReason} onChange={(e) => setRejectReason(e.target.value)} placeholder="Rejection reason for audit" />
               <div className="mt-4 flex justify-end gap-2">
                 <button className="btn-secondary" onClick={() => setRejectPrompt(null)}>Cancel</button>

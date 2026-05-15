@@ -376,6 +376,7 @@ export interface PayloadValidation {
   malformedInputs: string[];
   rejectionReason?: string;
   validatedAt: Date;
+  verificationCount: number;
 }
 
 // Signature verification check

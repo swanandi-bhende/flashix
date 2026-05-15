@@ -228,7 +228,7 @@ export const Pipeline: React.FC = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-6 gap-4 items-stretch">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 items-start">
               {stageOrder.map((stageKey, index) => {
                 const stage = stageMeta[stageKey];
                 const selected = stageKey === selectedStageKey;

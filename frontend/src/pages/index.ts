@@ -7,4 +7,3 @@ export { default as Execution } from './Execution';
 export { default as Settlement } from './Settlement';
 export { default as MarketData } from './MarketData';
 export { default as Compute } from './Compute';
-export { default as Admin } from './Admin';

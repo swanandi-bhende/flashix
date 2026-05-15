@@ -18,6 +18,9 @@ export const Settlement: React.FC = () => {
   const [selectedPosition, setSelectedPosition] = useState<string | null>(null);
   const [exportingTime, setExportingTime] = useState<{ start: string; end: string } | null>(null);
 
+  const selectedPositionRecord = settlement.openPositions.find((pos) => pos.id === selectedPosition) ?? null;
+  const openRepayments = settlement.repaymentStatuses.filter((rep) => ['pending', 'partially_repaid'].includes(rep.status));
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
@@ -104,6 +107,26 @@ export const Settlement: React.FC = () => {
           </div>
           <div className={`px-4 py-2 rounded-lg text-label-md font-semibold ${settlement.overallStatus === 'healthy' ? 'bg-green-100 text-green-900' : settlement.overallStatus === 'at_risk' ? 'bg-yellow-100 text-yellow-900' : 'bg-red-100 text-red-900'}`}>
             {settlement.overallStatus.toUpperCase()}
+          </div>
+        </div>
+
+        <div className="card border-2 border-primary/20 bg-primary/5">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <p className="text-label-md text-on-surface-variant uppercase tracking-wider mb-2">Settlement overview</p>
+              <h2 className="text-headline-md font-serif">{openRepayments.length} repayment(s) still need attention and {settlement.openPositions.length} position(s) remain open.</h2>
+              <p className="text-body-md text-on-surface-variant mt-2">The page now highlights what is open, what is paid, and what should be closed next.</p>
+            </div>
+            <div className="grid grid-cols-2 gap-3 text-label-md text-on-surface-variant">
+              <div className="rounded-lg bg-white border border-outline-variant/20 px-4 py-3">
+                <p>Portfolio balance</p>
+                <p className="text-body-md font-semibold text-primary">${settlement.portfolioBalance.toLocaleString()}</p>
+              </div>
+              <div className="rounded-lg bg-white border border-outline-variant/20 px-4 py-3">
+                <p>Last updated</p>
+                <p className="text-body-md font-semibold text-primary">{new Date(settlement.lastUpdated).toLocaleTimeString()}</p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -419,6 +442,13 @@ export const Settlement: React.FC = () => {
               <p className="text-body-md text-on-surface-variant mb-4">
                 This will initiate liquidation of position {selectedPosition}. This action cannot be undone immediately.
               </p>
+                {selectedPositionRecord && (
+                  <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm">
+                    <p className="font-semibold text-red-900">{selectedPositionRecord.symbol}</p>
+                    <p className="text-red-700 mt-1">Exposure: ${selectedPositionRecord.exposure.toLocaleString()}</p>
+                    <p className="text-red-700">Unrealized PnL: ${selectedPositionRecord.unrealizedPnL.toLocaleString()}</p>
+                  </div>
+                )}
               <div className="flex gap-2 justify-end">
                 <button onClick={() => setSelectedPosition(null)} className="btn-secondary">
                   Cancel
