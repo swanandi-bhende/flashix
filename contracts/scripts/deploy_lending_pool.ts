@@ -126,7 +126,7 @@ async function main() {
     blockNumber,
     gasUsed,
     verified: false,
-    explorerUrl: `https://chainscan-galileo.0g.ai/address/${lendingPoolAddr}`,
+     explorerUrl: `https://chainscan.0g.ai/address/${lendingPoolAddr}`,
     verificationUrl: null,
   };
   fs.writeFileSync(deploymentsPath, JSON.stringify(deployments, null, 2));

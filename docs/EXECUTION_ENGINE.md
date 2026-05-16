@@ -187,7 +187,7 @@ No transaction construction, simulation, or gas estimation happens until the app
 For judges verifying execution outcomes on the blockchain, follow this walkthrough:
 
 ### Step 1: Navigate to the Transaction
-- Open [0G Chain Explorer](https://chainscan-galileo.0g.ai)
+- Open [0G Chain Explorer](https://chainscan.0g.ai)
 - Paste the transaction hash (provided in `ExecutionResult.explorer_link`)
 - View the transaction details
 

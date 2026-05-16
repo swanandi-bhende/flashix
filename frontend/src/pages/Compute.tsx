@@ -80,15 +80,15 @@ export default function Compute() {
           <div className="mt-2 text-sm space-y-1">
             <div>
               <span className="font-mono text-blue-700">SignalValidator:</span>{' '}
-              <a className="text-blue-600 underline" href="https://chainscan-galileo.0g.ai/address/0xe6329A48C0D8E4152e8406dbe102078E1abC7484" target="_blank" rel="noreferrer">0xe6329A48C0D8E4152e8406dbe102078E1abC7484</a>
+              <a className="text-blue-600 underline" href="https://chainscan.0g.ai/address/0xe6329A48C0D8E4152e8406dbe102078E1abC7484" target="_blank" rel="noreferrer">0xe6329A48C0D8E4152e8406dbe102078E1abC7484</a>
             </div>
             <div>
               <span className="font-mono text-blue-700">LendingPool:</span>{' '}
-              <a className="text-blue-600 underline" href="https://chainscan-galileo.0g.ai/address/0x69d998618c7AEA1224C4bc5898519613c86EE42d" target="_blank" rel="noreferrer">0x69d998618c7AEA1224C4bc5898519613c86EE42d</a>
+              <a className="text-blue-600 underline" href="https://chainscan.0g.ai/address/0x69d998618c7AEA1224C4bc5898519613c86EE42d" target="_blank" rel="noreferrer">0x69d998618c7AEA1224C4bc5898519613c86EE42d</a>
             </div>
             <div>
               <span className="font-mono text-blue-700">ArbitrageExecutor:</span>{' '}
-              <a className="text-blue-600 underline" href="https://chainscan-galileo.0g.ai/address/0xAa0e986143B144f5860C41c74552B67ca78b1EBB" target="_blank" rel="noreferrer">0xAa0e986143B144f5860C41c74552B67ca78b1EBB</a>
+              <a className="text-blue-600 underline" href="https://chainscan.0g.ai/address/0xAa0e986143B144f5860C41c74552B67ca78b1EBB" target="_blank" rel="noreferrer">0xAa0e986143B144f5860C41c74552B67ca78b1EBB</a>
             </div>
           </div>
         </div>

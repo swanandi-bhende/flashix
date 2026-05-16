@@ -70,8 +70,8 @@ const config: HardhatUserConfig = {
         network: "zgTestnet",
         chainId: 16602,
         urls: {
-          apiURL: "https://chainscan-galileo.0g.ai/api",
-          browserURL: "https://chainscan-galileo.0g.ai",
+          apiURL: "https://chainscan.0g.ai/api",
+          browserURL: "https://chainscan.0g.ai",
         },
       },
     ],

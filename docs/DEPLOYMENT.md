@@ -10,8 +10,9 @@ This document is the runbook for deploying Flashix smart contracts to 0G Chain.
   - Explorer: https://chainscan-galileo.0g.ai/
   - Faucet: https://faucet-testnet.0g.ai/
 - 0G Mainnet
-  - RPC: https://evmrpc.0g.ai
-  - Chain ID: 16600
+	- RPC: https://evmrpc.0g.ai
+	- Chain ID: 16661
+	- Explorer: https://chainscan.0g.ai/
 
 ## Prerequisites
 

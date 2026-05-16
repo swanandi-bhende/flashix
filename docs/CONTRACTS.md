@@ -610,15 +610,15 @@ After verification, contracts show on explorer with:
 
 **Network:** 0G Chain Galileo Testnet (Chain ID: 16602)  
 **RPC:** https://evmrpc-testnet.0g.ai  
-**Explorer:** https://chainscan-galileo.0g.ai
+**Explorer:** https://chainscan.0g.ai
 
 ### Deployed Addresses
 
 | Contract | Address | Block | Tx Hash | Gas Used | Explorer |
 |----------|---------|-------|---------|----------|----------|
-| **SignalValidator** | `0xe6329A48C0D8E4152e8406dbe102078E1abC7484` | 32478529 | `0xb88a89...` | 720,357 | [Link](https://chainscan-galileo.0g.ai/address/0xe6329A48C0D8E4152e8406dbe102078E1abC7484) |
-| **LendingPool** | `0x69d998618c7AEA1224C4bc5898519613c86EE42d` | 32478557 | `0xea8f38...` | 996,161 | [Link](https://chainscan-galileo.0g.ai/address/0x69d998618c7AEA1224C4bc5898519613c86EE42d) |
-| **ArbitrageExecutor** | `0xAa0e986143B144f5860C41c74552B67ca78b1EBB` | 32478586 | `0x61e20e...` | 1,203,516 | [Link](https://chainscan-galileo.0g.ai/address/0xAa0e986143B144f5860C41c74552B67ca78b1EBB) |
+| **SignalValidator** | `0xe6329A48C0D8E4152e8406dbe102078E1abC7484` | 32478529 | `0xb88a89...` | 720,357 | [Link](https://chainscan.0g.ai/address/0xe6329A48C0D8E4152e8406dbe102078E1abC7484) |
+| **LendingPool** | `0x69d998618c7AEA1224C4bc5898519613c86EE42d` | 32478557 | `0xea8f38...` | 996,161 | [Link](https://chainscan.0g.ai/address/0x69d998618c7AEA1224C4bc5898519613c86EE42d) |
+| **ArbitrageExecutor** | `0xAa0e986143B144f5860C41c74552B67ca78b1EBB` | 32478586 | `0x61e20e...` | 1,203,516 | [Link](https://chainscan.0g.ai/address/0xAa0e986143B144f5860C41c74552B67ca78b1EBB) |
 
 ### Verification Status
 

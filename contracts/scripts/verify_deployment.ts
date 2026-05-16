@@ -96,7 +96,7 @@ async function main() {
         console.log(`  Status: RESPONSIVE`);
         console.log(`  Response: ${responseData}`);
         console.log(
-          `  Explorer: https://chainscan-galileo.0g.ai/address/${address}`
+          `  Explorer: https://chainscan.0g.ai/address/${address}`
         );
       } else {
         console.log(`⚠ ${contract.name}`);

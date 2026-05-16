@@ -174,7 +174,7 @@ async function main() {
     lendingPool: lendingPoolAddr || null,
     signalValidator: signalValidatorAddr || null,
     verified: false,
-    explorerUrl: `https://chainscan-galileo.0g.ai/address/${arbitrageExecutorAddr}`,
+    explorerUrl: `https://chainscan.0g.ai/address/${arbitrageExecutorAddr}`,
     verificationUrl: null,
   };
   fs.writeFileSync(deploymentsPath, JSON.stringify(deployments, null, 2));

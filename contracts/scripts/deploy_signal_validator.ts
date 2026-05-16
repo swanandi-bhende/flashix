@@ -132,7 +132,7 @@ async function main() {
     gasUsed,
     trustedSigner: teeSigner,
     verified: false,
-    explorerUrl: `https://chainscan-galileo.0g.ai/address/${signalValidatorAddr}`,
+    explorerUrl: `https://chainscan.0g.ai/address/${signalValidatorAddr}`,
     verificationUrl: null,
   };
   fs.writeFileSync(deploymentsPath, JSON.stringify(deployments, null, 2));

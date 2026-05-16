@@ -27,7 +27,7 @@ _logger = logging.getLogger(__name__)
 # Configuration
 CONFIRMATION_POLL_INTERVAL_MS = 500
 CONFIRMATION_TIMEOUT_SECONDS = 30
-EXPLORER_BASE_URL = "https://chainscan-galileo.0g.ai/tx"
+EXPLORER_BASE_URL = "https://chainscan.0g.ai/tx"
 ARBITRAGE_EXECUTOR_ABI_PATH = "contracts/abi/ArbitrageExecutor.json"
 
 

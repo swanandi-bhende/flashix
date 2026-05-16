@@ -56,7 +56,7 @@ async function main() {
   for (const [contract, address] of Object.entries(deployedAddresses)) {
     console.log(`\n${contract}:`);
     console.log(`  Address: ${address}`);
-    console.log(`  Explorer: https://chainscan-galileo.0g.ai/address/${address}`);
+    console.log(`  Explorer: https://chainscan.0g.ai/address/${address}`);
   }
 
   console.log("\n" + "=".repeat(70));

@@ -213,7 +213,7 @@ class SettlementValidator:
                 success=status == "PROFITABLE",
                 timestamp=int(time.time()),
                 tx_hash=str(tx_hash or ""),
-                explorer_link=f"https://chainscan-galileo.0g.ai/tx/{tx_hash.hex() if hasattr(tx_hash, 'hex') else tx_hash or ''}",
+                explorer_link=f"https://chainscan.0g.ai/tx/{tx_hash.hex() if hasattr(tx_hash, 'hex') else tx_hash or ''}",
             )
             
             _logger.info(
@@ -293,7 +293,7 @@ class SettlementValidator:
                 tx_hash, explorer_link, current_time,
                 profit_usdc, profit_after_gas, opportunity_id
             ))
-            
+                explorer_link="https://chainscan.0g.ai/tx/{tx_hash.hex() if hasattr(tx_hash, 'hex') else tx_hash or ''}",
             if cursor.rowcount == 0:
                 # Insert if not found
                 cursor.execute("""
