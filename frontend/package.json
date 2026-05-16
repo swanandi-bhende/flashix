@@ -7,7 +7,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint src --ext ts,tsx",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "smoke:demo": "node ./scripts/e2e/smoke_demo.js"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -32,5 +33,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "@typescript-eslint/eslint-plugin": "^6.13.0",
     "@typescript-eslint/parser": "^6.13.0"
+    ,
+    "playwright": "1.35.0"
   }
 }

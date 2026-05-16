@@ -180,6 +180,16 @@ export interface MarketDataCenter {
   comparison: MarketComparison;
   fallbackEvents: MarketFallbackEvent[];
   refreshedAt: Date;
+  refreshCycle: number;
+  latestSnapshot?: {
+    id: string;
+    sourceName: 'Pyth' | 'Chainlink' | 'Fallback' | 'CoinGecko';
+    sourceUrl?: string;
+    logUrl?: string;
+    takenAt: Date;
+    rawPayload: Record<string, any>;
+    executionCheckPayload: Record<string, any>;
+  };
 }
 
 // Circuit breakers
@@ -225,6 +235,10 @@ export interface HumanOverride {
   reason: string;
   active: boolean;
   pausesTrading: boolean;
+  // persisted trace URL returned by the demo persistence service (optional)
+  persistedUrl?: string;
+  // optional persisted record id returned by the persistence service
+  persistedId?: string;
 }
 
 // Risk center state
@@ -263,7 +277,7 @@ export interface GasEstimate {
 
 // Broadcast state tracking
 export interface BroadcastState {
-  status: 'not_sent' | 'submitted' | 'pending' | 'mined';
+  status: 'not_sent' | 'submitted' | 'pending' | 'mined' | 'blocked';
   transactionHash?: string;
   submittedAt?: Date;
   minedAt?: Date;
@@ -292,6 +306,12 @@ export interface ExecutionCenter {
   broadcastState: BroadcastState;
   onChainOutcome: OnChainOutcome;
   lastUpdated: Date;
+  // optional stored RPC payload / receipt for replaying network calls (demo/debug)
+  lastRpcPayload?: any;
+  // if a broadcast was blocked due to a human override, information is stored here
+  lastBlockedReason?: string;
+  blockedByOverrideUrl?: string;
+  blockedAt?: Date;
 }
 
 // Realized PnL tracking
@@ -303,6 +323,8 @@ export interface RealizedPnL {
   actualProfit: number;
   realizationTime: Date;
   status: 'completed' | 'partial' | 'failed';
+  txHash?: string;
+  exportUrl?: string;
 }
 
 // Portfolio position tracking
@@ -355,6 +377,9 @@ export interface SettlementCenter {
   repaymentStatuses: RepaymentStatus[];
   ledgerEntries: LedgerEntry[];
   lastUpdated: Date;
+  // last persisted ledger export URL (CSV/PDF) for judges
+  lastExportUrl?: string;
+  lastExportId?: string;
 }
 
 // Inference request (TEE input)
@@ -407,6 +432,26 @@ export interface ComputeCenter {
   traces: TraceLink[];
   overallHealth: 'green' | 'elevated' | 'blocked';
   lastUpdated: Date;
+  proofs?: Array<{
+    requestId: string;
+    algorithm: string;
+    signerIdentity: string;
+    publicKey: string;
+    signedAt: Date;
+    signature: string;
+    verificationSteps: string[];
+    artifactUrl?: string;
+    rawOutput: Record<string, any>;
+  }>;
+  // Signed artifacts produced by the TEE or signing service
+  signedArtifacts?: Array<{
+    requestId: string;
+    sourceOpportunityId?: string;
+    pipelineEventId?: string;
+    signedAt: Date;
+    signature: string;
+    artifactUrl?: string; // path where the signed artifact is persisted (server)
+  }>;
 }
 
 // Provider configuration (external dependencies)

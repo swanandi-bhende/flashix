@@ -35,16 +35,10 @@ export const Risk: React.FC = () => {
   };
 
   const handleEmergencyStop = () => {
-    triggerEmergencyStop(emergencyPrompt.reason, 'operator@flashix.com');
-    addActivity({
-      id: `emergency-${Date.now()}`,
-      type: 'risk_event',
-      timestamp: new Date(),
-      title: 'Emergency Stop Triggered',
-      description: emergencyPrompt.reason,
-      status: 'critical',
-    });
-    setEmergencyPrompt({ open: false, reason: '' });
+    (async () => {
+      await triggerEmergencyStop(emergencyPrompt.reason, 'operator@flashix.com');
+      setEmergencyPrompt({ open: false, reason: '' });
+    })();
   };
 
   const activeEmergency = riskCenter.overrides.some((o) => o.active && o.pausesTrading);
@@ -244,9 +238,14 @@ export const Risk: React.FC = () => {
               <p className="text-label-sm text-on-surface-variant">Last Override</p>
               {riskCenter.overrides.length > 0 ? (
                 <div className="mt-2">
-                  <p className="text-body-md">{riskCenter.overrides[riskCenter.overrides.length - 1].triggeredBy}</p>
-                  <p className="text-label-sm text-on-surface-variant">{new Date(riskCenter.overrides[riskCenter.overrides.length - 1].triggeredAt).toLocaleString()}</p>
-                  <p className="text-label-sm text-on-surface-variant mt-1">{riskCenter.overrides[riskCenter.overrides.length - 1].reason}</p>
+                    <p className="text-body-md">{riskCenter.overrides[riskCenter.overrides.length - 1].triggeredBy}</p>
+                    <p className="text-label-sm text-on-surface-variant">{new Date(riskCenter.overrides[riskCenter.overrides.length - 1].triggeredAt).toLocaleString()}</p>
+                    <p className="text-label-sm text-on-surface-variant mt-1">{riskCenter.overrides[riskCenter.overrides.length - 1].reason}</p>
+                    {riskCenter.overrides[riskCenter.overrides.length - 1].persistedUrl && (
+                      <p className="text-label-sm mt-2">
+                        Persisted: <a className="text-blue-600" href={riskCenter.overrides[riskCenter.overrides.length - 1].persistedUrl} target="_blank" rel="noreferrer">View record</a>
+                      </p>
+                    )}
                 </div>
               ) : (
                 <p className="text-body-md">No overrides</p>
@@ -260,6 +259,9 @@ export const Risk: React.FC = () => {
                   <div key={o.id} className="p-3 bg-white rounded border border-red-300">
                     <p className="text-label-md font-semibold text-red-900">{o.reason}</p>
                     <p className="text-label-sm text-red-700 mt-1">By {o.triggeredBy}</p>
+                    {o.persistedUrl && (
+                      <p className="text-label-sm text-on-surface-variant mt-2">Persisted: <a className="text-blue-600" href={o.persistedUrl} target="_blank" rel="noreferrer">View</a></p>
+                    )}
                     <button className="btn-secondary text-sm mt-2" onClick={() => acknowledgeOverride(o.id)}>
                       Clear Override
                     </button>

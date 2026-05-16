@@ -1,4 +1,4 @@
-import { SystemMetrics, ActivityEvent, Opportunity, RiskCenter, ExecutionCenter, BroadcastState, OnChainOutcome, SettlementCenter, MarketDataCenter, OracleFeedStatus, ComputeCenter, AdminCenter, Provider, AuditLogEntry, AuditActionType } from '@/types';
+import { SystemMetrics, ActivityEvent, PipelineState, Opportunity, RiskCenter, ExecutionCenter, BroadcastState, OnChainOutcome, SettlementCenter, MarketDataCenter, OracleFeedStatus, ComputeCenter, AdminCenter, Provider, AuditLogEntry, AuditActionType } from '@/types';
 interface DashboardStore {
     metrics: SystemMetrics;
     activities: ActivityEvent[];
@@ -19,7 +19,7 @@ interface DashboardStore {
     refreshData: () => Promise<void>;
     acknowledgeBreaker: (breakerId: string) => void;
     acknowledgeOverride: (overrideId: string) => void;
-    triggerEmergencyStop: (reason: string, by: string) => void;
+    triggerEmergencyStop: (reason: string, by: string) => Promise<void>;
     clearEmergencyStop: () => void;
     runSimulation: (executionId: string) => Promise<void>;
     broadcastTrade: (executionId: string) => Promise<void>;
@@ -27,6 +27,7 @@ interface DashboardStore {
     updateBroadcastState: (executionId: string, state: BroadcastState) => void;
     updateOnChainOutcome: (executionId: string, outcome: OnChainOutcome) => void;
     getExecution: (executionId: string) => ExecutionCenter;
+    simulateMempoolEvents: (count: number) => void;
     settlementCenter: SettlementCenter;
     closePosition: (positionId: string) => void;
     recordRepayment: (repaymentId: string, amount: number) => void;
@@ -35,13 +36,36 @@ interface DashboardStore {
         end: Date;
     }) => void;
     compareExpectedVsRealized: (tradeId: string) => void;
-    refreshFeeds: () => void;
+    refreshFeeds: () => Promise<void>;
     getFeedByName: (name: 'Pyth' | 'Chainlink' | 'Fallback') => OracleFeedStatus | undefined;
     computeCenter: ComputeCenter;
     verifyPayload: (requestId: string) => Promise<void>;
     replayInference: (requestId: string) => Promise<void>;
     viewTrace: (requestId: string) => void;
     inspectSignature: (requestId: string) => void;
+    runDemo: () => void;
+    runDemoAuto: () => Promise<void>;
+    pipelineDemo: {
+        itemId: string;
+        computeRequestId: string;
+        currentStage: PipelineState | 'discovery' | 'filtering' | 'inference' | 'reasoning' | 'execution' | 'settlement';
+        lifecycle: Array<{
+            id: string;
+            stage: 'discovery' | 'filtering' | 'inference' | 'reasoning' | 'execution' | 'settlement';
+            label: string;
+            timestamp: Date;
+            status: 'queued' | 'processing' | 'complete';
+            eventId?: string;
+            storageUrl?: string;
+        }>;
+        playbackIndex: number;
+        isPlaying: boolean;
+        lastPlaybackAt?: Date;
+    };
+    startPipelineDemo: () => Promise<void>;
+    stepPipelineDemo: () => Promise<void>;
+    replayPipelineDemo: () => void;
+    setPipelinePlaybackIndex: (index: number) => void;
     adminCenter: AdminCenter;
     editProvider: (providerId: string) => void;
     updateProvider: (providerId: string, config: Partial<Provider>) => Promise<void>;

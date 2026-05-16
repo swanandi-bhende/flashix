@@ -1,5 +1,7 @@
 Autonomous TEE-sealed AI agent that detects and executes flashloan-funded perpetual arbitrage across global DEXs using sealed inference on private mempool + liquidity snapshots.
 
+![CI](./.github/workflows/ci.yml)
+
 Problem Statement
 -----------------
 Perpetual swap arbitrage is frequently profitable but vulnerable to front-running, MEV extraction, and leakage of sensitive mempool and liquidity data. Traders and researchers need an architecture that ensures deterministic, private inference over sensitive market snapshots while enabling atomic execution for low-latency arbitrage.
@@ -22,6 +24,22 @@ Quick Start
 - Start mempool listener: `npm run mempool:listen`
 - Start agent: `./scripts/start_agent.sh` (or `python -m agent.flashloan_agent`)
 - Run unit tests: `./scripts/run_tests.sh`
+
+Demo Repro (for judges)
+------------------------
+To reproduce the demo story inside the running frontend:
+
+1. Start the frontend: `cd frontend && npm install && npm run dev` (or open the deployed URL).
+2. Open the app and navigate to the Dashboard.
+3. Click the `Run Demo` button in the Quick Navigation card — this seeds a deterministic demo scenario (OPP-9999).
+4. Click `Opportunities` → find `OPP-9999` → `Simulate` → `Approve` → open `Execution` → `Broadcast`.
+5. Go to `Settlement` to view the realized PnL and export the ledger.
+
+Exported Ledger & Evidence
+---------------------------
+When you generate an export from the `Settlement` page the system persists a CSV file (ledger export) and a demo lifecycle record to the demo persistence service. Judges can find a permalink to the latest export on the `Settlement` page ("Last Export"). The persisted files are stored under `data/public/` on the demo service and can be downloaded directly from the provided permalink for offline verification.
+
+This button is intended for judges to quickly reproduce the end-to-end flow without external dependencies. For full verification, see the `Compute` page which shows per-request validation and TEE-signed artifacts when available.
 
 Smart Contract Flow (0G Chain)
 ------------------------------

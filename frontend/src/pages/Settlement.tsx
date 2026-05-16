@@ -126,6 +126,12 @@ export const Settlement: React.FC = () => {
                 <p>Last updated</p>
                 <p className="text-body-md font-semibold text-primary">{new Date(settlement.lastUpdated).toLocaleTimeString()}</p>
               </div>
+              {settlement.lastExportUrl && (
+                <div className="rounded-lg bg-white border border-outline-variant/20 px-4 py-3">
+                  <p>Last Export</p>
+                  <p className="text-body-md font-semibold text-primary"><a href={settlement.lastExportUrl} target="_blank" rel="noreferrer">Open export</a></p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -206,7 +212,15 @@ export const Settlement: React.FC = () => {
               <tbody>
                 {settlement.realizedPnLList.map((pnl) => (
                   <tr key={pnl.tradeId} className="border-b border-outline-variant/20 hover:bg-surface-container transition-colors">
-                    <td className="py-4 px-4 text-body-md font-mono text-primary">{pnl.tradeId}</td>
+                      <td className="py-4 px-4 text-body-md font-mono text-primary">
+                        <div>{pnl.tradeId}</div>
+                        {pnl.txHash && (
+                          <div className="text-label-sm text-on-surface-variant mt-1">TX: <span className="font-mono text-sm">{pnl.txHash}</span></div>
+                        )}
+                        {pnl.exportUrl && (
+                          <div className="text-label-sm mt-1"><a className="text-blue-600" href={pnl.exportUrl} target="_blank" rel="noreferrer">Export</a></div>
+                        )}
+                      </td>
                     <td className="py-4 px-4 text-body-md">{pnl.symbol}</td>
                     <td className="py-4 px-4 text-right text-label-md">${pnl.plannedProfit.toLocaleString()}</td>
                     <td className="py-4 px-4 text-right text-label-md text-red-600">-${pnl.actualGasCost}</td>
