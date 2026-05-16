@@ -16,6 +16,9 @@ export const Execution: React.FC = () => {
   const [simulating, setSimulating] = useState(false);
   const [broadcasting, setBroadcasting] = useState(false);
   const [copiedTx, setCopiedTx] = useState(false);
+  const [showRpcModal, setShowRpcModal] = useState(false);
+  const [replayEndpoint, setReplayEndpoint] = useState('https://rpc.ankr.com/eth_goerli');
+  const [replayResponse, setReplayResponse] = useState<string | null>(null);
 
   const getStateColor = (state: typeof execution.currentState) => {
     switch (state) {
@@ -328,6 +331,103 @@ export const Execution: React.FC = () => {
             {copiedTx && (
               <p className="text-label-sm text-green-600">✓ Copied to clipboard</p>
             )}
+          </div>
+        )}
+
+        {/* Replay logged network call */}
+        {execution.lastRpcPayload && (
+          <div className="card border-2 border-gray-200">
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <p className="text-label-md text-on-surface-variant mb-1">Replay Logged Network Call</p>
+                <p className="text-body-sm text-on-surface-variant">View the RPC/receipt recorded during broadcast for replay or download.</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button onClick={() => setShowRpcModal(true)} className="btn-primary">View / Replay</button>
+                <button
+                  onClick={() => {
+                    // download the stored payload/receipt
+                    const blob = new Blob([JSON.stringify(execution.lastRpcPayload, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `rpc-replay-${execution.broadcastState.transactionHash || 'demo'}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    URL.revokeObjectURL(url);
+                  }}
+                  className="btn-secondary"
+                >
+                  Download Receipt
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {showRpcModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+            <div className="bg-white rounded-lg w-11/12 md:w-2/3 p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-headline-sm font-serif">RPC Payload & Receipt</h3>
+                <button onClick={() => setShowRpcModal(false)} className="btn-secondary">Close</button>
+              </div>
+              <div className="mb-4">
+                <label className="text-label-sm">Replay Endpoint</label>
+                <input className="w-full p-2 border rounded mt-1 mb-3" value={replayEndpoint} onChange={(e) => setReplayEndpoint(e.target.value)} />
+                <pre className="whitespace-pre-wrap text-sm bg-gray-100 p-3 rounded">{JSON.stringify(execution.lastRpcPayload, null, 2)}</pre>
+                {replayResponse && (
+                  <div className="mt-3 p-2 bg-gray-50 border rounded text-xs">
+                    <p className="font-semibold">Replay Response</p>
+                    <pre className="max-h-40 overflow-auto">{replayResponse}</pre>
+                  </div>
+                )}
+              </div>
+              <div className="flex gap-2 justify-end">
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(JSON.stringify(execution.lastRpcPayload, null, 2));
+                  }}
+                  className="btn-secondary"
+                >
+                  Copy Payload
+                </button>
+                <button
+                  onClick={() => {
+                    const blob = new Blob([JSON.stringify(execution.lastRpcPayload, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `rpc-replay-${execution.broadcastState.transactionHash || 'demo'}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    URL.revokeObjectURL(url);
+                  }}
+                  className="btn-primary"
+                >
+                  Download
+                </button>
+                <button
+                  onClick={async () => {
+                    try {
+                      setReplayResponse('Running...');
+                      const rpc = execution.lastRpcPayload?.rpc || execution.lastRpcPayload || execution.broadcastState.transactionHash;
+                      const body = rpc?.params ? rpc : execution.lastRpcPayload;
+                      const res = await fetch(replayEndpoint, { method: 'POST', body: JSON.stringify(body), headers: { 'Content-Type': 'application/json' } });
+                      const text = await res.text();
+                      setReplayResponse(text);
+                    } catch (err: any) {
+                      setReplayResponse(String(err));
+                    }
+                  }}
+                  className="btn-secondary"
+                >
+                  Replay Now
+                </button>
+              </div>
+            </div>
           </div>
         )}
 

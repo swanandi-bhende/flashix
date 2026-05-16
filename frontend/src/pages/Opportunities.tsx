@@ -12,6 +12,7 @@ export const Opportunities: React.FC = () => {
   const approve = useDashboardStore((s) => s.approveOpportunity);
   const reject = useDashboardStore((s) => s.rejectOpportunity);
   const addActivity = useDashboardStore((s) => s.addActivity);
+  const simulateMempoolEvents = useDashboardStore((s) => s.simulateMempoolEvents);
 
   const [simResult, setSimResult] = useState<{ id: string; result: string } | null>(null);
   const [traceView, setTraceView] = useState<{ id: string; trace: any[] } | null>(null);
@@ -98,7 +99,13 @@ export const Opportunities: React.FC = () => {
               <p className="text-label-md text-on-surface-variant uppercase tracking-wider mb-2">Decision flow</p>
               <h2 className="text-headline-md font-serif">Every candidate now keeps a visible action trail.</h2>
             </div>
-            <div className="text-label-md text-on-surface-variant">Open a row for the full decision screen and trace.</div>
+            <div className="flex items-center gap-3">
+              <div className="text-label-md text-on-surface-variant mr-4">Open a row for the full decision screen and trace.</div>
+              <div className="flex items-center gap-2">
+                <button className="btn-secondary" onClick={() => simulateMempoolEvents(3)}>Simulate 3 Mempool Events</button>
+                <button className="btn-secondary" onClick={() => simulateMempoolEvents(10)}>Simulate 10</button>
+              </div>
+            </div>
           </div>
         </div>
 

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDashboardStore } from '@/store';
 import StatusBadge from '@/components/StatusBadge';
 import Layout from '@/components/Layout';
@@ -18,9 +19,12 @@ import {
 } from 'lucide-react';
 
 export default function Compute() {
+  const navigate = useNavigate();
   const { computeCenter, verifyPayload, replayInference, viewTrace, inspectSignature } = useDashboardStore();
+  const pipelineDemo = useDashboardStore((s) => s.pipelineDemo);
   const [expandedRequest, setExpandedRequest] = useState<string | null>(null);
   const [selectedAction, setSelectedAction] = useState<{ type: 'verify' | 'replay' | 'trace' | 'signature'; requestId: string } | null>(null);
+  const [selectedProofRequestId, setSelectedProofRequestId] = useState<string | null>(null);
 
   const sortedRequests = [...computeCenter.inferenceRequests].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
 
@@ -29,6 +33,10 @@ export default function Compute() {
   const validatedRequests = computeCenter.validations.filter((v) => v.status === 'passed').length;
   const verifiedSignatures = computeCenter.signatures.filter((s) => s.signatureStatus === 'verified').length;
   const linkedTraces = computeCenter.traces.length;
+  const linkedDemoRequest = computeCenter.inferenceRequests.find((request) => request.id === pipelineDemo.computeRequestId);
+  const linkedDemoTrace = computeCenter.traces.find((trace) => trace.requestId === pipelineDemo.computeRequestId);
+  const linkedDemoArtifact = computeCenter.signedArtifacts?.find((artifact) => artifact.requestId === pipelineDemo.computeRequestId);
+  const selectedProof = computeCenter.proofs?.find((proof) => proof.requestId === (selectedProofRequestId ?? pipelineDemo.computeRequestId));
 
   const healthColors = {
     green: 'text-green-700 bg-green-50 border-green-200',
@@ -63,6 +71,70 @@ export default function Compute() {
         <div className="border-b border-gray-200 pb-6">
           <h1 className="text-3xl font-serif font-bold text-gray-900 mb-2">Compute & TEE</h1>
           <p className="text-gray-600">Central inspection screen for inference requests, validation, signatures, and trace linking</p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="border rounded-lg p-4 bg-white shadow-sm">
+            <div className="flex items-center justify-between gap-3 mb-3">
+              <div>
+                <p className="text-xs uppercase tracking-wider text-gray-500">Pipeline-linked compute proof</p>
+                <h2 className="text-lg font-semibold text-gray-900">Same item, side by side</h2>
+              </div>
+              <button className="btn-secondary text-sm" onClick={() => navigate('/pipeline')}>
+                Open Pipeline
+              </button>
+            </div>
+            <div className="space-y-3 text-sm">
+              <div className="rounded-lg bg-gray-50 border border-gray-200 p-3">
+                <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Demo item</p>
+                <p className="font-mono text-blue-700">{pipelineDemo.itemId}</p>
+                <p className="text-gray-600 mt-1">Current stage: {pipelineDemo.currentStage}</p>
+                <p className="text-gray-600">Playback step: {pipelineDemo.playbackIndex + 1} / {pipelineDemo.lifecycle.length}</p>
+              </div>
+              <div className="rounded-lg bg-gray-50 border border-gray-200 p-3">
+                <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Pipeline trace</p>
+                {linkedDemoTrace ? (
+                  <>
+                    <p className="font-semibold text-gray-900">{linkedDemoTrace.traceId}</p>
+                    <p className="text-gray-600">{linkedDemoTrace.linkedStage}</p>
+                    <p className="font-mono text-gray-700 break-all">{linkedDemoTrace.requestId}</p>
+                  </>
+                ) : (
+                  <p className="text-gray-600">Run the pipeline demo to create a linked trace.</p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="border rounded-lg p-4 bg-white shadow-sm">
+            <div className="flex items-center justify-between gap-3 mb-3">
+              <div>
+                <p className="text-xs uppercase tracking-wider text-gray-500">TEE artifact</p>
+                <h2 className="text-lg font-semibold text-gray-900">Signed proof for the same item</h2>
+              </div>
+              {linkedDemoArtifact?.artifactUrl && (
+                <a className="btn-secondary text-sm" href={linkedDemoArtifact.artifactUrl} target="_blank" rel="noreferrer">
+                  View artifact
+                </a>
+              )}
+            </div>
+            <div className="space-y-3 text-sm">
+              <div className="rounded-lg bg-gray-50 border border-gray-200 p-3">
+                <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Request ID</p>
+                <p className="font-mono text-blue-700">{pipelineDemo.computeRequestId}</p>
+                <p className="text-gray-600 mt-1">Source opportunity: {linkedDemoArtifact?.sourceOpportunityId ?? pipelineDemo.itemId}</p>
+                <p className="text-gray-600">TEE request status: {linkedDemoRequest?.status ?? 'not created yet'}</p>
+              </div>
+              <div className="rounded-lg bg-gray-50 border border-gray-200 p-3">
+                <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Signature</p>
+                <p className="font-mono break-all text-gray-900">{linkedDemoArtifact?.signature ?? 'Waiting for TEE signature'}</p>
+                <p className="text-gray-600 mt-1">Pipeline event: {linkedDemoArtifact?.pipelineEventId ?? 'Not linked yet'}</p>
+                <button className="btn-secondary mt-3 text-sm" onClick={() => setSelectedProofRequestId(pipelineDemo.computeRequestId)}>
+                  Show proof
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Health Summary - Four Key Questions */}
@@ -273,6 +345,13 @@ export default function Compute() {
                     <RefreshCw className="w-4 h-4" />
                     Verify Now
                   </button>
+                  <button
+                    onClick={() => setSelectedProofRequestId(validation.requestId)}
+                    className="w-full mt-2 btn-secondary flex items-center justify-center gap-2 text-sm"
+                  >
+                    <Shield className="w-4 h-4" />
+                    Show proof
+                  </button>
                 </div>
               );
             })}
@@ -472,6 +551,66 @@ export default function Compute() {
               >
                 Close
               </button>
+            </div>
+          </div>
+        )}
+
+        {/* Proof Modal */}
+        {selectedProof && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg shadow-lg max-w-3xl w-full mx-4 p-6">
+              <div className="flex items-center justify-between gap-4 mb-4">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">TEE Proof</h3>
+                  <p className="text-sm text-gray-600">Signed output and verification details for {selectedProof.requestId}</p>
+                </div>
+                <button className="btn-secondary" onClick={() => setSelectedProofRequestId(null)}>
+                  Close
+                </button>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mb-4">
+                <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
+                  <p className="text-xs uppercase tracking-wider text-gray-500 mb-1">Algorithm</p>
+                  <p className="font-semibold text-gray-900">{selectedProof.algorithm}</p>
+                </div>
+                <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
+                  <p className="text-xs uppercase tracking-wider text-gray-500 mb-1">Signer identity</p>
+                  <p className="font-semibold text-gray-900 break-all">{selectedProof.signerIdentity}</p>
+                </div>
+                <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
+                  <p className="text-xs uppercase tracking-wider text-gray-500 mb-1">Public key</p>
+                  <p className="font-mono text-gray-900 break-all">{selectedProof.publicKey}</p>
+                </div>
+                <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
+                  <p className="text-xs uppercase tracking-wider text-gray-500 mb-1">Signed at</p>
+                  <p className="font-semibold text-gray-900">{new Date(selectedProof.signedAt).toLocaleString()}</p>
+                </div>
+              </div>
+              <div className="rounded-lg border border-gray-200 bg-white p-3 mb-4">
+                <p className="text-xs uppercase tracking-wider text-gray-500 mb-2">Verification steps</p>
+                <ol className="list-decimal pl-5 space-y-1 text-sm text-gray-700">
+                  {selectedProof.verificationSteps.map((step) => (
+                    <li key={step}>{step}</li>
+                  ))}
+                </ol>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs uppercase tracking-wider text-gray-500 mb-1">Signature</p>
+                  <pre className="bg-gray-50 border border-gray-200 rounded p-3 text-xs overflow-auto max-h-40">{selectedProof.signature}</pre>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-wider text-gray-500 mb-1">Raw signed output</p>
+                  <pre className="bg-gray-50 border border-gray-200 rounded p-3 text-xs overflow-auto max-h-40">{JSON.stringify(selectedProof.rawOutput, null, 2)}</pre>
+                </div>
+              </div>
+              {selectedProof.artifactUrl && (
+                <div className="mt-4">
+                  <a href={selectedProof.artifactUrl} target="_blank" rel="noreferrer" className="text-primary underline break-all text-sm">
+                    {selectedProof.artifactUrl}
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         )}

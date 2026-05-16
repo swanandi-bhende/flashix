@@ -151,6 +151,16 @@ export interface MarketDataCenter {
     comparison: MarketComparison;
     fallbackEvents: MarketFallbackEvent[];
     refreshedAt: Date;
+    refreshCycle: number;
+    latestSnapshot?: {
+        id: string;
+        sourceName: 'Pyth' | 'Chainlink' | 'Fallback' | 'CoinGecko';
+        sourceUrl?: string;
+        logUrl?: string;
+        takenAt: Date;
+        rawPayload: Record<string, any>;
+        executionCheckPayload: Record<string, any>;
+    };
 }
 export interface CircuitBreaker {
     id: string;
@@ -188,6 +198,8 @@ export interface HumanOverride {
     reason: string;
     active: boolean;
     pausesTrading: boolean;
+    persistedUrl?: string;
+    persistedId?: string;
 }
 export interface RiskCenter {
     overallStatus: 'green' | 'elevated' | 'blocked' | 'emergency';
@@ -218,7 +230,7 @@ export interface GasEstimate {
     remainsProfitable: boolean;
 }
 export interface BroadcastState {
-    status: 'not_sent' | 'submitted' | 'pending' | 'mined';
+    status: 'not_sent' | 'submitted' | 'pending' | 'mined' | 'blocked';
     transactionHash?: string;
     submittedAt?: Date;
     minedAt?: Date;
@@ -243,6 +255,10 @@ export interface ExecutionCenter {
     broadcastState: BroadcastState;
     onChainOutcome: OnChainOutcome;
     lastUpdated: Date;
+    lastRpcPayload?: any;
+    lastBlockedReason?: string;
+    blockedByOverrideUrl?: string;
+    blockedAt?: Date;
 }
 export interface RealizedPnL {
     tradeId: string;
@@ -252,6 +268,8 @@ export interface RealizedPnL {
     actualProfit: number;
     realizationTime: Date;
     status: 'completed' | 'partial' | 'failed';
+    txHash?: string;
+    exportUrl?: string;
 }
 export interface PortfolioPosition {
     id: string;
@@ -296,6 +314,8 @@ export interface SettlementCenter {
     repaymentStatuses: RepaymentStatus[];
     ledgerEntries: LedgerEntry[];
     lastUpdated: Date;
+    lastExportUrl?: string;
+    lastExportId?: string;
 }
 export interface InferenceRequest {
     id: string;
@@ -338,6 +358,25 @@ export interface ComputeCenter {
     traces: TraceLink[];
     overallHealth: 'green' | 'elevated' | 'blocked';
     lastUpdated: Date;
+    proofs?: Array<{
+        requestId: string;
+        algorithm: string;
+        signerIdentity: string;
+        publicKey: string;
+        signedAt: Date;
+        signature: string;
+        verificationSteps: string[];
+        artifactUrl?: string;
+        rawOutput: Record<string, any>;
+    }>;
+    signedArtifacts?: Array<{
+        requestId: string;
+        sourceOpportunityId?: string;
+        pipelineEventId?: string;
+        signedAt: Date;
+        signature: string;
+        artifactUrl?: string;
+    }>;
 }
 export interface Provider {
     id: string;

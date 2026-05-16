@@ -11,7 +11,7 @@ export const Risk: React.FC = () => {
   const acknowledgeBreaker = useDashboardStore((s) => s.acknowledgeBreaker);
   const acknowledgeOverride = useDashboardStore((s) => s.acknowledgeOverride);
   const triggerEmergencyStop = useDashboardStore((s) => s.triggerEmergencyStop);
-  const addActivity = useDashboardStore((s) => s.addActivity);
+  
 
   const [emergencyPrompt, setEmergencyPrompt] = useState<{ open: boolean; reason: string }>({ open: false, reason: '' });
 

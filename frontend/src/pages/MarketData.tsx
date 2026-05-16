@@ -18,6 +18,7 @@ export const MarketData: React.FC = () => {
   const refreshFeeds = useDashboardStore((s) => s.refreshFeeds);
 
   const [selectedFeedName, setSelectedFeedName] = useState<'Pyth' | 'Chainlink' | 'Fallback'>('Pyth');
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const selectedFeed = marketData.feeds.find((feed) => feed.name === selectedFeedName) ?? marketData.feeds[0];
 
@@ -26,8 +27,10 @@ export const MarketData: React.FC = () => {
     scrollToSection('feed-breakdown');
   };
 
-  const handleRefresh = () => {
-    refreshFeeds();
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await refreshFeeds();
+    setIsRefreshing(false);
     setSelectedFeedName('Pyth');
   };
 
@@ -72,12 +75,13 @@ export const MarketData: React.FC = () => {
                 <span>Freshest price age: {marketData.summary.freshestPriceAgeSeconds}s</span>
                 <span>Freshness limit: {marketData.summary.acceptableFreshnessSeconds}s</span>
                 <span>Refreshed at: {new Date(marketData.refreshedAt).toLocaleTimeString()}</span>
+                <span>Refresh cycle: #{marketData.refreshCycle}</span>
               </div>
             </div>
             <div className="flex flex-wrap gap-3">
-              <button onClick={handleRefresh} className="btn-primary inline-flex items-center gap-2">
-                <RefreshCw className="w-4 h-4" />
-                Refresh Feeds
+              <button onClick={handleRefresh} className="btn-primary inline-flex items-center gap-2" disabled={isRefreshing}>
+                <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+                {isRefreshing ? 'Refreshing...' : 'Refresh Feeds'}
               </button>
               <button onClick={() => scrollToSection('feed-breakdown')} className="btn-secondary inline-flex items-center gap-2">
                 View Source Breakdown
@@ -106,6 +110,56 @@ export const MarketData: React.FC = () => {
             <p className="text-label-md text-on-surface-variant mb-2">Trust for execution?</p>
             <StatusBadge status={marketData.summary.trustForExecution ? 'healthy' : 'critical'} label={marketData.summary.trustForExecution ? 'TRUSTED' : 'UNTRUSTED'} />
             <p className="text-label-sm text-on-surface-variant mt-2">{marketData.summary.trustForExecution ? 'Safe to use for execution checks' : 'Hold execution until the feed recovers'}</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="card border-2 border-indigo-200">
+            <div className="flex items-center gap-2 mb-4">
+              <Database className="w-5 h-5 text-indigo-600" />
+              <h2 className="text-headline-sm font-serif">Snapshot source</h2>
+            </div>
+            <div className="space-y-3 text-body-md">
+              <div className="flex items-center justify-between gap-4">
+                <span className="text-on-surface-variant">Snapshot ID</span>
+                <span className="font-mono text-primary break-all">{marketData.latestSnapshot?.id ?? 'snapshot-unavailable'}</span>
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <span className="text-on-surface-variant">Source</span>
+                <span>{marketData.latestSnapshot?.sourceName ?? 'n/a'}</span>
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <span className="text-on-surface-variant">Source link</span>
+                {marketData.latestSnapshot?.sourceUrl ? (
+                  <a className="text-primary underline break-all" href={marketData.latestSnapshot.sourceUrl} target="_blank" rel="noreferrer">
+                    {marketData.latestSnapshot.sourceUrl}
+                  </a>
+                ) : (
+                  <span>n/a</span>
+                )}
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <span className="text-on-surface-variant">Persisted log</span>
+                {marketData.latestSnapshot?.logUrl ? (
+                  <a className="text-primary underline break-all" href={marketData.latestSnapshot.logUrl} target="_blank" rel="noreferrer">
+                    {marketData.latestSnapshot.logUrl}
+                  </a>
+                ) : (
+                  <span className="text-yellow-700">Refresh once to persist</span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="card border-2 border-green-200">
+            <div className="flex items-center gap-2 mb-4">
+              <Activity className="w-5 h-5 text-green-600" />
+              <h2 className="text-headline-sm font-serif">Execution check payload</h2>
+            </div>
+            <p className="text-body-sm text-on-surface-variant mb-3">Deterministic payload used to decide whether the market feed is safe for execution.</p>
+            <pre className="bg-surface-container-low rounded-lg border border-outline-variant/20 p-3 text-xs overflow-auto max-h-56">
+              {JSON.stringify(marketData.latestSnapshot?.executionCheckPayload ?? { refreshCycle: marketData.refreshCycle }, null, 2)}
+            </pre>
           </div>
         </div>
 
@@ -204,10 +258,11 @@ export const MarketData: React.FC = () => {
             <div className="mb-4 rounded-lg border border-primary/15 bg-primary/5 px-4 py-3 text-body-sm text-on-surface-variant">
               Focused source: <span className="font-semibold text-primary">{selectedFeed.name}</span> with {selectedFeed.stalenessSeconds}s staleness and {selectedFeed.failureCount} recent failure(s).
             </div>
-              <div className="mb-4 flex flex-wrap gap-2 text-label-sm text-on-surface-variant">
-                <span className="rounded-full bg-white border border-outline-variant/30 px-3 py-1">Cycle: {marketData.summary.message.includes('Refresh cycle') ? marketData.summary.message.match(/#(\d+)/)?.[1] ?? '0' : '0'}</span>
-                <span className="rounded-full bg-white border border-outline-variant/30 px-3 py-1">Source freshness updates on refresh</span>
-              </div>
+            <div className="mb-4 flex flex-wrap gap-2 text-label-sm text-on-surface-variant">
+              <span className="rounded-full bg-white border border-outline-variant/30 px-3 py-1">Cycle: #{marketData.refreshCycle}</span>
+              <span className="rounded-full bg-white border border-outline-variant/30 px-3 py-1">Payload updates on refresh</span>
+              <span className="rounded-full bg-white border border-outline-variant/30 px-3 py-1">Source log: {marketData.latestSnapshot?.logUrl ? 'persisted' : 'pending'}</span>
+            </div>
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 {marketData.feeds.map((feed) => (
@@ -254,6 +309,23 @@ export const MarketData: React.FC = () => {
                     {selectedFeed.warning}
                   </div>
                 )}
+              </div>
+
+              <div className="p-4 bg-surface-container rounded-lg border border-outline-variant/20">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <p className="text-label-md text-on-surface-variant uppercase tracking-wider">Raw payload for execution check</p>
+                    <h3 className="text-headline-sm font-serif">Cycle #{marketData.refreshCycle}</h3>
+                  </div>
+                  {marketData.latestSnapshot?.sourceUrl && (
+                    <a href={marketData.latestSnapshot.sourceUrl} target="_blank" rel="noreferrer" className="text-primary underline text-sm">
+                      Open source
+                    </a>
+                  )}
+                </div>
+                <pre className="bg-white p-3 rounded border border-gray-200 text-xs overflow-auto max-h-56">
+                  {JSON.stringify(marketData.latestSnapshot?.rawPayload ?? { feeds: marketData.feeds, comparison: marketData.comparison }, null, 2)}
+                </pre>
               </div>
             </div>
           </div>

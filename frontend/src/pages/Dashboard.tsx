@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Zap,
@@ -13,7 +13,10 @@ import { useDashboardStore } from '@/store';
 
 export const Dashboard: React.FC = () => {
   const navigate = useNavigate();
-  const { metrics, activities, loading, refreshData } = useDashboardStore();
+  const { metrics, activities, loading, refreshData, runDemo, runDemoAuto } = useDashboardStore();
+
+  const [showTour, setShowTour] = useState(false);
+  const [tourStep, setTourStep] = useState(0);
 
   useEffect(() => {
     // Auto-refresh every 30 seconds
@@ -204,7 +207,14 @@ export const Dashboard: React.FC = () => {
         {/* Primary action buttons */}
         <div className="bg-white rounded-lg p-6 border border-outline-variant/20 shadow-elevation-1">
           <h3 className="text-headline-sm font-serif mb-6 text-primary">Quick Navigation</h3>
-          <ActionButtons actions={actions} />
+          <div className="flex items-center justify-between">
+            <ActionButtons actions={actions} />
+            <div className="ml-4 flex items-center gap-2">
+              <button className="btn-secondary" onClick={() => setShowTour(true)}>Guided Tour</button>
+              <button className="btn-primary" onClick={() => { runDemo(); setShowTour(false); }}>Run Demo</button>
+              <button className="btn-primary" onClick={async () => { await runDemoAuto(); setShowTour(false); }}>Run Full Demo</button>
+            </div>
+          </div>
         </div>
 
         {/* Recent activity section */}
@@ -237,6 +247,34 @@ export const Dashboard: React.FC = () => {
           </div>
         </div>
       </div>
+      {/* Guided tour modal */}
+      {showTour && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
+          <div className="card w-[560px] p-6">
+            <h3 className="text-headline-sm font-serif mb-3">Quick Demo Tour</h3>
+            <div className="text-body-md mb-4">
+              {tourStep === 0 && <p>Step 1: Open <strong>Opportunities</strong> and locate the seeded demo item <em>OPP-9999</em>.</p>}
+              {tourStep === 1 && <p>Step 2: Click <strong>Simulate</strong> to run a pre-flight check, then <strong>Approve</strong> to send to execution.</p>}
+              {tourStep === 2 && <p>Step 3: Visit <strong>Execution</strong> to broadcast the tx, then <strong>Settlement</strong> to review the realized PnL and ledger export.</p>}
+            </div>
+            <div className="flex justify-between">
+              <div>
+                <button className="btn-secondary mr-2" onClick={() => { if (tourStep > 0) setTourStep(tourStep - 1); else setShowTour(false); }}>
+                  {tourStep > 0 ? 'Back' : 'Close'}
+                </button>
+              </div>
+              <div className="flex items-center gap-2">
+                <button className="btn-secondary" onClick={() => { runDemo(); setShowTour(false); }}>Skip and Run Demo</button>
+                {tourStep < 2 ? (
+                  <button className="btn-primary" onClick={() => setTourStep(tourStep + 1)}>Next</button>
+                ) : (
+                  <button className="btn-primary" onClick={() => { runDemo(); setShowTour(false); }}>Start Demo</button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 };

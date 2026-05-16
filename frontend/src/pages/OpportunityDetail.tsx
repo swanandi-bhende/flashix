@@ -68,7 +68,44 @@ export const OpportunityDetail: React.FC = () => {
             <p className="text-body-md text-on-surface-variant">Decision screen — evaluate the trade and choose an action</p>
           </div>
           <div>
-            <StatusBadge status={opp.status === 'pending' ? 'healthy' : opp.status === 'executing' ? 'warning' : 'critical'} label={opp.status} />
+              <div className="flex items-center gap-3">
+                <StatusBadge status={opp.status === 'pending' ? 'healthy' : opp.status === 'executing' ? 'warning' : 'critical'} label={opp.status} />
+                <button
+                  className="btn-secondary"
+                  onClick={async () => {
+                    // create decision trace export JSON and sign with SHA-256 for demo proof
+                    const traceExport = {
+                      id: opp.id,
+                      exportedAt: new Date().toISOString(),
+                      trace: opp.trace ?? [],
+                      decisionSnapshot: {
+                        expectedProfit: opp.expectedProfit,
+                        confidenceScore: opp.confidenceScore,
+                        status: opp.status,
+                      },
+                      rawPayload: opp.rawPayload,
+                    };
+                    const json = JSON.stringify(traceExport);
+                    const encoder = new TextEncoder();
+                    const data = encoder.encode(json);
+                    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+                    const hashArray = Array.from(new Uint8Array(hashBuffer));
+                    const signature = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+                    const final = { ...traceExport, signature: `sha256:${signature}` };
+                    const blob = new Blob([JSON.stringify(final, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `decision-trace-${opp.id}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    URL.revokeObjectURL(url);
+                  }}
+                >
+                  Export Decision Trace
+                </button>
+              </div>
           </div>
         </div>
 

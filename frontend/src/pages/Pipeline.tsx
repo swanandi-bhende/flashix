@@ -8,9 +8,13 @@ import {
   Search,
   Settings2,
   ShieldCheck,
+  Play,
+  Pause,
+  RotateCcw,
   type LucideIcon,
 } from 'lucide-react';
 import { Layout, StatusBadge } from '@/components';
+import { useDashboardStore } from '@/store';
 
 type PipelineStageKey = 'discovery' | 'filtering' | 'inference' | 'reasoning' | 'execution' | 'settlement';
 type PipelineStatus = 'healthy' | 'warning' | 'critical';
@@ -148,10 +152,15 @@ export const Pipeline: React.FC = () => {
   const navigate = useNavigate();
   const params = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
+  const pipelineDemo = useDashboardStore((s) => s.pipelineDemo);
+  const startPipelineDemo = useDashboardStore((s) => s.startPipelineDemo);
+  const replayPipelineDemo = useDashboardStore((s) => s.replayPipelineDemo);
+  const setPipelinePlaybackIndex = useDashboardStore((s) => s.setPipelinePlaybackIndex);
   const selectedStageKey = (params.stage as PipelineStageKey | undefined) ?? 'discovery';
-  const selectedItemId = searchParams.get('item') ?? sampleItems[0].id;
+  const selectedItemId = searchParams.get('item') ?? pipelineDemo.itemId ?? sampleItems[0].id;
 
   const [livePulse, setLivePulse] = useState(0);
+  const [isReplaying, setIsReplaying] = useState(false);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -161,9 +170,15 @@ export const Pipeline: React.FC = () => {
     return () => window.clearInterval(timer);
   }, []);
 
-  const selectedItem = sampleItems.find((item) => item.id === selectedItemId) ?? sampleItems[0];
-  const selectedStageIndex = stageOrder.indexOf(selectedItem.stage as PipelineStageKey);
-  const selectedStage = stageMeta[selectedStageKey] ?? stageMeta.discovery;
+  const liveDemoItem = {
+    id: pipelineDemo.itemId,
+    stage: pipelineDemo.currentStage as PipelineStageKey,
+    note: 'Live demo item driven by the pipeline runner',
+  };
+  const selectedItem = sampleItems.find((item) => item.id === selectedItemId) ?? liveDemoItem;
+  const activePipelineStage = (pipelineDemo.currentStage as PipelineStageKey) ?? (selectedItem.stage as PipelineStageKey);
+  const selectedStageIndex = stageOrder.indexOf(activePipelineStage);
+  const selectedStage = stageMeta[(params.stage as PipelineStageKey | undefined) ?? activePipelineStage] ?? stageMeta.discovery;
 
   const highlightedPath = useMemo(() => {
     return stageOrder.map((stageKey, index) => ({
@@ -196,6 +211,22 @@ export const Pipeline: React.FC = () => {
     });
   };
 
+  useEffect(() => {
+    if (!isReplaying) return;
+
+    const timer = window.setInterval(() => {
+      const nextIndex = Math.min(pipelineDemo.playbackIndex + 1, pipelineDemo.lifecycle.length - 1);
+      setPipelinePlaybackIndex(nextIndex);
+      if (nextIndex >= pipelineDemo.lifecycle.length - 1) {
+        setIsReplaying(false);
+      }
+    }, 1000);
+
+    return () => window.clearInterval(timer);
+  }, [isReplaying, pipelineDemo.lifecycle.length, pipelineDemo.playbackIndex, setPipelinePlaybackIndex]);
+
+  const currentPlaybackStep = pipelineDemo.lifecycle[pipelineDemo.playbackIndex] ?? pipelineDemo.lifecycle[0];
+
   return (
     <Layout>
       <div className="space-y-8">
@@ -211,6 +242,63 @@ export const Pipeline: React.FC = () => {
             <p className="text-body-md text-on-surface-variant">
               Live operational flow from discovery to settlement
             </p>
+          </div>
+        </div>
+
+        <div className="card border-2 border-primary/20 bg-primary/5 space-y-4">
+          <div className="flex items-start justify-between gap-4 flex-wrap">
+            <div>
+              <p className="text-label-md text-on-surface-variant uppercase tracking-[0.08em] mb-1">Pipeline demo runner</p>
+              <h2 className="text-headline-sm font-serif text-primary">Move one sample item through the full stack</h2>
+              <p className="text-body-md text-on-surface-variant mt-1">
+                The runner writes lifecycle events for {pipelineDemo.itemId} and persists each step to the trace store for judge replay.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <button className="btn-primary" onClick={() => void startPipelineDemo()}>
+                Run Pipeline Demo
+              </button>
+              <button
+                className="btn-secondary"
+                onClick={() => {
+                  replayPipelineDemo();
+                  setIsReplaying(true);
+                }}
+              >
+                <RotateCcw className="w-4 h-4 mr-2" />
+                Replay lifecycle
+              </button>
+              <button
+                className="btn-secondary"
+                onClick={() => setIsReplaying((value) => !value)}
+                disabled={pipelineDemo.lifecycle.length === 0}
+              >
+                {isReplaying ? <Pause className="w-4 h-4 mr-2" /> : <Play className="w-4 h-4 mr-2" />}
+                {isReplaying ? 'Pause replay' : 'Play replay'}
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="rounded-lg bg-white border border-outline-variant/20 p-4">
+              <p className="text-label-sm text-on-surface-variant">Current demo item</p>
+              <p className="mt-1 text-body-lg font-semibold text-on-surface">{pipelineDemo.itemId}</p>
+              <p className="text-label-sm text-on-surface-variant">Stage: {pipelineDemo.currentStage}</p>
+            </div>
+            <div className="rounded-lg bg-white border border-outline-variant/20 p-4">
+              <p className="text-label-sm text-on-surface-variant">Playback cursor</p>
+              <p className="mt-1 text-body-lg font-semibold text-on-surface">
+                {pipelineDemo.playbackIndex + 1} / {pipelineDemo.lifecycle.length}
+              </p>
+              <p className="text-label-sm text-on-surface-variant">{currentPlaybackStep?.timestamp.toLocaleString()}</p>
+            </div>
+            <div className="rounded-lg bg-white border border-outline-variant/20 p-4">
+              <p className="text-label-sm text-on-surface-variant">Last playback update</p>
+              <p className="mt-1 text-body-lg font-semibold text-on-surface">
+                {pipelineDemo.lastPlaybackAt ? pipelineDemo.lastPlaybackAt.toLocaleTimeString() : '—'}
+              </p>
+              <p className="text-label-sm text-on-surface-variant">Live event IDs are attached below</p>
+            </div>
           </div>
         </div>
 
@@ -284,6 +372,18 @@ export const Pipeline: React.FC = () => {
                             <p className="text-label-sm text-primary">Selected item is here</p>
                             <p className="mt-1 text-body-md text-on-surface">{selectedItem.id}</p>
                             <p className="text-label-sm text-on-surface-variant">Next: {stage.nextStage ? stageMeta[stage.nextStage].label : 'Complete'}</p>
+                          </div>
+                        )}
+
+                        {pipelineDemo.currentStage === stageKey && (
+                          <div className="rounded-lg border border-dashed border-primary/30 bg-white/70 p-3">
+                            <p className="text-label-sm text-primary">Live demo stage</p>
+                            <p className="mt-1 text-body-md text-on-surface">Event ID: {pipelineDemo.lifecycle[pipelineDemo.playbackIndex]?.eventId ?? pipelineDemo.lifecycle[stageOrder.indexOf(stageKey)]?.id}</p>
+                            <p className="text-label-sm text-on-surface-variant">
+                              {pipelineDemo.lifecycle[pipelineDemo.playbackIndex]?.storageUrl
+                                ? `Stored at ${pipelineDemo.lifecycle[pipelineDemo.playbackIndex]?.storageUrl}`
+                                : 'Waiting for persistence'}
+                            </p>
                           </div>
                         )}
                       </div>
@@ -395,6 +495,37 @@ export const Pipeline: React.FC = () => {
                     );
                   })}
                 </div>
+              </div>
+            </div>
+
+            <div className="card space-y-4">
+              <h2 className="text-headline-sm font-serif text-primary">Playback control</h2>
+              <p className="text-body-md text-on-surface-variant">
+                Replay a single item lifecycle with timestamps and the event IDs written to storage.
+              </p>
+              <div className="space-y-3 rounded-lg bg-surface-container-low p-4">
+                {pipelineDemo.lifecycle.map((step, index) => {
+                  const active = index === pipelineDemo.playbackIndex;
+                  return (
+                    <button
+                      key={step.id}
+                      onClick={() => setPipelinePlaybackIndex(index)}
+                      className={`w-full rounded-lg border px-3 py-2 text-left transition-colors ${active ? 'border-primary bg-primary/5' : 'border-outline-variant/20 bg-white hover:bg-surface-container'}`}
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <div>
+                          <p className="text-label-md text-primary capitalize">{step.stage}</p>
+                          <p className="text-label-sm text-on-surface-variant">{step.timestamp.toLocaleString()}</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-label-sm text-on-surface-variant">Event ID</p>
+                          <p className="text-body-sm text-on-surface break-all">{step.eventId ?? step.id}</p>
+                        </div>
+                      </div>
+                      {step.storageUrl && <p className="mt-2 text-label-sm text-primary break-all">{step.storageUrl}</p>}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
