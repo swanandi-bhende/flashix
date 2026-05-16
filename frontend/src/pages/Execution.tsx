@@ -105,6 +105,27 @@ export const Execution: React.FC = () => {
           </div>
         </div>
 
+        {/* 0G Integration Proof */}
+        <div className="card border-2">
+          <div className="p-3 flex items-center justify-between">
+            <div>
+              <p className="text-label-sm text-on-surface-variant">Proof of 0G integration</p>
+              <p className="text-body-md font-semibold">On-chain contracts deployed</p>
+            </div>
+            <div className="text-right text-sm">
+              <div>
+                <a className="text-blue-600 underline" href="https://chainscan-galileo.0g.ai/address/0xe6329A48C0D8E4152e8406dbe102078E1abC7484" target="_blank" rel="noreferrer">SignalValidator</a>
+              </div>
+              <div>
+                <a className="text-blue-600 underline" href="https://chainscan-galileo.0g.ai/address/0x69d998618c7AEA1224C4bc5898519613c86EE42d" target="_blank" rel="noreferrer">LendingPool</a>
+              </div>
+              <div>
+                <a className="text-blue-600 underline" href="https://chainscan-galileo.0g.ai/address/0xAa0e986143B144f5860C41c74552B67ca78b1EBB" target="_blank" rel="noreferrer">ArbitrageExecutor</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Current Execution State */}
         <div className={`card border-2 ${getStateColor(execution.currentState)}`}>
           <div className="flex items-start justify-between">

@@ -56,7 +56,7 @@ const config: HardhatUserConfig = {
     // 0G Chain Mainnet
     zgMainnet: {
       url: "https://evmrpc.0g.ai",
-      chainId: 16600,
+      chainId: 16661,
       accounts: DEPLOYER_ACCOUNTS,
       gasPrice: "auto",
     },

@@ -91,3 +91,9 @@ Submission for 0G APAC Hackathon 2026.
 - SignalValidator: 0xe6329A48C0D8E4152e8406dbe102078E1abC7484 — https://chainscan-galileo.0g.ai/address/0xe6329A48C0D8E4152e8406dbe102078E1abC7484
 - LendingPool: 0x69d998618c7AEA1224C4bc5898519613c86EE42d — https://chainscan-galileo.0g.ai/address/0x69d998618c7AEA1224C4bc5898519613c86EE42d
 - ArbitrageExecutor: 0xAa0e986143B144f5860C41c74552B67ca78b1EBB — https://chainscan-galileo.0g.ai/address/0xAa0e986143B144f5860C41c74552B67ca78b1EBB
+
+Proof of 0G integration (quick verifier)
+---------------------------------------
+The frontend surfaces deployed on-chain contracts as evidence of 0G integration. Open the app and navigate to the `Compute` or `Execution` pages — a small "Proof of 0G integration" card shows the contract addresses and links to ChainScan for on-chain inspection.
+
+If you'd like fresh contracts (not reused), run the deploy step with `REUSE_DEPLOYED_CONTRACTS=false` and re-run the deployment script. The UI and README will then reflect the newly deployed addresses.
