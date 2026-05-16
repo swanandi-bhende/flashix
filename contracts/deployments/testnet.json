@@ -4,35 +4,35 @@
   "deployedAt": "2026-05-10T00:17:35.313Z",
   "contracts": {
     "LendingPool": {
-      "address": "0x69d998618c7AEA1224C4bc5898519613c86EE42d",
+      "address": "0x4c580Fb35fBcc2A6D7223984B634ccE7EbE730Ed",
       "txHash": "0xea8f388e407fd799491038852f9b2751e638a89c67e8db5dc05136c8cde5f683",
       "blockNumber": 32478557,
       "gasUsed": "996161",
       "verified": false,
-      "explorerUrl": "https://chainscan-galileo.0g.ai/address/0x69d998618c7AEA1224C4bc5898519613c86EE42d",
+      "explorerUrl": "https://chainscan-galileo.0g.ai/address/0x4c580fb35fbcc2a6d7223984b634cce7ebe730ed",
       "verificationUrl": null
     },
     "SignalValidator": {
-      "address": "0xe6329A48C0D8E4152e8406dbe102078E1abC7484",
+      "address": "0x545CD17d890455040593e35018216C906221c371",
       "txHash": "0xb88a89c1ef143df9edb63a159fb306a7a5b3c7b8da84462fdc4d82ca6a3340a6",
       "blockNumber": 32478529,
       "gasUsed": "720357",
       "verified": false,
-      "explorerUrl": "https://chainscan-galileo.0g.ai/address/0xe6329A48C0D8E4152e8406dbe102078E1abC7484",
+      "explorerUrl": "https://chainscan-galileo.0g.ai/address/0x545cd17d890455040593e35018216c906221c371",
       "verificationUrl": null,
       "trustedSigner": "0x28FB61Dc27a37091f53C0c37b5026AdBbF5E1F46"
     },
     "ArbitrageExecutor": {
-      "address": "0xAa0e986143B144f5860C41c74552B67ca78b1EBB",
+      "address": "0x8A22F9af206fCC38d00c44DCa8B15555785b8a4a",
       "txHash": "0x61e20e49289ddfcba96e897b13d43214e0580c53b94a0be15fb800ffb59e1964",
       "blockNumber": 32478586,
       "gasUsed": "1203516",
       "verified": false,
-      "explorerUrl": "https://chainscan-galileo.0g.ai/address/0xAa0e986143B144f5860C41c74552B67ca78b1EBB",
+      "explorerUrl": "https://chainscan-galileo.0g.ai/address/0x8a22f9af206fcc38d00c44dca8b15555785b8a4a",
       "verificationUrl": null,
       "profitRecipient": "0x28FB61Dc27a37091f53C0c37b5026AdBbF5E1F46",
-      "lendingPool": "0x69d998618c7AEA1224C4bc5898519613c86EE42d",
-      "signalValidator": "0xe6329A48C0D8E4152e8406dbe102078E1abC7484"
+      "lendingPool": "0x4c580Fb35fBcc2A6D7223984B634ccE7EbE730Ed",
+      "signalValidator": "0x545CD17d890455040593e35018216C906221c371"
     }
   }
 }

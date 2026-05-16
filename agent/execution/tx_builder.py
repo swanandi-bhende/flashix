@@ -29,7 +29,7 @@ LENDING_POOL_ABI_PATH = "contracts/abi/LendingPool.json"
 ARBITRAGE_EXECUTOR_ABI_PATH = "contracts/abi/ArbitrageExecutor.json"
 
 # Deployed contract addresses on 0G Chain
-LENDING_POOL_ADDRESS = "0x69d998618c7AEA1224C4bc5898519613c86EE42d"
+LENDING_POOL_ADDRESS = "0x4c580Fb35fBcc2A6D7223984B634ccE7EbE730Ed"
 
 
 class TransactionBuilder:

@@ -114,13 +114,13 @@ export const Execution: React.FC = () => {
             </div>
             <div className="text-right text-sm">
               <div>
-                <a className="text-blue-600 underline" href="https://chainscan.0g.ai/address/0xe6329A48C0D8E4152e8406dbe102078E1abC7484" target="_blank" rel="noreferrer">SignalValidator</a>
+                <a className="text-blue-600 underline" href="https://chainscan.0g.ai/address/0x545cd17d890455040593e35018216c906221c371" target="_blank" rel="noreferrer">SignalValidator</a>
               </div>
               <div>
-                <a className="text-blue-600 underline" href="https://chainscan.0g.ai/address/0x69d998618c7AEA1224C4bc5898519613c86EE42d" target="_blank" rel="noreferrer">LendingPool</a>
+                <a className="text-blue-600 underline" href="https://chainscan.0g.ai/address/0x4c580fb35fbcc2a6d7223984b634cce7ebe730ed" target="_blank" rel="noreferrer">LendingPool</a>
               </div>
               <div>
-                <a className="text-blue-600 underline" href="https://chainscan.0g.ai/address/0xAa0e986143B144f5860C41c74552B67ca78b1EBB" target="_blank" rel="noreferrer">ArbitrageExecutor</a>
+                <a className="text-blue-600 underline" href="https://chainscan.0g.ai/address/0x8a22f9af206fcc38d00c44dca8b15555785b8a4a" target="_blank" rel="noreferrer">ArbitrageExecutor</a>
               </div>
             </div>
           </div>
