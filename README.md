@@ -1,99 +1,105 @@
-Autonomous TEE-sealed AI agent that detects and executes flashloan-funded perpetual arbitrage across global DEXs using sealed inference on private mempool + liquidity snapshots.
+# Flashix
 
-![CI](./.github/workflows/ci.yml)
+Autonomous TEE-sealed AI agent that detects, validates, and executes flashloan-funded arbitrage across global DEXs using private mempool ingestion, sealed inference, and on-chain settlement.
 
-Problem Statement
------------------
-Perpetual swap arbitrage is frequently profitable but vulnerable to front-running, MEV extraction, and leakage of sensitive mempool and liquidity data. Traders and researchers need an architecture that ensures deterministic, private inference over sensitive market snapshots while enabling atomic execution for low-latency arbitrage.
+## Live Demo
 
-Core Innovation
----------------
-- 0G Chain for atomic flashloan execution and deterministic on-chain settlement.
-- 0G Compute for deterministic sealed inference (TEE) preventing data leakage of private mempool and liquidity snapshots.
-- LangChain + Gemini as an autonomous reasoning layer that proposes, validates, and sequences arbitrage actions.
+Open the deployed app here: [https://flashix-mu.vercel.app/](https://flashix-mu.vercel.app/)
 
-System Architecture (high-level)
---------------------------------
-Flow: mempool listener → arbitrage detector → 0G Compute (sealed inference) → LangChain agent → on-chain execution (0G Chain) → settlement
+The deployed UI mirrors the local dashboard, opportunity queue, risk center, execution flow, settlement views, and compute proofs. Use the demo link for the fastest walkthrough, or run the app locally if you want to inspect logs and source behavior.
 
-Quick Start
------------
-- Clone the repo: `git clone https://github.com/swanandi-bhende/flashix.git && cd flashix`
-- Run the bootstrap script: `./setup.sh`
-- Copy `.env.example` → `.env.local` and fill secrets
-- Start mempool listener: `npm run mempool:listen`
-- Start agent: `./scripts/start_agent.sh` (or `python -m agent.flashloan_agent`)
-- Run unit tests: `./scripts/run_tests.sh`
+## Documentation
 
-Demo Repro (for judges)
-------------------------
-To reproduce the demo story inside the running frontend:
+- [Docs Index](docs/README.md)
+- [Setup Guide](docs/Setup.md)
+- [Interactive Demo Guide](docs/Demo.md)
+- [Architecture Guide](docs/ARCHITECTURE.md)
+- [0G Compute](docs/0G_Compute.md)
+- [0G Implementation](docs/0G_Implementation.md)
+- [Deploy](docs/Deploy.md)
+- [Features](docs/Features.md)
+- [Security](docs/Security.md)
+- [Tests and Verification](docs/Tests.md)
+- [Troubleshooting](docs/Troubleshooting.md)
 
-1. Start the frontend: `cd frontend && npm install && npm run dev` (or open the deployed URL).
-2. Open the app and navigate to the Dashboard.
-3. Click the `Run Demo` button in the Quick Navigation card — this seeds a deterministic demo scenario (OPP-9999).
-4. Click `Opportunities` → find `OPP-9999` → `Simulate` → `Approve` → open `Execution` → `Broadcast`.
-5. Go to `Settlement` to view the realized PnL and export the ledger.
+## What Flashix Does
 
-Exported Ledger & Evidence
----------------------------
-When you generate an export from the `Settlement` page the system persists a CSV file (ledger export) and a demo lifecycle record to the demo persistence service. Judges can find a permalink to the latest export on the `Settlement` page ("Last Export"). The persisted files are stored under `data/public/` on the demo service and can be downloaded directly from the provided permalink for offline verification.
+Flashix is built around a simple but strict pipeline:
 
-This button is intended for judges to quickly reproduce the end-to-end flow without external dependencies. For full verification, see the `Compute` page which shows per-request validation and TEE-signed artifacts when available.
+1. Ingest private or near-real-time market and mempool signals.
+2. Rank opportunities with deterministic filters, cost checks, and risk limits.
+3. Send the request through sealed compute / reasoning so sensitive inputs are not exposed unnecessarily.
+4. Approve or reject candidates in the opportunities queue.
+5. Simulate execution before broadcast.
+6. Broadcast the winning trade and record settlement evidence.
+7. Persist the lifecycle so operators can audit every step later.
 
-Smart Contract Flow (0G Chain)
-------------------------------
-- Hardhat project: `contracts/`
-- Compile: `cd contracts && npx hardhat compile`
-- Test: `npx hardhat test`
-- Coverage: `npx hardhat coverage`
-- Deploy to 0G testnet: `npx hardhat run scripts/deploy_all.ts --network zgTestnet`
-- Verify deployment health: `npx hardhat run scripts/verify_deployment.ts --network zgTestnet`
-- Verify source code: `npx hardhat verify --network zgTestnet ...`
+The UI exposes that flow directly through the following pages:
 
-Deployed Contracts (Testnet)
-----------------------------
-**0G Chain Galileo Testnet (Chain ID: 16602)**
+- Dashboard: system overview, health metrics, and demo launch controls.
+- Pipeline: lifecycle stages and playback of the seeded demo item.
+- Opportunities: live queue with simulate, approve, reject, and trace actions.
+- Risk: breakers, overrides, and position-level risk controls.
+- Execution: pre-flight simulation, gas analysis, on-chain broadcast, and proof links.
+- Settlement: realized and unrealized PnL, open positions, repayment tracking, and exports.
+- Market Data: oracle health, freshness, and fallback reliability.
+- Compute: TEE proof inspection, signature verification, and linked traces.
 
-- **LendingPool**: `0x69d998618c7AEA1224C4bc5898519613c86EE42d`
-  - Deployed: Block 32478557, Tx `0xea8f388e407fd799491038852f9b2751e638a89c67e8db5dc05136c8cde5f683`
-  - Explorer: https://chainscan.0g.ai/address/0x69d998618c7AEA1224C4bc5898519613c86EE42d
-  - Gas used: 996,161
+## Quick Start
 
-- **SignalValidator**: `0xe6329A48C0D8E4152e8406dbe102078E1abC7484`
-  - Deployed: Block 32478529, Tx `0xb88a89c1ef143df9edb63a159fb306a7a5b3c7b8da84462fdc4d82ca6a3340a6`
-  - Explorer: https://chainscan.0g.ai/address/0xe6329A48C0D8E4152e8406dbe102078E1abC7484
-  - Gas used: 720,357
+```bash
+git clone https://github.com/swanandi-bhende/flashix.git
+cd flashix
+./setup.sh
+```
 
-- **ArbitrageExecutor**: `0xAa0e986143B144f5860C41c74552B67ca78b1EBB`
-  - Deployed: Block 32478586, Tx `0x61e20e49289ddfcba96e897b13d43214e0580c53b94a0be15fb800ffb59e1964`
-  - Explorer: https://chainscan.0g.ai/address/0xAa0e986143B144f5860C41c74552B67ca78b1EBB
-  - Gas used: 1,203,516
+If you prefer the manual path:
 
-**Verification Status:**
-- All contracts deployed successfully and callable on 0G Chain testnet
-- Source code submission on ChainScan currently returns a compiler error for the fresh deployment
-- Health check passed (all state variables verified)
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+pip install -r requirements-dev.txt
+cd frontend
+npm install
+cd ..
+```
 
-Contributing
-------------
-See CONTRIBUTING.md for development guidelines, code style, testing, and PR workflow.
+Start the local services:
 
-Hackathon Resources
--------------------
-- 0G docs: https://0g.ai/docs
-- HackQuest portal: https://hackquest.example.com
-# flashix
-Submission for 0G APAC Hackathon 2026.
+```bash
+python3 scripts/tee_service.py
+source .venv/bin/activate
+python -m agent.backend_app
+npm --prefix frontend run dev
+```
+
+Then open the deployed app at [https://flashix-mu.vercel.app/](https://flashix-mu.vercel.app/) or the local frontend URL printed by Vite.
+
+## Development Commands
+
+```bash
+npm run mempool:listen
+./scripts/start_agent.sh
+./scripts/run_tests.sh
+./scripts/health_check.sh
+```
+
+For contract workflows:
+
+```bash
+cd contracts
+npx hardhat compile
+npx hardhat test
+npx hardhat coverage
+```
 
 
-**Deployed Contracts (0G mainnet):**
-- SignalValidator: 0xe6329A48C0D8E4152e8406dbe102078E1abC7484 — https://chainscan.0g.ai/address/0xe6329A48C0D8E4152e8406dbe102078E1abC7484
-- LendingPool: 0x69d998618c7AEA1224C4bc5898519613c86EE42d — https://chainscan.0g.ai/address/0x69d998618c7AEA1224C4bc5898519613c86EE42d
-- ArbitrageExecutor: 0xAa0e986143B144f5860C41c74552B67ca78b1EBB — https://chainscan.0g.ai/address/0xAa0e986143B144f5860C41c74552B67ca78b1EBB
+## Project Notes
 
-Proof of 0G integration (quick verifier)
----------------------------------------
-The frontend surfaces deployed on-chain contracts as evidence of 0G integration. Open the app and navigate to the `Compute` or `Execution` pages — a small "Proof of 0G integration" card shows the contract addresses and links to ChainScan for on-chain inspection.
+- Flashix uses a consolidated FastAPI backend in `agent/backend_app.py`.
+- The React frontend routes are defined in `frontend/src/router.tsx`.
+- The dashboard is the best entry point for understanding the system state.
+- The `Compute` and `Execution` pages contain the strongest proof artifacts for demo review.
 
-If you'd like fresh contracts (not reused), run the deploy step with `REUSE_DEPLOYED_CONTRACTS=false` and re-run the deployment script. The UI and README will then reflect the newly deployed addresses.
+
