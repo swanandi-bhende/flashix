@@ -85,3 +85,9 @@ Hackathon Resources
 - HackQuest portal: https://hackquest.example.com
 # flashix
 Submission for 0G APAC Hackathon 2026.
+
+
+**Deployed Contracts (0G mainnet):**
+- SignalValidator: 0xe6329A48C0D8E4152e8406dbe102078E1abC7484 — https://chainscan-galileo.0g.ai/address/0xe6329A48C0D8E4152e8406dbe102078E1abC7484
+- LendingPool: 0x69d998618c7AEA1224C4bc5898519613c86EE42d — https://chainscan-galileo.0g.ai/address/0x69d998618c7AEA1224C4bc5898519613c86EE42d
+- ArbitrageExecutor: 0xAa0e986143B144f5860C41c74552B67ca78b1EBB — https://chainscan-galileo.0g.ai/address/0xAa0e986143B144f5860C41c74552B67ca78b1EBB
