@@ -30,12 +30,4 @@ This page collects the most common operational failures across compute, mempool,
 - Re-run the targeted test or replay harness when a logic change is suspected.
 - Compare the local behavior with the deployed app when the UI state looks inconsistent.
 
-## Useful References
 
-- [docs/AGENT_ARCHITECTURE.md](AGENT_ARCHITECTURE.md)
-- [docs/COMPUTE.md](COMPUTE.md)
-- [docs/MEMPOOL_ARCHITECTURE.md](MEMPOOL_ARCHITECTURE.md)
-- [docs/MARKET_DATA.md](MARKET_DATA.md)
-- [docs/CONTRACTS.md](CONTRACTS.md)
-- [docs/0G_Compute.md](0G_Compute.md)
-- [docs/0G_Implementation.md](0G_Implementation.md)

@@ -10,7 +10,6 @@ The deployed UI mirrors the local dashboard, opportunity queue, risk center, exe
 
 ## Documentation
 
-- [Docs Index](docs/README.md)
 - [Setup Guide](docs/Setup.md)
 - [Interactive Demo Guide](docs/Demo.md)
 - [Architecture Guide](docs/ARCHITECTURE.md)

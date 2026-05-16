@@ -203,16 +203,6 @@ The demo persistence service keeps exported artifacts, override records, and rep
 
 That persistence layer is important because the demo is intended to be reviewable, not just executable.
 
-## Related Operational Docs
-
-- [docs/MEMPOOL_ARCHITECTURE.md](MEMPOOL_ARCHITECTURE.md)
-- [docs/MARKET_DATA.md](MARKET_DATA.md)
-- [docs/AGENT_ARCHITECTURE.md](AGENT_ARCHITECTURE.md)
-- [docs/EXECUTION_ENGINE.md](EXECUTION_ENGINE.md)
-- [docs/RISK_MANAGEMENT.md](RISK_MANAGEMENT.md)
-- [docs/SETTLEMENT_MONITOR.md](SETTLEMENT_MONITOR.md)
-- [docs/MONITORING.md](MONITORING.md)
-- [docs/PRODUCTION_RUNBOOK.md](PRODUCTION_RUNBOOK.md)
 
 ## Deployment Surface
 
