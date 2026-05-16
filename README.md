@@ -21,6 +21,19 @@ The deployed UI mirrors the local dashboard, opportunity queue, risk center, exe
 - [Tests and Verification](docs/Tests.md)
 - [Troubleshooting](docs/Troubleshooting.md)
 
+## Deployed Contracts
+
+- **Testnet (Galileo, chainId 16602):**
+	- SignalValidator: 0xEc238754ffb9a846Ba52718D0a78E72878747702 — https://chainscan-galileo.0g.ai/address/0xEc238754ffb9a846Ba52718D0a78E72878747702
+	- LendingPool: 0xCe233f627834e017097feFB53f4dfD2085A9B988 — https://chainscan-galileo.0g.ai/address/0xCe233f627834e017097feFB53f4dfD2085A9B988
+	- ArbitrageExecutorV2: 0x83c0d423c623F676770D0539acC69e49A2a64ab9 — https://chainscan-galileo.0g.ai/address/0x83c0d423c623F676770D0539acC69e49A2a64ab9
+	- TEE / Deployer: 0x28FB61Dc27a37091f53C0c37b5026AdBbF5E1F46
+
+- **Mainnet (aristotle, chainId 16661):**
+	- SignalValidator: 0x545CD17d890455040593e35018216C906221c371 — https://chainscan.0g.ai/address/0x545cd17d890455040593e35018216c906221c371
+	- LendingPool: 0x4c580Fb35fBcc2A6D7223984B634ccE7EbE730Ed — https://chainscan.0g.ai/address/0x4c580fb35fbcc2a6d7223984b634cce7ebe730ed
+	- ArbitrageExecutor: 0x8A22F9af206fCC38d00c44DCa8B15555785b8a4a — https://chainscan.0g.ai/address/0x8a22f9af206fcc38d00c44dca8b15555785b8a4a
+
 ## What Flashix Does
 
 Flashix is built around a simple but strict pipeline:

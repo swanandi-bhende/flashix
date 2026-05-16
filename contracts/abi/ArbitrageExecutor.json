@@ -1,5 +1,5 @@
 {
-  "address": "0xAa0e986143B144f5860C41c74552B67ca78b1EBB",
+  "address": "0x8A22F9af206fCC38d00c44DCa8B15555785b8a4a",
   "abi": [
     {
       "inputs": [
@@ -249,6 +249,25 @@
       "anonymous": false,
       "inputs": [
         {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "opportunityId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "traceId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "TraceLinked",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
           "indexed": false,
           "internalType": "address",
           "name": "account",
@@ -316,6 +335,19 @@
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "lastTraceId",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
         }
       ],
       "stateMutability": "view",
@@ -499,6 +531,25 @@
     {
       "inputs": [
         {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "name": "traceIdsByOpportunity",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "address",
           "name": "newOwner",
           "type": "address"
@@ -517,11 +568,11 @@
       "type": "function"
     }
   ],
-  "chainId": 16602,
-  "deployedAt": "2026-05-10T00:17:35.312Z",
-  "txHash": "0x61e20e49289ddfcba96e897b13d43214e0580c53b94a0be15fb800ffb59e1964",
-  "blockNumber": 32478586,
-  "profitRecipient": "0x28FB61Dc27a37091f53C0c37b5026AdBbF5E1F46",
-  "lendingPool": "0x69d998618c7AEA1224C4bc5898519613c86EE42d",
-  "signalValidator": "0xe6329A48C0D8E4152e8406dbe102078E1abC7484"
+  "chainId": 16661,
+  "deployedAt": "2026-05-16T10:31:34.628Z",
+  "txHash": "0x11cb7c636aafd56b5a5f4572b6d654ad1e64b0c7b477c418e618eb0d3e11205c",
+  "blockNumber": 33412108,
+  "profitRecipient": "0x9d4a8DEaaf5Db767a468BBC97d91BEd368706a1c",
+  "lendingPool": "0x4c580Fb35fBcc2A6D7223984B634ccE7EbE730Ed",
+  "signalValidator": "0x545CD17d890455040593e35018216C906221c371"
 }

@@ -16,6 +16,11 @@ async function main() {
   }
   const [deployer] = signers;
   const deployerAddr = await deployer.getAddress();
+  const network = await ethers.provider.getNetwork();
+  const chainId = Number(network.chainId);
+  const networkLabel = chainId === 16661 ? "zgMainnet" : "zgTestnet";
+  const explorerBase =
+    chainId === 16661 ? "https://chainscan.0g.ai" : "https://chainscan-galileo.0g.ai";
   console.log(`\nDeployer address: ${deployerAddr}`);
 
   // Get profit recipient from environment or use deployer
@@ -33,27 +38,34 @@ async function main() {
     );
   }
 
-  const shouldReuseExisting = process.env.REUSE_DEPLOYED_CONTRACTS !== "false";
-  const existingArbitrageExecutor = process.env.ARBITRAGE_EXECUTOR_ADDRESS?.trim();
-  if (shouldReuseExisting && existingArbitrageExecutor) {
-    console.log(`\nReusing existing ArbitrageExecutor at: ${existingArbitrageExecutor}`);
-    return existingArbitrageExecutor;
-  }
-
   // Deploy ArbitrageExecutor
   console.log("\nDeploying ArbitrageExecutor contract...");
   const ArbitrageExecutor = await ethers.getContractFactory("ArbitrageExecutor");
-  const arbitrageExecutor = await ArbitrageExecutor.deploy(profitRecipient);
-
-  const deploymentTx = arbitrageExecutor.deploymentTransaction();
-  await arbitrageExecutor.waitForDeployment();
-  const receipt = await deploymentTx?.wait(2);
-
-  const arbitrageExecutorAddr = await arbitrageExecutor.getAddress();
-  const txHash = deploymentTx?.hash || "";
-  const blockNumber = receipt?.blockNumber || 0;
-  const gasUsed = receipt?.gasUsed?.toString() || "0";
-  const chainId = Number((await ethers.provider.getNetwork()).chainId);
+  
+  // Work around ethers.js v6 resolveName bug by manually encoding constructor args
+  // Constructor takes: address _profitRecipient
+  const abiCoder = ethers.AbiCoder.defaultAbiCoder();
+  const encodedArgs = abiCoder.encode(["address"], [profitRecipient]);
+  const deployData = ArbitrageExecutor.bytecode + encodedArgs.slice(2);
+  
+  console.log("Sending deployment transaction...");
+  const tx = await deployer.sendTransaction({
+    data: deployData,
+    gasLimit: 3000000,  // Set explicit gas limit
+  });
+  
+  console.log(`Tx sent: ${tx.hash}`);
+  const receipt = await tx.wait(2);
+  
+  if (!receipt || !receipt.contractAddress) {
+    throw new Error("Deployment failed: no contract address in receipt");
+  }
+  
+  const arbitrageExecutorAddr = receipt.contractAddress;
+  const arbitrageExecutor = ArbitrageExecutor.attach(arbitrageExecutorAddr);
+  const txHash = tx.hash;
+  const blockNumber = receipt.blockNumber || 0;
+  const gasUsed = receipt.gasUsed?.toString() || "0";
 
   console.log(`\n✓ ArbitrageExecutor deployed successfully!`);
   console.log(`  Address: ${arbitrageExecutorAddr}`);
@@ -89,19 +101,6 @@ async function main() {
     );
   }
 
-  // Wire up contracts
-  console.log("\nWiring up contract dependencies...");
-
-  if (lendingPoolAddr) {
-    await arbitrageExecutor.setLendingPool(lendingPoolAddr);
-    console.log(`  ✓ LendingPool set: ${lendingPoolAddr}`);
-  }
-
-  if (signalValidatorAddr) {
-    await arbitrageExecutor.setSignalValidator(signalValidatorAddr);
-    console.log(`  ✓ SignalValidator set: ${signalValidatorAddr}`);
-  }
-
   // Save to ABI folder
   const abiDir = path.join(__dirname, "../abi");
   if (!fs.existsSync(abiDir)) {
@@ -131,7 +130,7 @@ async function main() {
     JSON.stringify(contractData, null, 2)
   );
 
-  console.log(`\n  ABI saved to: /abi/ArbitrageExecutor.json`);
+  console.log(`  ABI saved to: /abi/ArbitrageExecutor.json`);
 
   // Update .env
   if (envContent.includes("ARBITRAGE_EXECUTOR_ADDRESS")) {
@@ -148,7 +147,10 @@ async function main() {
 
   // Update deployments manifest
   const deploymentsDir = path.join(__dirname, "../deployments");
-  const deploymentsPath = path.join(deploymentsDir, "testnet.json");
+  const deploymentsPath = path.join(
+    deploymentsDir,
+    chainId === 16661 ? "mainnet.json" : "testnet.json"
+  );
   if (!fs.existsSync(deploymentsDir)) {
     fs.mkdirSync(deploymentsDir, { recursive: true });
   }
@@ -156,8 +158,8 @@ async function main() {
   const deployments = fs.existsSync(deploymentsPath)
     ? JSON.parse(fs.readFileSync(deploymentsPath, "utf-8"))
     : {
-        network: "zgTestnet",
-        chainId: 16602,
+        network: networkLabel,
+        chainId,
         deployedAt: null,
         contracts: {},
       };
@@ -170,15 +172,15 @@ async function main() {
     txHash,
     blockNumber,
     gasUsed,
-    profitRecipient,
-    lendingPool: lendingPoolAddr || null,
-    signalValidator: signalValidatorAddr || null,
+    profitRecipient: profitRecipient,
+    lendingPool: lendingPoolAddr,
+    signalValidator: signalValidatorAddr,
     verified: false,
-    explorerUrl: `https://chainscan.0g.ai/address/${arbitrageExecutorAddr}`,
+    explorerUrl: `${explorerBase}/address/${arbitrageExecutorAddr}`,
     verificationUrl: null,
   };
   fs.writeFileSync(deploymentsPath, JSON.stringify(deployments, null, 2));
-  console.log(`  deployments/testnet.json updated`);
+  console.log(`  deployments/${chainId === 16661 ? "mainnet.json" : "testnet.json"} updated`);
 
   console.log("\n" + "=".repeat(60));
   console.log("ArbitrageExecutor deployment complete!");

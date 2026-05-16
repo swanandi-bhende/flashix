@@ -16,6 +16,11 @@ async function main() {
   }
   const [deployer] = signers;
   const deployerAddr = await deployer.getAddress();
+  const network = await ethers.provider.getNetwork();
+  const chainId = Number(network.chainId);
+  const networkLabel = chainId === 16661 ? "zgMainnet" : "zgTestnet";
+  const explorerBase =
+    chainId === 16661 ? "https://chainscan.0g.ai" : "https://chainscan-galileo.0g.ai";
   console.log(`\nDeployer address: ${deployerAddr}`);
 
   // Check deployer balance
@@ -29,7 +34,8 @@ async function main() {
     );
   }
 
-  const shouldReuseExisting = process.env.REUSE_DEPLOYED_CONTRACTS !== "false";
+  // Safety default: force fresh deployments unless explicitly set to true.
+  const shouldReuseExisting = process.env.REUSE_DEPLOYED_CONTRACTS === "true";
   const existingLendingPool = process.env.LENDING_POOL_ADDRESS?.trim();
   if (shouldReuseExisting && existingLendingPool) {
     console.log(`\nReusing existing LendingPool at: ${existingLendingPool}`);
@@ -49,8 +55,6 @@ async function main() {
   const txHash = deploymentTx?.hash || "";
   const blockNumber = receipt?.blockNumber || 0;
   const gasUsed = receipt?.gasUsed?.toString() || "0";
-  const chainId = Number((await ethers.provider.getNetwork()).chainId);
-
   console.log(`\n✓ LendingPool deployed successfully!`);
   console.log(`  Address: ${lendingPoolAddr}`);
   console.log(`  Transaction: ${txHash}`);
@@ -103,7 +107,10 @@ async function main() {
 
   // Update deployments manifest
   const deploymentsDir = path.join(__dirname, "../deployments");
-  const deploymentsPath = path.join(deploymentsDir, "testnet.json");
+  const deploymentsPath = path.join(
+    deploymentsDir,
+    chainId === 16661 ? "mainnet.json" : "testnet.json"
+  );
   if (!fs.existsSync(deploymentsDir)) {
     fs.mkdirSync(deploymentsDir, { recursive: true });
   }
@@ -111,8 +118,8 @@ async function main() {
   const deployments = fs.existsSync(deploymentsPath)
     ? JSON.parse(fs.readFileSync(deploymentsPath, "utf-8"))
     : {
-        network: "zgTestnet",
-        chainId: 16602,
+        network: networkLabel,
+        chainId,
         deployedAt: null,
         contracts: {},
       };
@@ -126,11 +133,11 @@ async function main() {
     blockNumber,
     gasUsed,
     verified: false,
-     explorerUrl: `https://chainscan.0g.ai/address/${lendingPoolAddr}`,
+    explorerUrl: `${explorerBase}/address/${lendingPoolAddr}`,
     verificationUrl: null,
   };
   fs.writeFileSync(deploymentsPath, JSON.stringify(deployments, null, 2));
-  console.log(`  deployments/testnet.json updated`);
+  console.log(`  deployments/${chainId === 16661 ? "mainnet.json" : "testnet.json"} updated`);
 
   console.log("\n" + "=".repeat(60));
   console.log("LendingPool deployment complete!");

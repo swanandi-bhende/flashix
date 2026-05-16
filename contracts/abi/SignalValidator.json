@@ -1,5 +1,5 @@
 {
-  "address": "0xe6329A48C0D8E4152e8406dbe102078E1abC7484",
+  "address": "0x545CD17d890455040593e35018216C906221c371",
   "abi": [
     {
       "inputs": [
@@ -529,9 +529,9 @@
       "type": "function"
     }
   ],
-  "chainId": 16602,
-  "deployedAt": "2026-05-10T00:17:04.528Z",
-  "txHash": "0xb88a89c1ef143df9edb63a159fb306a7a5b3c7b8da84462fdc4d82ca6a3340a6",
-  "blockNumber": 32478529,
-  "trustedSigner": "0x28FB61Dc27a37091f53C0c37b5026AdBbF5E1F46"
+  "chainId": 16661,
+  "deployedAt": "2026-05-16T10:30:21.798Z",
+  "txHash": "0xaf8f141594fa7471a9802874815c3831d28bdd9670a4f1304c04a036212fdbdd",
+  "blockNumber": 33412027,
+  "teeSigner": "0x28FB61Dc27a37091f53C0c37b5026AdBbF5E1F46"
 }

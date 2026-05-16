@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 /**
  * @title SignalValidator
@@ -19,8 +17,18 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
  * Every arbitrage signal must be signed by a registered TEE address and its
  * MRENCLAVE must match the expected enclave measurement.
  */
-contract SignalValidator is Ownable, ReentrancyGuard {
+contract SignalValidator {
     using ECDSA for bytes32;
+
+    // ====================
+    // Owner
+    // ====================
+    address public owner;
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only owner can call this");
+        _;
+    }
 
     // ====================
     // Data Structures
@@ -140,8 +148,9 @@ contract SignalValidator is Ownable, ReentrancyGuard {
      * @notice Initialize the SignalValidator with the expected MRENCLAVE.
      * @param expectedMrenclave The SHA-256 hash of the trusted enclave binary.
      */
-    constructor(bytes32 expectedMrenclave) Ownable(msg.sender) {
+    constructor(bytes32 expectedMrenclave) {
         EXPECTED_MRENCLAVE = expectedMrenclave;
+        owner = msg.sender;
         verifiedSignalCount = 0;
     }
 

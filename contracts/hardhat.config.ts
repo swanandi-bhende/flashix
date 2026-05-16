@@ -63,14 +63,23 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: {
-      zgTestnet: process.env.BLOCK_EXPLORER_API_KEY || "",
+      zgTestnet: process.env.BLOCK_EXPLORER_API_KEY_TESTNET || process.env.BLOCK_EXPLORER_API_KEY || "",
+      zgMainnet: process.env.BLOCK_EXPLORER_API_KEY_MAINNET || process.env.BLOCK_EXPLORER_API_KEY || "",
     },
     customChains: [
       {
         network: "zgTestnet",
         chainId: 16602,
         urls: {
-          apiURL: "https://chainscan.0g.ai/api",
+          apiURL: "https://chainscan-galileo.0g.ai/open/api",
+          browserURL: "https://chainscan-galileo.0g.ai",
+        },
+      },
+      {
+        network: "zgMainnet",
+        chainId: 16661,
+        urls: {
+          apiURL: "https://chainscan.0g.ai/open/api",
           browserURL: "https://chainscan.0g.ai",
         },
       },

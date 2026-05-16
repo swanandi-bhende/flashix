@@ -5,22 +5,39 @@
   "deployer": "0x9d4a8DEaaf5Db767a468BBC97d91BEd368706a1c",
   "contracts": {
     "SignalValidator": {
-      "address": "0xe6329A48C0D8E4152e8406dbe102078E1abC7484",
-      "blockNumber": 32478529,
-      "txHash": "0xb88a89...",
-      "explorer": "https://chainscan.0g.ai/address/0xe6329A48C0D8E4152e8406dbe102078E1abC7484"
+      "address": "0x545CD17d890455040593e35018216C906221c371",
+      "blockNumber": 33412027,
+      "txHash": "0xaf8f141594fa7471a9802874815c3831d28bdd9670a4f1304c04a036212fdbdd",
+      "explorer": "https://chainscan.0g.ai/address/0xe6329A48C0D8E4152e8406dbe102078E1abC7484",
+      "gasUsed": "1600000",
+      "trustedSigner": "0x28FB61Dc27a37091f53C0c37b5026AdBbF5E1F46",
+      "verified": false,
+      "explorerUrl": "https://chainscan.0g.ai/address/0x545CD17d890455040593e35018216C906221c371",
+      "verificationUrl": null
     },
     "LendingPool": {
-      "address": "0x69d998618c7AEA1224C4bc5898519613c86EE42d",
-      "blockNumber": 32478557,
-      "txHash": "0xea8f38...",
-      "explorer": "https://chainscan.0g.ai/address/0x69d998618c7AEA1224C4bc5898519613c86EE42d"
+      "address": "0x4c580Fb35fBcc2A6D7223984B634ccE7EbE730Ed",
+      "blockNumber": 33411711,
+      "txHash": "0x88d2fcd8d83674412ba040d16dc8158efea12cece09a827f47f70792a35fa6c7",
+      "explorer": "https://chainscan.0g.ai/address/0x69d998618c7AEA1224C4bc5898519613c86EE42d",
+      "gasUsed": "990513",
+      "verified": false,
+      "explorerUrl": "https://chainscan.0g.ai/address/0x4c580Fb35fBcc2A6D7223984B634ccE7EbE730Ed",
+      "verificationUrl": null
     },
     "ArbitrageExecutor": {
-      "address": "0xAa0e986143B144f5860C41c74552B67ca78b1EBB",
-      "blockNumber": 32478586,
-      "txHash": "0x61e20e...",
-      "explorer": "https://chainscan.0g.ai/address/0xAa0e986143B144f5860C41c74552B67ca78b1EBB"
+      "address": "0x8A22F9af206fCC38d00c44DCa8B15555785b8a4a",
+      "blockNumber": 33412108,
+      "txHash": "0x11cb7c636aafd56b5a5f4572b6d654ad1e64b0c7b477c418e618eb0d3e11205c",
+      "explorer": "https://chainscan.0g.ai/address/0xAa0e986143B144f5860C41c74552B67ca78b1EBB",
+      "gasUsed": "2400000",
+      "profitRecipient": "0x9d4a8DEaaf5Db767a468BBC97d91BEd368706a1c",
+      "lendingPool": "0x4c580Fb35fBcc2A6D7223984B634ccE7EbE730Ed",
+      "signalValidator": "0x545CD17d890455040593e35018216C906221c371",
+      "verified": false,
+      "explorerUrl": "https://chainscan.0g.ai/address/0x8A22F9af206fCC38d00c44DCa8B15555785b8a4a",
+      "verificationUrl": null
     }
-  }
+  },
+  "deployedAt": "2026-05-16T10:31:34.630Z"
 }
